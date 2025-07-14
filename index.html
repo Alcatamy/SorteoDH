@@ -3,1008 +3,538 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo TOP10 IBERDROLA 2025/2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Sorteo Definitivo TOP10 IBERDROLA (Versión Panorámica)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-gold: #d4af37;
+            --primary-blue: #0c2f6b;
+            --dark-bg: #0a192f;
+            --accent-silver: #e5e7eb;
+            --shadow-gold: rgba(212, 175, 55, 0.3);
+        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f1419 0%, #1e293b 30%, #334155 70%, #475569 100%);
-            min-height: 100vh;
-            color: #f8fafc;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Partículas de fondo */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: rgba(255, 215, 0, 0.6);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Header ceremonial */
-        .ceremonial-header {
-            text-align: center;
-            padding: 50px 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-        }
-
-        .ceremonial-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,215,0,0.1) 50%, transparent 70%);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .logo-ceremonial {
-            max-width: 500px;
-            height: auto;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
-        }
-
-        .title-ceremonial {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5em;
-            font-weight: 700;
-            color: #ffd700;
-            margin-bottom: 15px;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-            position: relative;
-            z-index: 1;
-        }
-
-        .subtitle-ceremonial {
-            font-size: 1.4em;
-            color: #e2e8f0;
-            font-weight: 400;
-            margin-bottom: 20px;
-        }
-
-        .ceremony-info {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--primary-blue) 100%);
+            color: white;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* La clave para evitar el scroll */
             display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 30px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .ceremony-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 1.5rem;
         }
 
-        .info-item {
-            background: rgba(255,255,255,0.1);
-            padding: 15px 25px;
-            border-radius: 25px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.2);
+        /* --- HEADER --- */
+        .header-section {
+            text-align: center;
+            padding-bottom: 1rem;
+            flex-shrink: 0;
+        }
+        .main-logo {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 0.5rem;
+        }
+        .ceremony-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            background: linear-gradient(45deg, var(--primary-gold), #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .info-label {
-            font-size: 0.9em;
-            color: #94a3b8;
-            margin-bottom: 5px;
-        }
-
-        .info-value {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #ffd700;
-        }
-
-        /* Área principal del sorteo */
-        .sorteo-ceremonial {
+        /* --- MAIN CONTENT AREA --- */
+        .main-content {
             display: grid;
             grid-template-columns: 1fr 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-            align-items: start;
+            gap: 1.5rem;
+            flex-grow: 1;
+            height: calc(100% - 150px); /* Ajustar altura para dejar espacio a header y footer */
         }
 
-        /* Bombos con diseño 3D */
-        .bombo-ceremonial {
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            padding: 30px;
-            border: 2px solid rgba(255,215,0,0.3);
-            position: relative;
-            transform-style: preserve-3d;
-            transition: all 0.4s ease;
-        }
-
-        .bombo-ceremonial:hover {
-            transform: rotateY(5deg) rotateX(5deg);
-            box-shadow: 0 20px 40px rgba(255,215,0,0.2);
-        }
-
-        .bombo-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8em;
-            font-weight: 600;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .teams-ceremonial {
+        /* --- GRUPOS (Laterales) --- */
+        .group-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
-            gap: 15px;
-        }
-
-        .team-ceremonial {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            position: relative;
             overflow: hidden;
         }
-
-        .team-ceremonial::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
-            transition: left 0.5s ease;
+        .group-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--primary-gold);
+            flex-shrink: 0;
         }
-
-        .team-ceremonial:hover::before {
-            left: 100%;
-        }
-
-        .team-ceremonial:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(255,215,0,0.3);
-            border-color: #ffd700;
-        }
-
-        .team-logo-ceremonial {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            border-radius: 10px;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
-        }
-
-        .team-info-ceremonial {
-            flex: 1;
-        }
-
-        .team-name-ceremonial {
-            font-weight: 600;
-            color: #f8fafc;
-            font-size: 1em;
-            margin-bottom: 5px;
-        }
-
-        .team-position-ceremonial {
-            font-size: 0.85em;
-            color: #94a3b8;
-        }
-
-        /* Área central - Grupos */
-        .grupos-ceremonial {
+        .group-teams {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 0.75rem;
+            overflow-y: auto; /* Para el caso extremo de muchos equipos, aunque no se usará */
+        }
+        .group-team {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeIn 0.5s ease forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .group-team img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+        .group-team .team-name {
+            font-weight: 500;
+        }
+        .group-team .team-position {
+            font-size: 0.8rem;
+            color: var(--accent-silver);
+            opacity: 0.8;
         }
 
-        .grupo-ceremonial {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            padding: 30px;
-            border: 2px solid rgba(255,215,0,0.4);
+        /* --- ÁREA CENTRAL DE SORTEO --- */
+        .draw-arena {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .pots-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            flex-shrink: 0;
+        }
+        .pot-container {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        .pot-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-gold);
+        }
+        .pot-teams {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .team-ball {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, white, #f3f4f6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .team-ball.selected {
+            transform: scale(1.15);
+            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
+            box-shadow: 0 8px 25px var(--shadow-gold);
+        }
+        .team-ball img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+        .team-ball .team-name {
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: var(--dark-bg);
+            margin-top: 2px;
+        }
+
+        .central-sphere-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             position: relative;
         }
-
-        .grupo-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2em;
-            font-weight: 700;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .grupo-slots {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .slot-ceremonial {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            border: 2px dashed rgba(255,215,0,0.3);
-            border-radius: 15px;
-            padding: 20px;
-            min-height: 80px;
+        .drawing-sphere {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .slot-ceremonial.filled {
-            border-style: solid;
-            border-color: #ffd700;
-            background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.05) 100%);
-        }
-
-        .slot-ceremonial.empty {
-            color: #64748b;
-            font-style: italic;
-        }
-
-        .slot-number {
-            position: absolute;
-            top: -10px;
-            left: 15px;
-            background: #ffd700;
-            color: #0f1419;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: 600;
-        }
-
-        /* Panel de control ceremonial */
-        .control-ceremonial {
+            color: var(--dark-bg);
+            box-shadow: 0 10px 30px var(--shadow-gold);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
             text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px;
+            padding: 1rem;
+        }
+        .drawing-sphere.active {
+            transform: scale(1.1);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 10px 30px var(--shadow-gold); }
+            50% { box-shadow: 0 15px 45px var(--shadow-gold); }
+        }
+        .sphere-text {
+             font-size: 1.2rem;
+             font-weight: 600;
+        }
+        .status-message {
+            position: absolute;
+            bottom: 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--primary-gold);
         }
 
-        .button-ceremonial {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
-            color: #0f1419;
+        /* --- FOOTER (Controles y Transparencia) --- */
+        .footer-bar {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .transparency-grid {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .transparency-item {
+            text-align: center;
+        }
+        .transparency-label {
+            font-size: 0.8rem;
+            color: var(--accent-silver);
+            opacity: 0.7;
+        }
+        .transparency-value {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: var(--primary-gold);
+        }
+        .ceremony-button {
+            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
+            color: var(--dark-bg);
             border: none;
-            padding: 20px 50px;
-            font-size: 1.4em;
-            font-weight: 700;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(255,215,0,0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-
-        .button-ceremonial::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s ease;
+        .ceremony-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
-
-        .button-ceremonial:hover::before {
-            left: 100%;
-        }
-
-        .button-ceremonial:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255,215,0,0.6);
-        }
-
-        .button-ceremonial:disabled {
-            background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
+        .ceremony-button:disabled {
+            background: #6b7280;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
-
-        .status-ceremonial {
-            margin-top: 25px;
-            font-size: 1.2em;
-            font-weight: 500;
-            color: #ffd700;
-            min-height: 30px;
-        }
-
-        /* Efectos de selección */
-        .selected-ceremonial {
-            animation: pulse-gold 1s ease-in-out infinite alternate;
-            border-color: #ffd700 !important;
-            box-shadow: 0 0 30px rgba(255,215,0,0.8);
-        }
-
-        @keyframes pulse-gold {
-            0% { background: rgba(255,215,0,0.2); }
-            100% { background: rgba(255,215,0,0.4); }
-        }
-
-        .shake-ceremonial {
-            animation: shake-3d 0.8s ease-in-out infinite;
-        }
-
-        @keyframes shake-3d {
-            0%, 100% { transform: rotateY(0deg) rotateX(0deg); }
-            25% { transform: rotateY(-2deg) rotateX(-1deg); }
-            75% { transform: rotateY(2deg) rotateX(1deg); }
-        }
-
-        /* Animación de movimiento */
-        .moving-ceremonial {
-            position: fixed;
-            z-index: 1000;
-            transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            filter: drop-shadow(0 10px 20px rgba(255,215,0,0.5));
-        }
-
-        /* Mensaje final */
-        .final-ceremonial {
-            background: linear-gradient(135deg, rgba(255,215,0,0.2) 0%, rgba(255,215,0,0.1) 100%);
-            border: 2px solid #ffd700;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            font-size: 1.6em;
-            font-weight: 600;
-            color: #ffd700;
-            box-shadow: 0 20px 40px rgba(255,215,0,0.3);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .final-ceremonial::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
-            animation: rotate 4s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Historial de transparencia */
-        .transparency-panel {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.2);
-            margin-bottom: 20px;
-        }
-
-        .transparency-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4em;
-            font-weight: 600;
-            color: #ffd700;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .transparency-log {
-            max-height: 200px;
-            overflow-y: auto;
-            color: #e2e8f0;
-            font-size: 0.9em;
-            line-height: 1.6;
-        }
-
-        .log-entry {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .log-time {
-            color: #94a3b8;
-            font-size: 0.8em;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sorteo-ceremonial {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .title-ceremonial {
-                font-size: 2.5em;
-            }
-            
-            .ceremony-info {
-                flex-direction: column;
-                gap: 15px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .button-ceremonial {
-                padding: 15px 30px;
-                font-size: 1.2em;
-            }
-            
-            .grupo-title {
-                font-size: 1.8em;
-            }
-            
-            .container {
-                padding: 20px;
-            }
-        }
-
-        /* Placeholder para logos */
-        .logo-placeholder {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7em;
-            color: #f8fafc;
-            text-align: center;
-            line-height: 1.2;
-        }
     </style>
 </head>
 <body>
-    <!-- Partículas de fondo -->
-    <div class="particles" id="particles"></div>
+    <div class="ceremony-wrapper">
+        <header class="header-section">
+            <img src="https://liga.badminton.es/wp-content/uploads/2024/01/AF_Iberdrola_Badminton_RGB_POS_H.png" alt="Logo Iberdrola" class="main-logo">
+            <h1 class="ceremony-title">Sorteo de Grupos TOP10 2025/2026</h1>
+        </header>
 
-    <div class="container">
-        <!-- Header ceremonial -->
-        <div class="ceremonial-header">
-            <img src="https://liga.badminton.es/wp-content/uploads/2024/01/AF_Iberdrola_Badminton_RGB_POS_H.png" 
-                 alt="Logo TOP10 IBERDROLA" class="logo-ceremonial" 
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div class="logo-placeholder" style="display: none; max-width: 500px; height: 100px; margin: 0 auto 30px;">
-                Logo TOP10 IBERDROLA
-            </div>
-            <h1 class="title-ceremonial">Sorteo Ceremonial</h1>
-            <p class="subtitle-ceremonial">Fase de Grupos TOP10 IBERDROLA 2025/2026</p>
-            
-            <div class="ceremony-info">
-                <div class="info-item">
-                    <div class="info-label">Equipos Participantes</div>
-                    <div class="info-value">10</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Grupos</div>
-                    <div class="info-value">2</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Tiempo Transcurrido</div>
-                    <div class="info-value" id="timer">00:00</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel de transparencia -->
-        <div class="transparency-panel" id="transparency-panel" style="display: none;">
-            <div class="transparency-title">📋 Registro de Transparencia</div>
-            <div class="transparency-log" id="transparency-log"></div>
-        </div>
-
-        <!-- Área principal del sorteo -->
-        <div class="sorteo-ceremonial">
-            <!-- Bombos -->
-            <div>
-                <div class="bombo-ceremonial" id="bombo-heads">
-                    <div class="bombo-title">Cabezas de Serie</div>
-                    <div class="teams-ceremonial" id="heads-teams"></div>
-                </div>
-                
-                <div class="bombo-ceremonial" id="bombo-1" style="margin-top: 20px;">
-                    <div class="bombo-title">Bombo 1</div>
-                    <div class="teams-ceremonial" id="pot1-teams"></div>
-                </div>
-                
-                <div class="bombo-ceremonial" id="bombo-2" style="margin-top: 20px;">
-                    <div class="bombo-title">Bombo 2</div>
-                    <div class="teams-ceremonial" id="pot2-teams"></div>
-                </div>
+        <main class="main-content">
+            <div class="group-panel" id="group-a-panel">
+                <h2 class="group-title">Grupo A</h2>
+                <div class="group-teams" id="group-a-teams"></div>
             </div>
 
-            <!-- Grupos -->
-            <div class="grupos-ceremonial">
-                <div class="grupo-ceremonial">
-                    <div class="grupo-title">GRUPO A</div>
-                    <div class="grupo-slots" id="grupo-a-slots"></div>
-                </div>
-                
-                <div class="grupo-ceremonial">
-                    <div class="grupo-title">GRUPO B</div>
-                    <div class="grupo-slots" id="grupo-b-slots"></div>
-                </div>
-            </div>
-
-            <!-- Espacio para información adicional -->
-            <div>
-                <div class="bombo-ceremonial">
-                    <div class="bombo-title">Estadísticas</div>
-                    <div style="text-align: center; color: #e2e8f0;">
-                        <div style="margin-bottom: 15px;">
-                            <strong>Probabilidad:</strong><br>
-                            <span id="probability">Pendiente</span>
-                        </div>
-                        <div style="margin-bottom: 15px;">
-                            <strong>Fase Actual:</strong><br>
-                            <span id="current-phase">Preparación</span>
-                        </div>
-                        <div>
-                            <strong>Selecciones:</strong><br>
-                            <span id="selections-count">0/8</span>
-                        </div>
+            <div class="draw-arena">
+                <div class="pots-container">
+                    <div class="pot-container" id="pot-heads">
+                        <div class="pot-title">Cabezas de Serie</div>
+                        <div class="pot-teams" id="heads-teams"></div>
+                    </div>
+                    <div class="pot-container" id="pot-drawing">
+                        <div class="pot-title" id="current-pot-title">Bombo 1</div>
+                        <div class="pot-teams" id="current-pot-teams"></div>
                     </div>
                 </div>
+                <div class="central-sphere-area">
+                    <div class="drawing-sphere" id="drawing-sphere">
+                        <span class="sphere-text" id="sphere-text">Iniciar Sorteo</span>
+                    </div>
+                    <div class="status-message" id="status-message"></div>
+                </div>
             </div>
-        </div>
 
-        <!-- Control ceremonial -->
-        <div class="control-ceremonial">
-            <button class="button-ceremonial" id="main-button" onclick="startCeremonialDraw()">
-                🎭 Iniciar Ceremonia
-            </button>
-            <div class="status-ceremonial" id="status"></div>
-        </div>
-
-        <!-- Mensaje final -->
-        <div class="final-ceremonial" id="final-message" style="display: none;">
-            <div style="position: relative; z-index: 1;">
-                🏆 ¡Ceremonia de Sorteo Completada! 🏆<br>
-                <span style="font-size: 0.8em; margin-top: 10px; display: block;">
-                    Proceso realizado con máxima transparencia y aleatoriedad verificada
-                </span>
+            <div class="group-panel" id="group-b-panel">
+                <h2 class="group-title">Grupo B</h2>
+                <div class="group-teams" id="group-b-teams"></div>
             </div>
-        </div>
+        </main>
     </div>
 
+    <footer class="footer-bar">
+        <div class="transparency-grid">
+            <div class="transparency-item">
+                <div class="transparency-label">Timestamp</div>
+                <div class="transparency-value" id="timestamp">--:--:--</div>
+            </div>
+            <div class="transparency-item">
+                <div class="transparency-label">Semilla Aleatoria</div>
+                <div class="transparency-value" id="random-seed">...</div>
+            </div>
+            <div class="transparency-item">
+                <div class="transparency-label">Hash Sorteo</div>
+                <div class="transparency-value" id="verification-hash">Pendiente</div>
+            </div>
+        </div>
+        <button class="ceremony-button" id="ceremony-btn">COMENZAR</button>
+    </footer>
+
     <script>
-        // Datos de equipos
-        const teams = [
-            { name: "Recreativo IES La Orden", position: "Campeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/IES-La-Orden.png", type: "head" },
-            { name: "Puertas Padilla Cartagena", position: "Subcampeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Logo-Puertas-Padilla-Cartagena.png", type: "head" },
-            { name: "Oviedo", position: "3º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/Logo-cbo-formato-vertical.ai_.png", type: "pot1" },
-            { name: "Rinconada - Sevilla", position: "4º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Rinconada.png", type: "pot1" },
-            { name: "Ravachol Pontevedra", position: "5º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/LOGO-HORIZONTAL.png", type: "pot2" },
-            { name: "UD Ibiza - Bádminton Pitius", position: "6º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Shield_of_UD_Ibiza.png", type: "pot2" },
-            { name: "Alicante Intercity", position: "7º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-46.png", type: "pot2" },
-            { name: "San Fernando Valencia", position: "8º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-30.png", type: "pot2" },
-            { name: "Astures", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/ASTURES.png", type: "pot2" },
-            { name: "Huesca La Magia", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/images-2-300x104.png", type: "pot2" }
-        ];
+        // --- DATA ---
+        const teams = {
+            heads: [
+                { id: 'campeon', name: 'Recreativo IES La Orden', subtitle: 'Campeón', img: 'https://liga.badminton.es/wp-content/uploads/2022/09/IES-La-Orden.png' },
+                { id: 'subcampeon', name: 'Puertas Padilla Cartagena', subtitle: 'Subcampeón', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Logo-Puertas-Padilla-Cartagena.png' }
+            ],
+            pot1: [
+                { id: 'oviedo', name: 'Oviedo', subtitle: '3º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/09/Logo-cbo-formato-vertical.ai_.png' },
+                { id: 'rinconada', name: 'Rinconada - Sevilla', subtitle: '4º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Rinconada.png' }
+            ],
+            pot2: [
+                { id: 'ravachol', name: 'Ravachol Pontevedra', subtitle: '5º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/09/LOGO-HORIZONTAL.png' },
+                { id: 'ibiza', name: 'UD Ibiza', subtitle: '6º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Shield_of_UD_Ibiza.png' },
+                { id: 'alicante', name: 'Alicante Intercity', subtitle: '7º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-46.png' },
+                { id: 'sanfernando', name: 'San Fernando Valencia', subtitle: '8º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-30.png' },
+                { id: 'astures', name: 'Astures', subtitle: 'Ascendido', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/ASTURES.png' },
+                { id: 'huesca', name: 'Huesca La Magia', subtitle: 'Ascendido', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/images-2-300x104.png' }
+            ]
+        };
 
-        let drawInProgress = false;
-        let startTime = null;
-        let timer = null;
-        let selectionCount = 0;
-        let transparencyLog = [];
+        // --- STATE ---
+        let state = {
+            isDrawing: false,
+            phase: 'initial',
+            groupA: [],
+            groupB: [],
+            randomSeed: '',
+        };
 
-        // Crear partículas de fondo
-        function createParticles() {
-            const particles = document.getElementById('particles');
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                particles.appendChild(particle);
+        // --- DOM ELEMENTS ---
+        const DOMElements = {
+            ceremonyBtn: document.getElementById('ceremony-btn'),
+            drawingSphere: document.getElementById('drawing-sphere'),
+            sphereText: document.getElementById('sphere-text'),
+            statusMessage: document.getElementById('status-message'),
+            headsTeams: document.getElementById('heads-teams'),
+            currentPotTeams: document.getElementById('current-pot-teams'),
+            currentPotTitle: document.getElementById('current-pot-title'),
+            groupATeams: document.getElementById('group-a-teams'),
+            groupBTeams: document.getElementById('group-b-teams'),
+            timestamp: document.getElementById('timestamp'),
+            randomSeed: document.getElementById('random-seed'),
+            verificationHash: document.getElementById('verification-hash'),
+        };
+
+        // --- RENDER FUNCTIONS ---
+        const render = {
+            teamBall: (team) => {
+                const name = team.name.split(' ')[0];
+                return `<div class="team-ball" data-team-id="${team.id}">
+                          <img src="${team.img}" alt="${team.name}" onerror="this.style.display='none'">
+                          <div class="team-name">${name}</div>
+                        </div>`;
+            },
+            groupTeam: (team) => {
+                return `<div class="group-team">
+                          <img src="${team.img}" alt="${team.name}">
+                          <div>
+                            <div class="team-name">${team.name}</div>
+                            <div class="team-position">${team.subtitle}</div>
+                          </div>
+                        </div>`;
+            },
+            initialState: () => {
+                DOMElements.headsTeams.innerHTML = teams.heads.map(render.teamBall).join('');
+                DOMElements.currentPotTitle.textContent = "Bombo 1";
+                DOMElements.currentPotTeams.innerHTML = teams.pot1.map(render.teamBall).join('');
+                DOMElements.groupATeams.innerHTML = '';
+                DOMElements.groupBTeams.innerHTML = '';
+            },
+            updateTimestamp: () => {
+                const now = new Date();
+                DOMElements.timestamp.textContent = now.toLocaleTimeString('es-ES');
+            },
+            showMessage: (msg, duration = 2000) => {
+                DOMElements.statusMessage.textContent = msg;
+                DOMElements.statusMessage.style.opacity = '1';
+                setTimeout(() => { DOMElements.statusMessage.style.opacity = '0'; }, duration);
             }
-        }
+        };
 
-        // Crear tarjeta de equipo ceremonial
-        function createTeamCeremonial(team, containerId) {
-            const card = document.createElement('div');
-            card.className = 'team-ceremonial';
-            card.dataset.team = team.name;
-            card.dataset.container = containerId;
-            
-            const logo = document.createElement('img');
-            logo.src = team.logo;
-            logo.alt = team.name;
-            logo.className = 'team-logo-ceremonial';
-            logo.onerror = function() {
-                this.style.display = 'none';
-                const placeholder = document.createElement('div');
-                placeholder.className = 'logo-placeholder';
-                placeholder.textContent = team.name.substring(0, 8);
-                this.parentNode.insertBefore(placeholder, this);
-            };
-            
-            const info = document.createElement('div');
-            info.className = 'team-info-ceremonial';
-            
-            const name = document.createElement('div');
-            name.className = 'team-name-ceremonial';
-            name.textContent = team.name;
-            
-            const position = document.createElement('div');
-            position.className = 'team-position-ceremonial';
-            position.textContent = team.position;
-            
-            info.appendChild(name);
-            info.appendChild(position);
-            card.appendChild(logo);
-            card.appendChild(info);
-            
-            return card;
-        }
-
-        // Crear slot vacío
-        function createSlotCeremonial(number) {
-            const slot = document.createElement('div');
-            slot.className = 'slot-ceremonial empty';
-            slot.innerHTML = `
-                <div class="slot-number">${number}</div>
-                <div>Esperando asignación...</div>
-            `;
-            return slot;
-        }
-
-        // Agregar entrada al log de transparencia
-        function addTransparencyLog(message) {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString();
-            const logEntry = document.createElement('div');
-            logEntry.className = 'log-entry';
-            logEntry.innerHTML = `
-                <div class="log-time">${timeStr}</div>
-                <div>${message}</div>
-            `;
-            
-            const log = document.getElementById('transparency-log');
-            log.appendChild(logEntry);
-            log.scrollTop = log.scrollHeight;
-            
-            transparencyLog.push({ time: timeStr, message: message });
-        }
-
-        // Actualizar cronómetro
-        function updateTimer() {
-            if (!startTime) return;
-            
-            const elapsed = Date.now() - startTime;
-            const minutes = Math.floor(elapsed / 60000);
-            const seconds = Math.floor((elapsed % 60000) / 1000);
-            
-            document.getElementById('timer').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // Actualizar estadísticas
-        function updateStats(phase, probability = null) {
-            document.getElementById('current-phase').textContent = phase;
-            document.getElementById('selections-count').textContent = `${selectionCount}/8`;
-            
-            if (probability) {
-                document.getElementById('probability').textContent = probability;
-            }
-        }
-
-        // Mover equipo con animación ceremonial
-        function moveTeamCeremonial(teamCard, targetSlot) {
-            return new Promise((resolve) => {
-                const startRect = teamCard.getBoundingClientRect();
-                const endRect = targetSlot.getBoundingClientRect();
-                
-                const movingCard = teamCard.cloneNode(true);
-                movingCard.className = 'team-ceremonial moving-ceremonial';
-                movingCard.style.position = 'fixed';
-                movingCard.style.left = startRect.left + 'px';
-                movingCard.style.top = startRect.top + 'px';
-                movingCard.style.width = startRect.width + 'px';
-                movingCard.style.height = startRect.height + 'px';
-                
-                document.body.appendChild(movingCard);
-                teamCard.style.opacity = '0';
-                
-                setTimeout(() => {
-                    movingCard.style.left = endRect.left + 'px';
-                    movingCard.style.top = endRect.top + 'px';
-                    movingCard.style.width = endRect.width + 'px';
-                    movingCard.style.height = endRect.height + 'px';
-                }, 100);
-                
-                setTimeout(() => {
-                    targetSlot.innerHTML = '';
-                    targetSlot.appendChild(teamCard);
-                    targetSlot.classList.remove('empty');
-                    targetSlot.classList.add('filled');
-                    teamCard.style.opacity = '1';
-                    teamCard.classList.remove('selected-ceremonial');
-                    
-                    document.body.removeChild(movingCard);
-                    resolve();
-                }, 2100);
-            });
-        }
-
-        // Seleccionar equipo aleatorio
-        function selectRandomTeamCeremonial(container) {
-            const teams = Array.from(container.children);
-            const randomIndex = Math.floor(Math.random() * teams.length);
-            return teams[randomIndex];
-        }
-
-        // Animar bombo
-        function animateBomboCeremonial(bomboId) {
-            return new Promise((resolve) => {
-                const bombo = document.getElementById(bomboId);
-                bombo.classList.add('shake-ceremonial');
-                
-                setTimeout(() => {
-                    bombo.classList.remove('shake-ceremonial');
-                    resolve();
-                }, 1200);
-            });
-        }
-
-        // Inicializar página
-        function initializePage() {
-            createParticles();
-            
-            // Limpiar contenedores
-            ['heads-teams', 'pot1-teams', 'pot2-teams'].forEach(id => {
-                document.getElementById(id).innerHTML = '';
-            });
-            
-            ['grupo-a-slots', 'grupo-b-slots'].forEach(id => {
-                document.getElementById(id).innerHTML = '';
-            });
-            
-            // Llenar bombos
-            teams.filter(team => team.type === 'head').forEach(team => {
-                document.getElementById('heads-teams').appendChild(createTeamCeremonial(team, 'heads-teams'));
-            });
-            
-            teams.filter(team => team.type === 'pot1').forEach(team => {
-                document.getElementById('pot1-teams').appendChild(createTeamCeremonial(team, 'pot1-teams'));
-            });
-            
-            teams.filter(team => team.type === 'pot2').forEach(team => {
-                document.getElementById('pot2-teams').appendChild(createTeamCeremonial(team, 'pot2-teams'));
-            });
-            
-            // Crear slots
-            for (let i = 1; i <= 5; i++) {
-                document.getElementById('grupo-a-slots').appendChild(createSlotCeremonial(i));
-                document.getElementById('grupo-b-slots').appendChild(createSlotCeremonial(i));
-            }
-            
-            // Resetear variables
-            drawInProgress = false;
-            selectionCount = 0;
-            startTime = null;
-            transparencyLog = [];
-            
-            if (timer) {
-                clearInterval(timer);
-            }
-            
-            // Resetear interfaz
-            document.getElementById('main-button').textContent = '🎭 Iniciar Ceremonia';
-            document.getElementById('main-button').disabled = false;
-            document.getElementById('status').textContent = '';
-            document.getElementById('final-message').style.display = 'none';
-            document.getElementById('transparency-panel').style.display = 'none';
-            
-            updateStats('Preparación', 'Pendiente');
-        }
-
-        // Función principal del sorteo ceremonial
-        async function startCeremonialDraw() {
-            if (drawInProgress) return;
-            
-            drawInProgress = true;
-            startTime = Date.now();
-            
-            // Iniciar cronómetro
-            timer = setInterval(updateTimer, 100);
-            
-            // Mostrar panel de transparencia
-            document.getElementById('transparency-panel').style.display = 'block';
-            
-            const button = document.getElementById('main-button');
-            button.disabled = true;
-            button.textContent = '🎬 Ceremonia en Progreso...';
-            
-            const status = document.getElementById('status');
-            
-            addTransparencyLog('Inicio de la ceremonia de sorteo');
-            addTransparencyLog('Verificando integridad de los equipos participantes');
-            
-            // Fase 1: Cabezas de serie
-            status.textContent = '👑 Asignando Cabezas de Serie...';
-            updateStats('Cabezas de Serie', 'Asignación fija');
-            
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            const headsContainer = document.getElementById('heads-teams');
-            const champion = headsContainer.children[0];
-            const runnerUp = headsContainer.children[1];
-            
-            addTransparencyLog(`Campeón "${champion.dataset.team}" asignado automáticamente al Grupo A`);
-            
-            const groupASlots = document.getElementById('grupo-a-slots');
-            const groupBSlots = document.getElementById('grupo-b-slots');
-            
-            await moveTeamCeremonial(champion, groupASlots.children[0]);
-            selectionCount++;
-            updateStats('Cabezas de Serie', 'Asignación fija');
-            
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            addTransparencyLog(`Subcampeón "${runnerUp.dataset.team}" asignado automáticamente al Grupo B`);
-            await moveTeamCeremonial(runnerUp, groupBSlots.children[0]);
-            selectionCount++;
-            
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            
-            // Fase 2: Bombo 1
-            status.textContent = '🎯 Sorteando Bombo 1 (3º y 4º puesto)...';
-            updateStats('Bombo 1', '50% cada equipo');
-            
-            addTransparencyLog('Iniciando sorteo del Bombo 1 (probabilidad 50% cada equipo)');
-            
-            await animateBomboCeremonial('bombo-1');
-            
-            const pot1Container = document.getElementById('pot1-teams');
-            const selectedPot1 = selectRandomTeamCeremonial(pot1Container);
-            
-            selectedPot1.classList.add('selected-ceremonial');
-            addTransparencyLog(`Equipo seleccionado aleatoriamente: "${selectedPot1.dataset.team}"`);
-            
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            await moveTeamCeremonial(selectedPot1, groupASlots.children[1]);
-            selectionCount++;
-            
-            const remainingPot1 = Array.from(pot1Container.children).find(child => child !== selectedPot1);
-            if (remainingPot1) {
-                await new Promise(resolve => setTimeout(resolve, 600));
-                addTransparencyLog(`Equipo restante "${remainingPot1.dataset.team}" asignado automáticamente al Grupo B`);
-                await moveTeamCeremonial(remainingPot1, groupBSlots.children[1]);
-                selectionCount++;
-            }
-            
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // Fase 3: Bombo 2
-            status.textContent = '🎲 Sorteando Bombo 2 (equipos restantes)...';
-            updateStats('Bombo 2', 'Aleatoriedad completa');
-            
-            addTransparencyLog('Iniciando sorteo del Bombo 2 (6 equipos restantes)');
-            
-            const pot2Container = document.getElementById('pot2-teams');
-            let currentGroup = 'A';
-            let groupAPosition = 2;
-            let groupBPosition = 2;
-            
-            while (pot2Container.children.length > 0) {
-                const remainingTeams = pot2Container.children.length;
-                const probability = `${((1/remainingTeams) * 100).toFixed(1)}% cada equipo`;
-                updateStats('Bombo 2', probability);
-                
-                await animateBomboCeremonial('bombo-2');
-                
-                const selectedTeam = selectRandomTeamCeremonial(pot2Container);
-                selectedTeam.classList.add('selected-ceremonial');
-                
-                addTransparencyLog(`Selección aleatoria: "${selectedTeam.dataset.team}" (${probability})`);
-                
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                if (currentGroup === 'A') {
-                    await moveTeamCeremonial(selectedTeam, groupASlots.children[groupAPosition]);
-                    addTransparencyLog(`Equipo asignado al Grupo A, posición ${groupAPosition + 1}`);
-                    groupAPosition++;
-                } else {
-                    await moveTeamCeremonial(selectedTeam, groupBSlots.children[groupBPosition]);
-                    addTransparencyLog(`Equipo asignado al Grupo B, posición ${groupBPosition + 1}`);
-                    groupBPosition++;
+        // --- LOGIC FUNCTIONS ---
+        const logic = {
+            sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
+            generateRandomSeed: () => {
+                state.randomSeed = Math.random().toString(36).substring(2, 10).toUpperCase();
+                DOMElements.randomSeed.textContent = state.randomSeed;
+            },
+            generateHash: (data) => {
+                let hash = 0;
+                for (let i = 0; i < data.length; i++) {
+                    const char = data.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash |= 0;
                 }
+                return Math.abs(hash).toString(16).toUpperCase().padStart(8, '0');
+            },
+            reset: () => {
+                state = { isDrawing: false, phase: 'initial', groupA: [], groupB: [], randomSeed: '' };
+                logic.generateRandomSeed();
+                render.initialState();
+                DOMElements.verificationHash.textContent = 'Pendiente';
+                DOMElements.sphereText.textContent = 'Iniciar Sorteo';
+                DOMElements.ceremonyBtn.textContent = 'COMENZAR';
+                DOMElements.ceremonyBtn.disabled = false;
+                DOMElements.drawingSphere.classList.remove('active');
+            },
+            drawTeam: async (pot, targetGroupEl, targetArray) => {
+                DOMElements.drawingSphere.classList.add('active');
+                DOMElements.sphereText.textContent = 'Sorteando...';
                 
-                selectionCount++;
-                currentGroup = currentGroup === 'A' ? 'B' : 'A';
+                const teamIndex = Math.floor(Math.random() * pot.length);
+                const selectedTeam = pot.splice(teamIndex, 1)[0];
                 
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                const ballEl = document.querySelector(`.pot-teams [data-team-id="${selectedTeam.id}"]`);
+                ballEl.classList.add('selected');
+                
+                await logic.sleep(1500);
+
+                targetArray.push(selectedTeam);
+                targetGroupEl.innerHTML += render.groupTeam(selectedTeam);
+                ballEl.style.transition = 'opacity 0.5s';
+                ballEl.style.opacity = '0';
+                
+                DOMElements.drawingSphere.classList.remove('active');
+                return selectedTeam;
+            }
+        };
+
+        // --- MAIN DRAW SEQUENCE ---
+        async function startDraw() {
+            if (state.isDrawing) return;
+            state.isDrawing = true;
+            DOMElements.ceremonyBtn.disabled = true;
+
+            // Phase 1: Heads of seed
+            render.showMessage('Asignando Cabezas de Serie');
+            DOMElements.sphereText.textContent = 'Fase 1';
+            await logic.sleep(1500);
+            
+            state.groupA.push(teams.heads[0]);
+            DOMElements.groupATeams.innerHTML += render.groupTeam(teams.heads[0]);
+            document.querySelector('#pot-heads [data-team-id="campeon"]').classList.add('selected');
+            await logic.sleep(1000);
+
+            state.groupB.push(teams.heads[1]);
+            DOMElements.groupBTeams.innerHTML += render.groupTeam(teams.heads[1]);
+            document.querySelector('#pot-heads [data-team-id="subcampeon"]').classList.add('selected');
+            await logic.sleep(1500);
+
+            // Phase 2: Pot 1
+            render.showMessage('Sorteo del Bombo 1');
+            DOMElements.sphereText.textContent = 'Fase 2';
+            let pot1 = [...teams.pot1];
+            const drawnToA = await logic.drawTeam(pot1, DOMElements.groupATeams, state.groupA);
+            await logic.sleep(500);
+            const remainingTeam = pot1[0];
+            const remainingBall = document.querySelector(`.pot-teams [data-team-id="${remainingTeam.id}"]`);
+            remainingBall.classList.add('selected');
+            await logic.sleep(1000);
+            state.groupB.push(remainingTeam);
+            DOMElements.groupBTeams.innerHTML += render.groupTeam(remainingTeam);
+            remainingBall.style.opacity = '0';
+            await logic.sleep(1500);
+
+            // Phase 3: Pot 2
+            render.showMessage('Sorteo del Bombo 2');
+            DOMElements.sphereText.textContent = 'Fase 3';
+            DOMElements.currentPotTitle.textContent = "Bombo 2";
+            DOMElements.currentPotTeams.innerHTML = teams.pot2.map(render.teamBall).join('');
+            let pot2 = [...teams.pot2].sort(() => Math.random() - 0.5);
+            
+            for(let i=0; i<6; i++) {
+                const targetGroupEl = state.groupA.length <= state.groupB.length ? DOMElements.groupATeams : DOMElements.groupBTeams;
+                const targetArray = state.groupA.length <= state.groupB.length ? state.groupA : state.groupB;
+                await logic.drawTeam(pot2, targetGroupEl, targetArray);
+                await logic.sleep(500);
             }
             
-            // Finalización
-            addTransparencyLog('Sorteo completado con éxito');
-            addTransparencyLog(`Duración total: ${document.getElementById('timer').textContent}`);
-            
-            status.textContent = '🎊 ¡Ceremonia Completada con Éxito!';
-            updateStats('Finalizado', 'Proceso completado');
-            
-            document.getElementById('final-message').style.display = 'block';
-            
-            button.textContent = '🔄 Nueva Ceremonia';
-            button.disabled = false;
-            drawInProgress = false;
-            
-            if (timer) {
-                clearInterval(timer);
-            }
-            
-            // Cambiar función del botón
-            button.onclick = () => {
-                initializePage();
-                button.onclick = startCeremonialDraw;
-            };
+            // Finalization
+            render.showMessage('¡Sorteo Finalizado!');
+            DOMElements.sphereText.textContent = 'Finalizado';
+            const finalData = state.randomSeed + JSON.stringify(state.groupA) + JSON.stringify(state.groupB);
+            DOMElements.verificationHash.textContent = logic.generateHash(finalData);
+            DOMElements.ceremonyBtn.textContent = 'REINICIAR';
+            DOMElements.ceremonyBtn.disabled = false;
         }
 
-        // Inicializar al cargar
-        window.onload = initializePage;
+        // --- INITIALIZATION ---
+        function init() {
+            logic.reset();
+            render.updateTimestamp();
+            setInterval(render.updateTimestamp, 1000);
+
+            DOMElements.ceremonyBtn.addEventListener('click', () => {
+                if (DOMElements.ceremonyBtn.textContent === 'REINICIAR') {
+                    logic.reset();
+                } else {
+                    startDraw();
+                }
+            });
+        }
+
+        init();
     </script>
 </body>
 </html>
