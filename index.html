@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Mejorada</title>
+    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Corregida</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -463,6 +463,67 @@
             filter: drop-shadow(0 8px 20px rgba(255,215,0,0.6));
         }
 
+        /* POPUP DE NORMATIVA */
+        .normativa-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .popup-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 3px solid rgba(255,215,0,0.5);
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(255,215,0,0.3);
+        }
+
+        .popup-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .popup-text {
+            font-size: 1.2em;
+            color: #e2e8f0;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .popup-button {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+            color: #0a0e1a;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+            text-transform: uppercase;
+        }
+
+        .popup-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(255,215,0,0.6);
+        }
+
         .final-message {
             position: fixed;
             top: 50%;
@@ -607,7 +668,7 @@
 
         <!-- Control inferior -->
         <div class="control-bottom">
-            <button class="button-main" id="main-button" onclick="startImprovedDraw()">
+            <button class="button-main" id="main-button" onclick="startCorrectedDraw()">
                 🎭 Iniciar Sorteo
             </button>
             <div class="status-main" id="status">Listo para comenzar</div>
@@ -620,6 +681,15 @@
         <span style="font-size: 0.7em; margin-top: 10px; display: block;">
             Proceso transparente verificado
         </span>
+    </div>
+
+    <!-- Popup de normativa -->
+    <div class="normativa-popup" id="normativa-popup" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-title" id="popup-title">Normativa del Sorteo</div>
+            <div class="popup-text" id="popup-text">Texto de la normativa</div>
+            <button class="popup-button" id="popup-button">Continuar Sorteo</button>
+        </div>
     </div>
 
     <script>
@@ -637,10 +707,29 @@
             { name: "Huesca La Magia", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/images-2-300x104.png", type: "pot2" }
         ];
 
+        // Variables de estado mejoradas
         let drawInProgress = false;
         let startTime = null;
         let timer = null;
         let selectionCount = 0;
+        let assignedTeams = new Set(); // Tracking de equipos asignados
+        let currentPhaseIndex = 0;
+
+        // Fases de normativa para popups
+        const normativaFases = [
+            {
+                title: "Cabezas de Serie - Normativa",
+                text: "Según la normativa oficial del sorteo:\n\n• El campeón de la edición anterior será ubicado automáticamente en el Grupo A\n• El subcampeón de la edición anterior será ubicado automáticamente en el Grupo B\n\nEsto garantiza que los dos mejores equipos no coincidan en la misma llave."
+            },
+            {
+                title: "Bombo 1 - Normativa",
+                text: "Según la normativa oficial del sorteo:\n\n• Los equipos clasificados en 3º y 4º lugar de la edición anterior serán sorteados\n• Deberán quedar en grupos distintos para equilibrar la competencia\n• Se realizará un sorteo aleatorio para determinar la distribución"
+            },
+            {
+                title: "Bombo 2 - Normativa",
+                text: "Según la normativa oficial del sorteo:\n\n• Los equipos restantes (5º al 8º clasificados y ascendidos) serán sorteados\n• Se distribuirán aleatoriamente entre los dos grupos\n• El sorteo garantiza la equidad y transparencia en la distribución"
+            }
+        ];
 
         // Crear partículas optimizadas
         function createOptimizedParticles() {
@@ -657,12 +746,34 @@
             }
         }
 
-        // Crear equipo compacto
+        // Mostrar popup de normativa
+        function showNormativaPopup(phaseIndex) {
+            return new Promise((resolve) => {
+                const popup = document.getElementById('normativa-popup');
+                const title = document.getElementById('popup-title');
+                const text = document.getElementById('popup-text');
+                const button = document.getElementById('popup-button');
+                
+                const fase = normativaFases[phaseIndex];
+                title.textContent = fase.title;
+                text.textContent = fase.text;
+                
+                popup.style.display = 'flex';
+                
+                button.onclick = () => {
+                    popup.style.display = 'none';
+                    resolve();
+                };
+            });
+        }
+
+        // Crear equipo compacto con validaciones
         function createTeamCompact(team, containerId) {
             const card = document.createElement('div');
             card.className = 'team-compact';
             card.dataset.team = team.name;
             card.dataset.container = containerId;
+            card.dataset.type = team.type;
             
             const logo = document.createElement('img');
             logo.src = team.logo;
@@ -686,7 +797,7 @@
             return card;
         }
 
-        // Crear equipo GRANDE para grupos
+        // Crear equipo GRANDE para grupos con validaciones
         function createTeamLarge(team) {
             const teamDiv = document.createElement('div');
             teamDiv.className = 'team-in-group';
@@ -725,320 +836,603 @@
             return slot;
         }
 
-        // Agregar entrada al log
+        // Agregar entrada al log con timestamp
         function addLogEntry(message) {
-            const logEntries = document.getElementById('log-entries');
-            const entry = document.createElement('div');
-            entry.className = 'log-entry-compact';
-            entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
-            logEntries.appendChild(entry);
-            logEntries.scrollTop = logEntries.scrollHeight;
+            try {
+                const logEntries = document.getElementById('log-entries');
+                if (!logEntries) return;
+                
+                const entry = document.createElement('div');
+                entry.className = 'log-entry-compact';
+                entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+                logEntries.appendChild(entry);
+                logEntries.scrollTop = logEntries.scrollHeight;
+            } catch (error) {
+                console.error('Error adding log entry:', error);
+            }
         }
 
         // Actualizar cronómetro
         function updateTimer() {
             if (!startTime) return;
-            const elapsed = Date.now() - startTime;
-            const minutes = Math.floor(elapsed / 60000);
-            const seconds = Math.floor((elapsed % 60000) / 1000);
-            document.getElementById('timer').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // Actualizar estadísticas
-        function updateStats(phase, probability = null) {
-            document.getElementById('current-phase').textContent = phase;
-            document.getElementById('progress').textContent = `${selectionCount}/8`;
-            if (probability) {
-                document.getElementById('probability').textContent = probability;
+            try {
+                const elapsed = Date.now() - startTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                const timerElement = document.getElementById('timer');
+                if (timerElement) {
+                    timerElement.textContent = 
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            } catch (error) {
+                console.error('Error updating timer:', error);
             }
         }
 
-        // EFECTO DE MEZCLA MEJORADO
+        // Actualizar estadísticas con validaciones
+        function updateStats(phase, probability = null) {
+            try {
+                const phaseElement = document.getElementById('current-phase');
+                const progressElement = document.getElementById('progress');
+                const probabilityElement = document.getElementById('probability');
+                
+                if (phaseElement) phaseElement.textContent = phase;
+                if (progressElement) progressElement.textContent = `${selectionCount}/8`;
+                if (probability && probabilityElement) {
+                    probabilityElement.textContent = probability;
+                }
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+
+        // EFECTO DE MEZCLA MEJORADO con validaciones
         function startMixingEffect(container) {
             return new Promise((resolve) => {
-                const teams = Array.from(container.children);
-                
-                // Activar efecto de mezcla rápida en todos los equipos
-                teams.forEach(team => {
-                    team.classList.add('mixing-effect');
-                });
-                
-                // Mantener el efecto por 2 segundos
-                setTimeout(() => {
-                    // Quitar el efecto de todos
+                try {
+                    if (!container || !container.children) {
+                        resolve();
+                        return;
+                    }
+                    
+                    const teams = Array.from(container.children);
+                    
+                    // Activar efecto de mezcla rápida en todos los equipos
                     teams.forEach(team => {
-                        team.classList.remove('mixing-effect');
+                        if (team && team.classList) {
+                            team.classList.add('mixing-effect');
+                        }
                     });
+                    
+                    // Mantener el efecto por 2 segundos
+                    setTimeout(() => {
+                        // Quitar el efecto de todos
+                        teams.forEach(team => {
+                            if (team && team.classList) {
+                                team.classList.remove('mixing-effect');
+                            }
+                        });
+                        resolve();
+                    }, 2000);
+                } catch (error) {
+                    console.error('Error in mixing effect:', error);
                     resolve();
-                }, 2000);
+                }
             });
         }
 
-        // Seleccionar equipo con efecto final
+        // Seleccionar equipo con efecto final y validaciones
         function selectTeamWithEffect(container) {
             return new Promise((resolve) => {
-                const teams = Array.from(container.children);
-                const randomIndex = Math.floor(Math.random() * teams.length);
-                const selectedTeam = teams[randomIndex];
-                
-                // Efecto de selección final
-                selectedTeam.classList.add('selected-final');
-                
-                setTimeout(() => {
-                    resolve(selectedTeam);
-                }, 1500);
+                try {
+                    if (!container || !container.children || container.children.length === 0) {
+                        resolve(null);
+                        return;
+                    }
+                    
+                    const teams = Array.from(container.children);
+                    const availableTeams = teams.filter(team => 
+                        team && 
+                        team.dataset && 
+                        team.dataset.team && 
+                        !assignedTeams.has(team.dataset.team)
+                    );
+                    
+                    if (availableTeams.length === 0) {
+                        resolve(null);
+                        return;
+                    }
+                    
+                    const randomIndex = Math.floor(Math.random() * availableTeams.length);
+                    const selectedTeam = availableTeams[randomIndex];
+                    
+                    // Marcar como asignado
+                    assignedTeams.add(selectedTeam.dataset.team);
+                    
+                    // Efecto de selección final
+                    if (selectedTeam.classList) {
+                        selectedTeam.classList.add('selected-final');
+                    }
+                    
+                    setTimeout(() => {
+                        resolve(selectedTeam);
+                    }, 1500);
+                } catch (error) {
+                    console.error('Error selecting team:', error);
+                    resolve(null);
+                }
             });
         }
 
-        // Mover equipo con animación mejorada
-        function moveTeamImproved(teamCard, targetSlot) {
+        // Mover equipo con animación mejorada y validaciones robustas
+        function moveTeamCorrected(teamCard, targetSlot) {
             return new Promise((resolve) => {
-                const startRect = teamCard.getBoundingClientRect();
-                const endRect = targetSlot.getBoundingClientRect();
-                
-                const movingCard = teamCard.cloneNode(true);
-                movingCard.className = 'team-compact moving-team';
-                movingCard.style.left = startRect.left + 'px';
-                movingCard.style.top = startRect.top + 'px';
-                movingCard.style.width = startRect.width + 'px';
-                movingCard.style.height = startRect.height + 'px';
-                
-                document.body.appendChild(movingCard);
-                teamCard.style.opacity = '0';
-                
-                setTimeout(() => {
-                    movingCard.style.left = endRect.left + 'px';
-                    movingCard.style.top = endRect.top + 'px';
-                    movingCard.style.width = endRect.width + 'px';
-                    movingCard.style.height = endRect.height + 'px';
-                }, 50);
-                
-                setTimeout(() => {
-                    // Crear el equipo grande para el grupo
-                    const teamData = teams.find(t => t.name === teamCard.dataset.team);
-                    const teamLarge = createTeamLarge(teamData);
+                try {
+                    // Validaciones exhaustivas
+                    if (!teamCard || !targetSlot) {
+                        console.error('Invalid team card or target slot');
+                        resolve();
+                        return;
+                    }
                     
-                    targetSlot.innerHTML = '';
-                    targetSlot.appendChild(teamLarge);
-                    targetSlot.classList.remove('empty');
-                    targetSlot.classList.add('filled');
+                    if (!teamCard.dataset || !teamCard.dataset.team) {
+                        console.error('Team card missing data');
+                        resolve();
+                        return;
+                    }
                     
-                    teamCard.classList.remove('selected-final');
+                    // Verificar que el elemento aún existe en el DOM
+                    if (!document.body.contains(teamCard)) {
+                        console.error('Team card not in DOM');
+                        resolve();
+                        return;
+                    }
                     
-                    document.body.removeChild(movingCard);
+                    if (!document.body.contains(targetSlot)) {
+                        console.error('Target slot not in DOM');
+                        resolve();
+                        return;
+                    }
+                    
+                    const startRect = teamCard.getBoundingClientRect();
+                    const endRect = targetSlot.getBoundingClientRect();
+                    
+                    // Verificar que las dimensiones son válidas
+                    if (startRect.width === 0 || startRect.height === 0 || 
+                        endRect.width === 0 || endRect.height === 0) {
+                        console.error('Invalid dimensions for animation');
+                        resolve();
+                        return;
+                    }
+                    
+                    const movingCard = teamCard.cloneNode(true);
+                    movingCard.className = 'team-compact moving-team';
+                    movingCard.style.position = 'fixed';
+                    movingCard.style.left = startRect.left + 'px';
+                    movingCard.style.top = startRect.top + 'px';
+                    movingCard.style.width = startRect.width + 'px';
+                    movingCard.style.height = startRect.height + 'px';
+                    movingCard.style.zIndex = '1000';
+                    
+                    document.body.appendChild(movingCard);
+                    
+                    // Ocultar tarjeta original de forma segura
+                    if (teamCard.style) {
+                        teamCard.style.opacity = '0';
+                    }
+                    
+                    setTimeout(() => {
+                        if (document.body.contains(movingCard)) {
+                            movingCard.style.left = endRect.left + 'px';
+                            movingCard.style.top = endRect.top + 'px';
+                            movingCard.style.width = endRect.width + 'px';
+                            movingCard.style.height = endRect.height + 'px';
+                        }
+                    }, 50);
+                    
+                    setTimeout(() => {
+                        try {
+                            // Crear el equipo grande para el grupo
+                            const teamData = teams.find(t => t.name === teamCard.dataset.team);
+                            if (!teamData) {
+                                console.error('Team data not found');
+                                resolve();
+                                return;
+                            }
+                            
+                            const teamLarge = createTeamLarge(teamData);
+                            
+                            // Verificar que el slot target aún existe
+                            if (document.body.contains(targetSlot)) {
+                                targetSlot.innerHTML = '';
+                                targetSlot.appendChild(teamLarge);
+                                targetSlot.classList.remove('empty');
+                                targetSlot.classList.add('filled');
+                            }
+                            
+                            // Limpiar efectos de la tarjeta original
+                            if (teamCard.classList) {
+                                teamCard.classList.remove('selected-final');
+                            }
+                            
+                            // Remover tarjeta original del DOM de forma segura
+                            if (teamCard.parentNode) {
+                                teamCard.parentNode.removeChild(teamCard);
+                            }
+                            
+                            // Limpiar tarjeta de movimiento
+                            if (document.body.contains(movingCard)) {
+                                document.body.removeChild(movingCard);
+                            }
+                            
+                            resolve();
+                        } catch (cleanupError) {
+                            console.error('Error in cleanup:', cleanupError);
+                            resolve();
+                        }
+                    }, 1850);
+                    
+                } catch (error) {
+                    console.error('Error in moveTeamCorrected:', error);
                     resolve();
-                }, 1850);
+                }
             });
         }
 
         // Animar bombo mejorado
         function animateBomboImproved(bomboId) {
             return new Promise((resolve) => {
-                const bombo = document.getElementById(bomboId);
-                bombo.classList.add('shake-effect');
-                
-                setTimeout(() => {
-                    bombo.classList.remove('shake-effect');
+                try {
+                    const bombo = document.getElementById(bomboId);
+                    if (!bombo) {
+                        resolve();
+                        return;
+                    }
+                    
+                    bombo.classList.add('shake-effect');
+                    
+                    setTimeout(() => {
+                        if (bombo.classList) {
+                            bombo.classList.remove('shake-effect');
+                        }
+                        resolve();
+                    }, 600);
+                } catch (error) {
+                    console.error('Error animating bombo:', error);
                     resolve();
-                }, 600);
+                }
             });
         }
 
-        // Inicializar página
+        // Inicializar página con reseteo completo
         function initializePage() {
-            createOptimizedParticles();
-            
-            // Limpiar contenedores
-            ['heads-teams', 'pot1-teams', 'pot2-teams'].forEach(id => {
-                document.getElementById(id).innerHTML = '';
-            });
-            
-            ['grupo-a-slots', 'grupo-b-slots'].forEach(id => {
-                document.getElementById(id).innerHTML = '';
-            });
-            
-            // Llenar bombos
-            teams.filter(team => team.type === 'head').forEach(team => {
-                document.getElementById('heads-teams').appendChild(createTeamCompact(team, 'heads-teams'));
-            });
-            
-            teams.filter(team => team.type === 'pot1').forEach(team => {
-                document.getElementById('pot1-teams').appendChild(createTeamCompact(team, 'pot1-teams'));
-            });
-            
-            teams.filter(team => team.type === 'pot2').forEach(team => {
-                document.getElementById('pot2-teams').appendChild(createTeamCompact(team, 'pot2-teams'));
-            });
-            
-            // Crear slots grandes
-            for (let i = 1; i <= 5; i++) {
-                document.getElementById('grupo-a-slots').appendChild(createSlotLarge(i));
-                document.getElementById('grupo-b-slots').appendChild(createSlotLarge(i));
-            }
-            
-            // Resetear variables
-            drawInProgress = false;
-            selectionCount = 0;
-            startTime = null;
-            
-            if (timer) {
-                clearInterval(timer);
-            }
-            
-            // Resetear interfaz
-            document.getElementById('main-button').textContent = '🎭 Iniciar Sorteo';
-            document.getElementById('main-button').disabled = false;
-            document.getElementById('status').textContent = 'Listo para comenzar';
-            document.getElementById('final-message').style.display = 'none';
-            document.getElementById('log-entries').innerHTML = '';
-            
-            updateStats('Preparación', 'Pendiente');
-        }
-
-        // Sorteo mejorado con efectos de mezcla
-        async function startImprovedDraw() {
-            if (drawInProgress) return;
-            
-            drawInProgress = true;
-            startTime = Date.now();
-            timer = setInterval(updateTimer, 100);
-            
-            const button = document.getElementById('main-button');
-            button.disabled = true;
-            button.textContent = '🎬 Sorteo en Progreso';
-            
-            const status = document.getElementById('status');
-            
-            addLogEntry('Inicio del sorteo oficial');
-            
-            // Fase 1: Cabezas de serie
-            status.textContent = '👑 Asignando Cabezas de Serie';
-            updateStats('Cabezas de Serie', 'Fijas');
-            
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            const headsContainer = document.getElementById('heads-teams');
-            const champion = headsContainer.children[0];
-            const runnerUp = headsContainer.children[1];
-            
-            const groupASlots = document.getElementById('grupo-a-slots');
-            const groupBSlots = document.getElementById('grupo-b-slots');
-            
-            addLogEntry(`Campeón "${champion.dataset.team}" → Grupo A`);
-            await moveTeamImproved(champion, groupASlots.children[0]);
-            selectionCount++;
-            
-            await new Promise(resolve => setTimeout(resolve, 600));
-            
-            addLogEntry(`Subcampeón "${runnerUp.dataset.team}" → Grupo B`);
-            await moveTeamImproved(runnerUp, groupBSlots.children[0]);
-            selectionCount++;
-            
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            // Fase 2: Bombo 1 con efectos de mezcla
-            status.textContent = '🎯 Sorteo Bombo 1 - Mezclando...';
-            updateStats('Bombo 1', '50% cada uno');
-            
-            addLogEntry('Mezclando Bombo 1 con efectos visuales');
-            await animateBomboImproved('bombo-1');
-            
-            const pot1Container = document.getElementById('pot1-teams');
-            
-            // EFECTO DE MEZCLA VISUAL
-            await startMixingEffect(pot1Container);
-            
-            status.textContent = '🎯 Seleccionando del Bombo 1...';
-            const selectedPot1 = await selectTeamWithEffect(pot1Container);
-            
-            addLogEntry(`Seleccionado: "${selectedPot1.dataset.team}"`);
-            
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            await moveTeamImproved(selectedPot1, groupASlots.children[1]);
-            selectionCount++;
-            
-            const remainingPot1 = Array.from(pot1Container.children).find(child => child !== selectedPot1);
-            if (remainingPot1) {
-                await new Promise(resolve => setTimeout(resolve, 400));
-                addLogEntry(`Restante "${remainingPot1.dataset.team}" → Grupo B`);
-                await moveTeamImproved(remainingPot1, groupBSlots.children[1]);
-                selectionCount++;
-            }
-            
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            // Fase 3: Bombo 2 con efectos de mezcla
-            status.textContent = '🎲 Sorteo Bombo 2 - Proceso completo';
-            updateStats('Bombo 2', 'Aleatorio');
-            
-            const pot2Container = document.getElementById('pot2-teams');
-            let currentGroup = 'A';
-            let groupAPosition = 2;
-            let groupBPosition = 2;
-            
-            while (pot2Container.children.length > 0) {
-                const remaining = pot2Container.children.length;
-                const prob = `${((1/remaining) * 100).toFixed(1)}%`;
-                updateStats('Bombo 2', prob);
+            try {
+                createOptimizedParticles();
                 
-                addLogEntry(`Mezclando ${remaining} equipos restantes`);
-                status.textContent = `🎲 Mezclando ${remaining} equipos...`;
+                // Resetear estado global
+                assignedTeams.clear();
+                selectionCount = 0;
+                startTime = null;
+                currentPhaseIndex = 0;
                 
-                await animateBomboImproved('bombo-2');
+                // Limpiar contenedores de forma segura
+                ['heads-teams', 'pot1-teams', 'pot2-teams'].forEach(id => {
+                    const container = document.getElementById(id);
+                    if (container) container.innerHTML = '';
+                });
                 
-                // EFECTO DE MEZCLA VISUAL
-                await startMixingEffect(pot2Container);
+                ['grupo-a-slots', 'grupo-b-slots'].forEach(id => {
+                    const container = document.getElementById(id);
+                    if (container) container.innerHTML = '';
+                });
                 
-                status.textContent = '🎲 Seleccionando equipo...';
-                const selectedTeam = await selectTeamWithEffect(pot2Container);
+                // Llenar bombos
+                const headsContainer = document.getElementById('heads-teams');
+                const pot1Container = document.getElementById('pot1-teams');
+                const pot2Container = document.getElementById('pot2-teams');
                 
-                addLogEntry(`Seleccionado: "${selectedTeam.dataset.team}"`);
-                
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                if (currentGroup === 'A') {
-                    await moveTeamImproved(selectedTeam, groupASlots.children[groupAPosition]);
-                    groupAPosition++;
-                } else {
-                    await moveTeamImproved(selectedTeam, groupBSlots.children[groupBPosition]);
-                    groupBPosition++;
+                if (headsContainer) {
+                    teams.filter(team => team.type === 'head').forEach(team => {
+                        headsContainer.appendChild(createTeamCompact(team, 'heads-teams'));
+                    });
                 }
                 
-                selectionCount++;
-                currentGroup = currentGroup === 'A' ? 'B' : 'A';
+                if (pot1Container) {
+                    teams.filter(team => team.type === 'pot1').forEach(team => {
+                        pot1Container.appendChild(createTeamCompact(team, 'pot1-teams'));
+                    });
+                }
                 
-                await new Promise(resolve => setTimeout(resolve, 500));
+                if (pot2Container) {
+                    teams.filter(team => team.type === 'pot2').forEach(team => {
+                        pot2Container.appendChild(createTeamCompact(team, 'pot2-teams'));
+                    });
+                }
+                
+                // Crear slots grandes
+                const groupAContainer = document.getElementById('grupo-a-slots');
+                const groupBContainer = document.getElementById('grupo-b-slots');
+                
+                if (groupAContainer && groupBContainer) {
+                    for (let i = 1; i <= 5; i++) {
+                        groupAContainer.appendChild(createSlotLarge(i));
+                        groupBContainer.appendChild(createSlotLarge(i));
+                    }
+                }
+                
+                // Resetear timer
+                if (timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+                
+                // Resetear interfaz
+                const button = document.getElementById('main-button');
+                const status = document.getElementById('status');
+                const finalMessage = document.getElementById('final-message');
+                const logEntries = document.getElementById('log-entries');
+                const normativaPopup = document.getElementById('normativa-popup');
+                
+                if (button) {
+                    button.textContent = '🎭 Iniciar Sorteo';
+                    button.disabled = false;
+                    button.onclick = startCorrectedDraw;
+                }
+                
+                if (status) status.textContent = 'Listo para comenzar';
+                if (finalMessage) finalMessage.style.display = 'none';
+                if (logEntries) logEntries.innerHTML = '';
+                if (normativaPopup) normativaPopup.style.display = 'none';
+                
+                updateStats('Preparación', 'Pendiente');
+                
+                // Resetear timer display
+                const timerElement = document.getElementById('timer');
+                if (timerElement) timerElement.textContent = '00:00';
+                
+            } catch (error) {
+                console.error('Error initializing page:', error);
             }
-            
-            // Finalización
-            addLogEntry('Sorteo completado exitosamente');
-            status.textContent = '🎊 ¡Sorteo Completado!';
-            updateStats('Finalizado', 'Completado');
-            
-            document.getElementById('final-message').style.display = 'block';
-            
-            setTimeout(() => {
-                document.getElementById('final-message').style.display = 'none';
-            }, 4000);
-            
-            button.textContent = '🔄 Nuevo Sorteo';
-            button.disabled = false;
-            drawInProgress = false;
-            
-            if (timer) {
-                clearInterval(timer);
-            }
-            
-            button.onclick = () => {
-                initializePage();
-                button.onclick = startImprovedDraw;
-            };
         }
 
-        // Inicializar
-        window.onload = initializePage;
+        // Sorteo corregido con manejo robusto de errores
+        async function startCorrectedDraw() {
+            if (drawInProgress) return;
+            
+            try {
+                drawInProgress = true;
+                startTime = Date.now();
+                timer = setInterval(updateTimer, 100);
+                
+                const button = document.getElementById('main-button');
+                const status = document.getElementById('status');
+                
+                if (button) {
+                    button.disabled = true;
+                    button.textContent = '🎬 Sorteo en Progreso';
+                }
+                
+                addLogEntry('Inicio del sorteo oficial corregido');
+                
+                // Fase 1: Cabezas de serie con popup
+                await showNormativaPopup(0);
+                
+                if (status) status.textContent = '👑 Asignando Cabezas de Serie';
+                updateStats('Cabezas de Serie', 'Fijas');
+                
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                const headsContainer = document.getElementById('heads-teams');
+                if (!headsContainer || headsContainer.children.length < 2) {
+                    throw new Error('Invalid heads container');
+                }
+                
+                const champion = headsContainer.children[0];
+                const runnerUp = headsContainer.children[1];
+                
+                const groupASlots = document.getElementById('grupo-a-slots');
+                const groupBSlots = document.getElementById('grupo-b-slots');
+                
+                if (!groupASlots || !groupBSlots || 
+                    groupASlots.children.length < 5 || groupBSlots.children.length < 5) {
+                    throw new Error('Invalid group containers');
+                }
+                
+                // Marcar como asignados
+                if (champion.dataset.team) assignedTeams.add(champion.dataset.team);
+                if (runnerUp.dataset.team) assignedTeams.add(runnerUp.dataset.team);
+                
+                addLogEntry(`Campeón "${champion.dataset.team}" → Grupo A`);
+                await moveTeamCorrected(champion, groupASlots.children[0]);
+                selectionCount++;
+                
+                await new Promise(resolve => setTimeout(resolve, 600));
+                
+                addLogEntry(`Subcampeón "${runnerUp.dataset.team}" → Grupo B`);
+                await moveTeamCorrected(runnerUp, groupBSlots.children[0]);
+                selectionCount++;
+                
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                // Fase 2: Bombo 1 con popup
+                await showNormativaPopup(1);
+                
+                if (status) status.textContent = '🎯 Sorteo Bombo 1 - Mezclando...';
+                updateStats('Bombo 1', '50% cada uno');
+                
+                addLogEntry('Mezclando Bombo 1 con efectos visuales');
+                await animateBomboImproved('bombo-1');
+                
+                const pot1Container = document.getElementById('pot1-teams');
+                if (!pot1Container) {
+                    throw new Error('Invalid pot1 container');
+                }
+                
+                // EFECTO DE MEZCLA VISUAL
+                await startMixingEffect(pot1Container);
+                
+                if (status) status.textContent = '🎯 Seleccionando del Bombo 1...';
+                const selectedPot1 = await selectTeamWithEffect(pot1Container);
+                
+                if (!selectedPot1) {
+                    throw new Error('No team selected from pot1');
+                }
+                
+                addLogEntry(`Seleccionado: "${selectedPot1.dataset.team}"`);
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                await moveTeamCorrected(selectedPot1, groupASlots.children[1]);
+                selectionCount++;
+                
+                // Encontrar el equipo restante del pot1
+                const remainingPot1Teams = Array.from(pot1Container.children).filter(team => 
+                    team.dataset.team && !assignedTeams.has(team.dataset.team)
+                );
+                
+                if (remainingPot1Teams.length > 0) {
+                    const remainingPot1 = remainingPot1Teams[0];
+                    await new Promise(resolve => setTimeout(resolve, 400));
+                    
+                    assignedTeams.add(remainingPot1.dataset.team);
+                    addLogEntry(`Restante "${remainingPot1.dataset.team}" → Grupo B`);
+                    await moveTeamCorrected(remainingPot1, groupBSlots.children[1]);
+                    selectionCount++;
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                // Fase 3: Bombo 2 con popup
+                await showNormativaPopup(2);
+                
+                if (status) status.textContent = '🎲 Sorteo Bombo 2 - Proceso completo';
+                updateStats('Bombo 2', 'Aleatorio');
+                
+                const pot2Container = document.getElementById('pot2-teams');
+                if (!pot2Container) {
+                    throw new Error('Invalid pot2 container');
+                }
+                
+                let currentGroup = 'A';
+                let groupAPosition = 2;
+                let groupBPosition = 2;
+                
+                // Sortear equipos restantes del pot2
+                const pot2Teams = Array.from(pot2Container.children).filter(team => 
+                    team.dataset.team && !assignedTeams.has(team.dataset.team)
+                );
+                
+                for (let i = 0; i < pot2Teams.length && (groupAPosition < 5 || groupBPosition < 5); i++) {
+                    const remaining = pot2Teams.length - i;
+                    const prob = `${((1/remaining) * 100).toFixed(1)}%`;
+                    updateStats('Bombo 2', prob);
+                    
+                    addLogEntry(`Mezclando ${remaining} equipos restantes`);
+                    if (status) status.textContent = `🎲 Mezclando ${remaining} equipos...`;
+                    
+                    await animateBomboImproved('bombo-2');
+                    
+                    // EFECTO DE MEZCLA VISUAL
+                    await startMixingEffect(pot2Container);
+                    
+                    if (status) status.textContent = '🎲 Seleccionando equipo...';
+                    const selectedTeam = await selectTeamWithEffect(pot2Container);
+                    
+                    if (!selectedTeam) {
+                        break; // No hay más equipos disponibles
+                    }
+                    
+                    addLogEntry(`Seleccionado: "${selectedTeam.dataset.team}"`);
+                    
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    
+                    if (currentGroup === 'A' && groupAPosition < 5) {
+                        await moveTeamCorrected(selectedTeam, groupASlots.children[groupAPosition]);
+                        groupAPosition++;
+                    } else if (currentGroup === 'B' && groupBPosition < 5) {
+                        await moveTeamCorrected(selectedTeam, groupBSlots.children[groupBPosition]);
+                        groupBPosition++;
+                    }
+                    
+                    selectionCount++;
+                    currentGroup = currentGroup === 'A' ? 'B' : 'A';
+                    
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+                
+                // Finalización
+                addLogEntry('Sorteo completado exitosamente');
+                if (status) status.textContent = '🎊 ¡Sorteo Completado!';
+                updateStats('Finalizado', 'Completado');
+                
+                const finalMessage = document.getElementById('final-message');
+                if (finalMessage) {
+                    finalMessage.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        finalMessage.style.display = 'none';
+                    }, 4000);
+                }
+                
+                if (button) {
+                    button.textContent = '🔄 Nuevo Sorteo';
+                    button.disabled = false;
+                }
+                
+                drawInProgress = false;
+                
+                if (timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+                
+                // Cambiar función del botón
+                if (button) {
+                    button.onclick = () => {
+                        initializePage();
+                    };
+                }
+                
+            } catch (error) {
+                console.error('Error in draw process:', error);
+                
+                // Recuperación de errores
+                drawInProgress = false;
+                if (timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+                
+                const button = document.getElementById('main-button');
+                const status = document.getElementById('status');
+                
+                if (button) {
+                    button.textContent = '⚠️ Reiniciar Sorteo';
+                    button.disabled = false;
+                    button.onclick = initializePage;
+                }
+                
+                if (status) status.textContent = 'Error detectado - Reinicie el sorteo';
+                
+                addLogEntry('Error en el sorteo - Proceso interrumpido');
+            }
+        }
+
+        // Inicializar al cargar con manejo de errores
+        window.onload = function() {
+            try {
+                initializePage();
+            } catch (error) {
+                console.error('Error on page load:', error);
+            }
+        };
+
+        // Manejo de errores globales
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('Global error:', msg, 'at', lineNo + ':' + columnNo);
+            addLogEntry('Error detectado en el sistema');
+            return false;
+        };
     </script>
 </body>
 </html>
