@@ -73,7 +73,19 @@
         .grupo-slots-large { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: calc(100% - 50px); }
         .slot-large { background: rgba(0,0,0,0.2); border: 2px dashed var(--borde-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; position: relative; }
         .slot-large.filled { border-style: solid; border-color: var(--color-oro); background: rgba(255,215,0,0.1); }
-        .team-in-group { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; width: 100%; height: 100%; padding: 5px; opacity: 0; animation: fadeIn 0.5s forwards; }
+        .team-in-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* <-- CAMBIO CLAVE: Centrado Vertical */
+            text-align: center;
+            gap: 8px; /* Aumentado para más espacio */
+            width: 100%;
+            height: 100%;
+            padding: 5px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
         .team-logo-large { width: 50px; height: 50px; object-fit: contain; }
         .team-name-large { font-size: 0.75em; font-weight: 600; }
@@ -174,7 +186,7 @@
                 { title: "Normativa: Bombo 1", text: "El 3º y 4º clasificado deben ir a grupos separados.\nSe sorteará aleatoriamente cuál va al Grupo A y el otro irá por defecto al Grupo B." },
                 { title: "Normativa: Bombo 2", text: "Los 6 equipos restantes se sortearán de forma aleatoria para rellenar las plazas libres de cada grupo." }
             ],
-            delays: { step: 500, move: 800, select: 1000, preSelect: 3000 }
+            delays: { step: 800, move: 800, select: 1000, preSelect: 3000 }
         };
 
         // --- ESTADO DE LA APLICACIÓN ---
@@ -304,7 +316,7 @@
 
                 // Animación de pre-selección
                 const preSelectDuration = AppConfig.delays.preSelect;
-                const interval = 40; // Más rápido
+                const interval = 40; // Más rápido para efecto flicker
                 let lastGlowedCard = null;
                 const startTime = Date.now();
 
@@ -335,6 +347,8 @@
                 await UI.showPopup(0);
                 await this.phase1_Heads();
                 
+                await Animations.pause(2000); // Pausa adicional post cabezas de serie
+
                 await UI.showPopup(1, 5000); // Popup 2 con 5 segundos
                 await this.phase2_Pot1();
 
@@ -362,6 +376,7 @@
                 UI.log(`${teamName} → ${targetSlot.parentElement.previousElementSibling.textContent.trim()}`);
                 const drawnCount = AppState.assignedTeams.size - 2; // No contar cabezas de serie
                 UI.updateStats(AppState.currentPhase, 'N/A', Math.max(0, drawnCount));
+                await Animations.pause(AppConfig.delays.step); // Pausa para ritmo
             },
             async phase1_Heads() {
                 AppState.currentPhase = "Cabezas de Serie";
@@ -410,7 +425,7 @@
             },
             finish() {
                 clearInterval(AppState.timerInterval);
-                UI.updateStatus('¡Sorteo Finalizado!');
+                UI.updateStatus('Sorteo Finalizado');
                 UI.updateStats('Finalizado', '100%', 8);
                 UI.log("Sorteo completado.");
                 setTimeout(() => UI.enterFinalView(), 1500);
