@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Grabación</title>
+    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Mejorada</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -49,34 +49,34 @@
         .container {
             height: 100vh;
             display: grid;
-            grid-template-rows: 120px 1fr 80px;
-            padding: 20px;
+            grid-template-rows: 100px 1fr 70px;
+            padding: 15px;
             position: relative;
             z-index: 2;
-            gap: 20px;
+            gap: 15px;
         }
 
         /* Header compacto */
         .header-compact {
             display: grid;
-            grid-template-columns: 300px 1fr 200px;
+            grid-template-columns: 250px 1fr 180px;
             align-items: center;
             background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 15px;
             border: 1px solid rgba(255,215,0,0.3);
         }
 
         .logo-compact {
-            height: 60px;
+            height: 50px;
             object-fit: contain;
         }
 
         .title-compact {
             text-align: center;
             font-family: 'Playfair Display', serif;
-            font-size: 2.2em;
+            font-size: 1.8em;
             font-weight: 700;
             color: #ffd700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -84,35 +84,35 @@
 
         .timer-compact {
             text-align: center;
-            font-size: 1.8em;
+            font-size: 1.5em;
             font-weight: 800;
             color: #ffd700;
             background: rgba(255,215,0,0.1);
-            padding: 10px;
-            border-radius: 10px;
+            padding: 8px;
+            border-radius: 8px;
             border: 2px solid rgba(255,215,0,0.3);
         }
 
-        /* Área principal horizontal */
+        /* Nueva distribución principal */
         .main-area {
             display: grid;
-            grid-template-columns: 280px 1fr 280px;
-            gap: 20px;
+            grid-template-columns: 220px 1fr 250px;
+            gap: 15px;
             height: 100%;
         }
 
-        /* Bombos compactos */
+        /* Bombos más compactos */
         .bombos-section {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
         }
 
         .bombo-compact {
             background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
             backdrop-filter: blur(12px);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 12px;
             border: 2px solid rgba(255,215,0,0.3);
             transition: all 0.3s ease;
         }
@@ -124,62 +124,62 @@
 
         .bombo-title-compact {
             font-family: 'Playfair Display', serif;
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: 700;
             color: #ffd700;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         .teams-compact {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .team-compact {
             background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
             border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            padding: 10px;
+            border-radius: 6px;
+            padding: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .team-compact:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(255,215,0,0.3);
             border-color: #ffd700;
         }
 
         .team-logo-compact {
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             object-fit: contain;
-            border-radius: 5px;
+            border-radius: 4px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         .team-name-compact {
             flex: 1;
-            font-size: 0.75em;
+            font-size: 0.7em;
             font-weight: 600;
             color: #f8fafc;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
-        /* Grupos centrales */
+        /* Grupos centrales MÁS GRANDES */
         .grupos-center {
             display: grid;
             grid-template-rows: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
-        .grupo-compact {
+        .grupo-large {
             background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
             backdrop-filter: blur(12px);
             border-radius: 15px;
@@ -188,9 +188,9 @@
             position: relative;
         }
 
-        .grupo-title-compact {
+        .grupo-title-large {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8em;
+            font-size: 2em;
             font-weight: 700;
             color: #ffd700;
             text-align: center;
@@ -198,40 +198,72 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .grupo-slots-compact {
+        .grupo-slots-large {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            height: 100px;
+            gap: 8px;
+            height: 120px;
         }
 
-        .slot-compact {
+        .slot-large {
             background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
             border: 2px dashed rgba(255,215,0,0.3);
             border-radius: 10px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-size: 0.7em;
             color: #94a3b8;
             transition: all 0.3s ease;
             position: relative;
+            padding: 5px;
         }
 
-        .slot-compact.filled {
+        .slot-large.filled {
             border-style: solid;
             border-color: #ffd700;
             background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.05) 100%);
         }
 
-        .slot-number-compact {
+        /* EQUIPOS EN GRUPOS MÁS GRANDES */
+        .team-in-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+            height: 100%;
+            padding: 5px;
+        }
+
+        .team-logo-large {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            border-radius: 6px;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+        }
+
+        .team-name-large {
+            font-size: 0.65em;
+            font-weight: 600;
+            color: #f8fafc;
+            text-align: center;
+            line-height: 1.1;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .slot-number-large {
             position: absolute;
             top: -8px;
             right: -8px;
             background: #ffd700;
             color: #0a0e1a;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -240,37 +272,37 @@
             font-weight: 700;
         }
 
-        /* Panel de información */
+        /* Panel de información optimizado */
         .info-panel {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .stats-compact {
             background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
             backdrop-filter: blur(12px);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 12px;
             border: 2px solid rgba(255,215,0,0.3);
         }
 
         .stats-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: 700;
             color: #ffd700;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .stat-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px 0;
+            padding: 4px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.8em;
+            font-size: 0.75em;
         }
 
         .stat-label {
@@ -286,8 +318,8 @@
         .log-compact {
             background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
             backdrop-filter: blur(12px);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 12px;
             border: 2px solid rgba(255,215,0,0.3);
             flex: 1;
             overflow-y: auto;
@@ -295,19 +327,19 @@
 
         .log-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: 700;
             color: #ffd700;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .log-entry-compact {
-            font-size: 0.7em;
+            font-size: 0.65em;
             color: #e2e8f0;
-            padding: 3px 0;
+            padding: 2px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         /* Control inferior */
@@ -315,27 +347,27 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 25px;
         }
 
         .button-main {
             background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
             color: #0a0e1a;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.3em;
+            padding: 12px 35px;
+            font-size: 1.2em;
             font-weight: 800;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+            box-shadow: 0 6px 20px rgba(255,215,0,0.4);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .button-main:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(255,215,0,0.6);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.6);
         }
 
         .button-main:disabled {
@@ -346,34 +378,82 @@
         }
 
         .status-main {
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: 600;
             color: #ffd700;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-            min-width: 300px;
+            min-width: 250px;
             text-align: center;
         }
 
-        /* Efectos especiales */
-        .selected-glow {
-            animation: glow-pulse 1s ease-in-out infinite alternate;
+        /* EFECTOS DE MEZCLA MEJORADOS */
+        .mixing-effect {
+            animation: rapid-mixing 0.15s ease-in-out infinite;
             border-color: #ffd700 !important;
-            box-shadow: 0 0 25px rgba(255,215,0,0.8);
+            box-shadow: 0 0 15px rgba(255,215,0,0.8);
         }
 
-        @keyframes glow-pulse {
-            0% { box-shadow: 0 0 25px rgba(255,215,0,0.8); }
-            100% { box-shadow: 0 0 35px rgba(255,215,0,1); }
+        @keyframes rapid-mixing {
+            0% { 
+                border-color: #ffd700;
+                box-shadow: 0 0 15px rgba(255,215,0,0.8);
+                transform: translateX(0px);
+            }
+            25% { 
+                border-color: #ff6b35;
+                box-shadow: 0 0 15px rgba(255,107,53,0.8);
+                transform: translateX(-2px);
+            }
+            50% { 
+                border-color: #f7931e;
+                box-shadow: 0 0 15px rgba(247,147,30,0.8);
+                transform: translateX(2px);
+            }
+            75% { 
+                border-color: #ffed4a;
+                box-shadow: 0 0 15px rgba(255,237,74,0.8);
+                transform: translateX(-1px);
+            }
+            100% { 
+                border-color: #ffd700;
+                box-shadow: 0 0 15px rgba(255,215,0,0.8);
+                transform: translateX(0px);
+            }
+        }
+
+        .selected-final {
+            animation: final-selection 1.5s ease-in-out;
+            border-color: #ffd700 !important;
+            box-shadow: 0 0 30px rgba(255,215,0,1);
+            transform: scale(1.05);
+        }
+
+        @keyframes final-selection {
+            0% { 
+                border-color: #ffd700;
+                box-shadow: 0 0 15px rgba(255,215,0,0.8);
+                transform: scale(1);
+            }
+            50% { 
+                border-color: #ffd700;
+                box-shadow: 0 0 35px rgba(255,215,0,1);
+                transform: scale(1.08);
+            }
+            100% { 
+                border-color: #ffd700;
+                box-shadow: 0 0 30px rgba(255,215,0,1);
+                transform: scale(1.05);
+            }
         }
 
         .shake-effect {
-            animation: shake-compact 0.6s ease-in-out infinite;
+            animation: shake-improved 0.5s ease-in-out infinite;
         }
 
-        @keyframes shake-compact {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-3px); }
-            75% { transform: translateX(3px); }
+        @keyframes shake-improved {
+            0%, 100% { transform: translateX(0) scale(1); }
+            25% { transform: translateX(-3px) scale(1.02); }
+            75% { transform: translateX(3px) scale(1.02); }
         }
 
         .moving-team {
@@ -391,9 +471,9 @@
             background: linear-gradient(135deg, rgba(255,215,0,0.25) 0%, rgba(255,215,0,0.15) 100%);
             border: 3px solid #ffd700;
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: 700;
             color: #ffd700;
             box-shadow: 0 20px 50px rgba(255,215,0,0.4);
@@ -403,10 +483,8 @@
 
         /* Placeholder para logos */
         .logo-placeholder {
-            width: 30px;
-            height: 30px;
             background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
-            border-radius: 5px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -416,19 +494,29 @@
             font-weight: 600;
         }
 
+        .logo-placeholder-compact {
+            width: 25px;
+            height: 25px;
+        }
+
+        .logo-placeholder-large {
+            width: 45px;
+            height: 45px;
+        }
+
         /* Scroll personalizado */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
 
         ::-webkit-scrollbar-track {
             background: rgba(255,255,255,0.1);
-            border-radius: 3px;
+            border-radius: 2px;
         }
 
         ::-webkit-scrollbar-thumb {
             background: rgba(255,215,0,0.5);
-            border-radius: 3px;
+            border-radius: 2px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -447,7 +535,7 @@
                 <img src="https://liga.badminton.es/wp-content/uploads/2024/01/AF_Iberdrola_Badminton_RGB_POS_H.png" 
                      alt="Logo TOP10 IBERDROLA" class="logo-compact" 
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <div class="logo-placeholder" style="display: none; width: 200px; height: 60px;">
+                <div class="logo-placeholder" style="display: none; width: 180px; height: 50px;">
                     TOP10 IBERDROLA
                 </div>
             </div>
@@ -455,9 +543,9 @@
             <div class="timer-compact" id="timer">00:00</div>
         </div>
 
-        <!-- Área principal -->
+        <!-- Área principal con nueva distribución -->
         <div class="main-area">
-            <!-- Bombos -->
+            <!-- Bombos compactos -->
             <div class="bombos-section">
                 <div class="bombo-compact" id="bombo-heads">
                     <div class="bombo-title-compact">Cabezas de Serie</div>
@@ -475,16 +563,16 @@
                 </div>
             </div>
 
-            <!-- Grupos centrales -->
+            <!-- Grupos centrales MÁS GRANDES -->
             <div class="grupos-center">
-                <div class="grupo-compact">
-                    <div class="grupo-title-compact">GRUPO A</div>
-                    <div class="grupo-slots-compact" id="grupo-a-slots"></div>
+                <div class="grupo-large">
+                    <div class="grupo-title-large">GRUPO A</div>
+                    <div class="grupo-slots-large" id="grupo-a-slots"></div>
                 </div>
                 
-                <div class="grupo-compact">
-                    <div class="grupo-title-compact">GRUPO B</div>
-                    <div class="grupo-slots-compact" id="grupo-b-slots"></div>
+                <div class="grupo-large">
+                    <div class="grupo-title-large">GRUPO B</div>
+                    <div class="grupo-slots-large" id="grupo-b-slots"></div>
                 </div>
             </div>
 
@@ -519,7 +607,7 @@
 
         <!-- Control inferior -->
         <div class="control-bottom">
-            <button class="button-main" id="main-button" onclick="startOptimizedDraw()">
+            <button class="button-main" id="main-button" onclick="startImprovedDraw()">
                 🎭 Iniciar Sorteo
             </button>
             <div class="status-main" id="status">Listo para comenzar</div>
@@ -558,7 +646,7 @@
         function createOptimizedParticles() {
             const particles = document.getElementById('particles');
             particles.innerHTML = '';
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 15; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
@@ -583,8 +671,8 @@
             logo.onerror = function() {
                 this.style.display = 'none';
                 const placeholder = document.createElement('div');
-                placeholder.className = 'logo-placeholder';
-                placeholder.textContent = team.name.substring(0, 4).toUpperCase();
+                placeholder.className = 'logo-placeholder logo-placeholder-compact';
+                placeholder.textContent = team.name.substring(0, 3).toUpperCase();
                 this.parentNode.insertBefore(placeholder, this);
             };
             
@@ -598,13 +686,41 @@
             return card;
         }
 
-        // Crear slot compacto
-        function createSlotCompact(number) {
+        // Crear equipo GRANDE para grupos
+        function createTeamLarge(team) {
+            const teamDiv = document.createElement('div');
+            teamDiv.className = 'team-in-group';
+            teamDiv.dataset.team = team.name;
+            
+            const logo = document.createElement('img');
+            logo.src = team.logo;
+            logo.alt = team.name;
+            logo.className = 'team-logo-large';
+            logo.onerror = function() {
+                this.style.display = 'none';
+                const placeholder = document.createElement('div');
+                placeholder.className = 'logo-placeholder logo-placeholder-large';
+                placeholder.textContent = team.name.substring(0, 3).toUpperCase();
+                this.parentNode.insertBefore(placeholder, this);
+            };
+            
+            const name = document.createElement('div');
+            name.className = 'team-name-large';
+            name.textContent = team.name;
+            
+            teamDiv.appendChild(logo);
+            teamDiv.appendChild(name);
+            
+            return teamDiv;
+        }
+
+        // Crear slot grande
+        function createSlotLarge(number) {
             const slot = document.createElement('div');
-            slot.className = 'slot-compact empty';
+            slot.className = 'slot-large empty';
             slot.innerHTML = `
-                <div class="slot-number-compact">${number}</div>
-                <div style="font-size: 0.6em; text-align: center;">Pos. ${number}</div>
+                <div class="slot-number-large">${number}</div>
+                <div style="font-size: 0.6em; text-align: center; color: #64748b;">Posición ${number}</div>
             `;
             return slot;
         }
@@ -638,8 +754,45 @@
             }
         }
 
-        // Mover equipo con animación
-        function moveTeamOptimized(teamCard, targetSlot) {
+        // EFECTO DE MEZCLA MEJORADO
+        function startMixingEffect(container) {
+            return new Promise((resolve) => {
+                const teams = Array.from(container.children);
+                
+                // Activar efecto de mezcla rápida en todos los equipos
+                teams.forEach(team => {
+                    team.classList.add('mixing-effect');
+                });
+                
+                // Mantener el efecto por 2 segundos
+                setTimeout(() => {
+                    // Quitar el efecto de todos
+                    teams.forEach(team => {
+                        team.classList.remove('mixing-effect');
+                    });
+                    resolve();
+                }, 2000);
+            });
+        }
+
+        // Seleccionar equipo con efecto final
+        function selectTeamWithEffect(container) {
+            return new Promise((resolve) => {
+                const teams = Array.from(container.children);
+                const randomIndex = Math.floor(Math.random() * teams.length);
+                const selectedTeam = teams[randomIndex];
+                
+                // Efecto de selección final
+                selectedTeam.classList.add('selected-final');
+                
+                setTimeout(() => {
+                    resolve(selectedTeam);
+                }, 1500);
+            });
+        }
+
+        // Mover equipo con animación mejorada
+        function moveTeamImproved(teamCard, targetSlot) {
             return new Promise((resolve) => {
                 const startRect = teamCard.getBoundingClientRect();
                 const endRect = targetSlot.getBoundingClientRect();
@@ -662,12 +815,16 @@
                 }, 50);
                 
                 setTimeout(() => {
+                    // Crear el equipo grande para el grupo
+                    const teamData = teams.find(t => t.name === teamCard.dataset.team);
+                    const teamLarge = createTeamLarge(teamData);
+                    
                     targetSlot.innerHTML = '';
-                    targetSlot.appendChild(teamCard);
+                    targetSlot.appendChild(teamLarge);
                     targetSlot.classList.remove('empty');
                     targetSlot.classList.add('filled');
-                    teamCard.style.opacity = '1';
-                    teamCard.classList.remove('selected-glow');
+                    
+                    teamCard.classList.remove('selected-final');
                     
                     document.body.removeChild(movingCard);
                     resolve();
@@ -675,15 +832,8 @@
             });
         }
 
-        // Seleccionar equipo aleatorio
-        function selectRandomTeam(container) {
-            const teams = Array.from(container.children);
-            const randomIndex = Math.floor(Math.random() * teams.length);
-            return teams[randomIndex];
-        }
-
-        // Animar bombo
-        function animateBombo(bomboId) {
+        // Animar bombo mejorado
+        function animateBomboImproved(bomboId) {
             return new Promise((resolve) => {
                 const bombo = document.getElementById(bomboId);
                 bombo.classList.add('shake-effect');
@@ -691,7 +841,7 @@
                 setTimeout(() => {
                     bombo.classList.remove('shake-effect');
                     resolve();
-                }, 800);
+                }, 600);
             });
         }
 
@@ -721,10 +871,10 @@
                 document.getElementById('pot2-teams').appendChild(createTeamCompact(team, 'pot2-teams'));
             });
             
-            // Crear slots
+            // Crear slots grandes
             for (let i = 1; i <= 5; i++) {
-                document.getElementById('grupo-a-slots').appendChild(createSlotCompact(i));
-                document.getElementById('grupo-b-slots').appendChild(createSlotCompact(i));
+                document.getElementById('grupo-a-slots').appendChild(createSlotLarge(i));
+                document.getElementById('grupo-b-slots').appendChild(createSlotLarge(i));
             }
             
             // Resetear variables
@@ -746,8 +896,8 @@
             updateStats('Preparación', 'Pendiente');
         }
 
-        // Sorteo optimizado
-        async function startOptimizedDraw() {
+        // Sorteo mejorado con efectos de mezcla
+        async function startImprovedDraw() {
             if (drawInProgress) return;
             
             drawInProgress = true;
@@ -776,47 +926,51 @@
             const groupBSlots = document.getElementById('grupo-b-slots');
             
             addLogEntry(`Campeón "${champion.dataset.team}" → Grupo A`);
-            await moveTeamOptimized(champion, groupASlots.children[0]);
+            await moveTeamImproved(champion, groupASlots.children[0]);
             selectionCount++;
             
             await new Promise(resolve => setTimeout(resolve, 600));
             
             addLogEntry(`Subcampeón "${runnerUp.dataset.team}" → Grupo B`);
-            await moveTeamOptimized(runnerUp, groupBSlots.children[0]);
+            await moveTeamImproved(runnerUp, groupBSlots.children[0]);
             selectionCount++;
             
             await new Promise(resolve => setTimeout(resolve, 800));
             
-            // Fase 2: Bombo 1
-            status.textContent = '🎯 Sorteo Bombo 1';
+            // Fase 2: Bombo 1 con efectos de mezcla
+            status.textContent = '🎯 Sorteo Bombo 1 - Mezclando...';
             updateStats('Bombo 1', '50% cada uno');
             
-            addLogEntry('Mezclando Bombo 1');
-            await animateBombo('bombo-1');
+            addLogEntry('Mezclando Bombo 1 con efectos visuales');
+            await animateBomboImproved('bombo-1');
             
             const pot1Container = document.getElementById('pot1-teams');
-            const selectedPot1 = selectRandomTeam(pot1Container);
-            selectedPot1.classList.add('selected-glow');
+            
+            // EFECTO DE MEZCLA VISUAL
+            await startMixingEffect(pot1Container);
+            
+            status.textContent = '🎯 Seleccionando del Bombo 1...';
+            const selectedPot1 = await selectTeamWithEffect(pot1Container);
             
             addLogEntry(`Seleccionado: "${selectedPot1.dataset.team}"`);
             
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 500));
             
-            await moveTeamOptimized(selectedPot1, groupASlots.children[1]);
+            await moveTeamImproved(selectedPot1, groupASlots.children[1]);
             selectionCount++;
             
             const remainingPot1 = Array.from(pot1Container.children).find(child => child !== selectedPot1);
             if (remainingPot1) {
                 await new Promise(resolve => setTimeout(resolve, 400));
                 addLogEntry(`Restante "${remainingPot1.dataset.team}" → Grupo B`);
-                await moveTeamOptimized(remainingPot1, groupBSlots.children[1]);
+                await moveTeamImproved(remainingPot1, groupBSlots.children[1]);
                 selectionCount++;
             }
             
             await new Promise(resolve => setTimeout(resolve, 800));
             
-            // Fase 3: Bombo 2
-            status.textContent = '🎲 Sorteo Bombo 2';
+            // Fase 3: Bombo 2 con efectos de mezcla
+            status.textContent = '🎲 Sorteo Bombo 2 - Proceso completo';
             updateStats('Bombo 2', 'Aleatorio');
             
             const pot2Container = document.getElementById('pot2-teams');
@@ -830,27 +984,32 @@
                 updateStats('Bombo 2', prob);
                 
                 addLogEntry(`Mezclando ${remaining} equipos restantes`);
-                await animateBombo('bombo-2');
+                status.textContent = `🎲 Mezclando ${remaining} equipos...`;
                 
-                const selectedTeam = selectRandomTeam(pot2Container);
-                selectedTeam.classList.add('selected-glow');
+                await animateBomboImproved('bombo-2');
+                
+                // EFECTO DE MEZCLA VISUAL
+                await startMixingEffect(pot2Container);
+                
+                status.textContent = '🎲 Seleccionando equipo...';
+                const selectedTeam = await selectTeamWithEffect(pot2Container);
                 
                 addLogEntry(`Seleccionado: "${selectedTeam.dataset.team}"`);
                 
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 300));
                 
                 if (currentGroup === 'A') {
-                    await moveTeamOptimized(selectedTeam, groupASlots.children[groupAPosition]);
+                    await moveTeamImproved(selectedTeam, groupASlots.children[groupAPosition]);
                     groupAPosition++;
                 } else {
-                    await moveTeamOptimized(selectedTeam, groupBSlots.children[groupBPosition]);
+                    await moveTeamImproved(selectedTeam, groupBSlots.children[groupBPosition]);
                     groupBPosition++;
                 }
                 
                 selectionCount++;
                 currentGroup = currentGroup === 'A' ? 'B' : 'A';
                 
-                await new Promise(resolve => setTimeout(resolve, 600));
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
             
             // Finalización
@@ -862,7 +1021,7 @@
             
             setTimeout(() => {
                 document.getElementById('final-message').style.display = 'none';
-            }, 3000);
+            }, 4000);
             
             button.textContent = '🔄 Nuevo Sorteo';
             button.disabled = false;
@@ -874,7 +1033,7 @@
             
             button.onclick = () => {
                 initializePage();
-                button.onclick = startOptimizedDraw;
+                button.onclick = startImprovedDraw;
             };
         }
 
