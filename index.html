@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Corregida</title>
+    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Final</title>
+    <script src="https://unpkg.com/tone"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -19,6 +20,7 @@
             color: #ffffff;
             overflow: hidden;
             position: relative;
+            transition: all 1s ease;
         }
 
         /* Partículas optimizadas */
@@ -54,6 +56,46 @@
             position: relative;
             z-index: 2;
             gap: 15px;
+            transition: all 1s ease;
+        }
+
+        /* VISTA AMPLIADA PARA RESULTADO FINAL */
+        .container.final-view {
+            grid-template-rows: 80px 1fr 60px;
+            padding: 10px;
+        }
+
+        .container.final-view .main-area {
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .container.final-view .bombos-section,
+        .container.final-view .info-panel {
+            display: none;
+        }
+
+        .container.final-view .grupos-center {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .container.final-view .grupo-large {
+            transform: scale(1.1);
+            border: 4px solid #ffd700;
+            box-shadow: 0 20px 60px rgba(255,215,0,0.4);
+        }
+
+        .container.final-view .grupo-title-large {
+            font-size: 2.5em;
+            margin-bottom: 25px;
+        }
+
+        .container.final-view .grupo-slots-large {
+            height: 140px;
+            gap: 12px;
         }
 
         /* Header compacto */
@@ -66,11 +108,22 @@
             border-radius: 12px;
             padding: 15px;
             border: 1px solid rgba(255,215,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .header-compact {
+            grid-template-columns: 200px 1fr 120px 100px;
+            padding: 10px;
         }
 
         .logo-compact {
             height: 50px;
             object-fit: contain;
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .logo-compact {
+            height: 40px;
         }
 
         .title-compact {
@@ -80,6 +133,11 @@
             font-weight: 700;
             color: #ffd700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .title-compact {
+            font-size: 1.4em;
         }
 
         .timer-compact {
@@ -91,6 +149,39 @@
             padding: 8px;
             border-radius: 8px;
             border: 2px solid rgba(255,215,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .timer-compact {
+            font-size: 1.2em;
+            padding: 6px;
+        }
+
+        /* Control de volumen */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #ffd700;
+        }
+
+        .volume-slider {
+            width: 60px;
+            height: 4px;
+            background: rgba(255,215,0,0.3);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            border-radius: 50%;
+            cursor: pointer;
         }
 
         /* Nueva distribución principal */
@@ -99,6 +190,7 @@
             grid-template-columns: 220px 1fr 250px;
             gap: 15px;
             height: 100%;
+            transition: all 1s ease;
         }
 
         /* Bombos más compactos */
@@ -106,6 +198,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            transition: all 0.5s ease;
         }
 
         .bombo-compact {
@@ -177,6 +270,7 @@
             display: grid;
             grid-template-rows: 1fr 1fr;
             gap: 15px;
+            transition: all 1s ease;
         }
 
         .grupo-large {
@@ -186,6 +280,7 @@
             padding: 20px;
             border: 3px solid rgba(255,215,0,0.4);
             position: relative;
+            transition: all 1s ease;
         }
 
         .grupo-title-large {
@@ -196,6 +291,7 @@
             text-align: center;
             margin-bottom: 15px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
         }
 
         .grupo-slots-large {
@@ -203,6 +299,7 @@
             grid-template-columns: repeat(5, 1fr);
             gap: 8px;
             height: 120px;
+            transition: all 0.5s ease;
         }
 
         .slot-large {
@@ -235,6 +332,12 @@
             width: 100%;
             height: 100%;
             padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .container.final-view .team-in-group {
+            gap: 6px;
+            padding: 8px;
         }
 
         .team-logo-large {
@@ -243,6 +346,12 @@
             object-fit: contain;
             border-radius: 6px;
             filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .team-logo-large {
+            width: 55px;
+            height: 55px;
         }
 
         .team-name-large {
@@ -254,6 +363,12 @@
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .team-name-large {
+            font-size: 0.75em;
+            font-weight: 700;
         }
 
         .slot-number-large {
@@ -270,6 +385,13 @@
             justify-content: center;
             font-size: 0.7em;
             font-weight: 700;
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .slot-number-large {
+            width: 22px;
+            height: 22px;
+            font-size: 0.8em;
         }
 
         /* Panel de información optimizado */
@@ -277,6 +399,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            transition: all 0.5s ease;
         }
 
         .stats-compact {
@@ -315,6 +438,11 @@
             font-weight: 700;
         }
 
+        .stat-value.probability-real {
+            color: #4ade80;
+            font-weight: 800;
+        }
+
         .log-compact {
             background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
             backdrop-filter: blur(12px);
@@ -348,6 +476,11 @@
             justify-content: center;
             align-items: center;
             gap: 25px;
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .control-bottom {
+            gap: 15px;
         }
 
         .button-main {
@@ -365,6 +498,11 @@
             letter-spacing: 1px;
         }
 
+        .container.final-view .button-main {
+            padding: 10px 25px;
+            font-size: 1em;
+        }
+
         .button-main:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(255,215,0,0.6);
@@ -377,6 +515,26 @@
             box-shadow: none;
         }
 
+        .button-back {
+            background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
+            color: #ffffff;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(100,116,139,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button-back:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(100,116,139,0.6);
+        }
+
         .status-main {
             font-size: 1em;
             font-weight: 600;
@@ -384,6 +542,12 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             min-width: 250px;
             text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        .container.final-view .status-main {
+            min-width: 200px;
+            font-size: 0.9em;
         }
 
         /* EFECTOS DE MEZCLA MEJORADOS */
@@ -565,6 +729,11 @@
             height: 45px;
         }
 
+        .container.final-view .logo-placeholder-large {
+            width: 55px;
+            height: 55px;
+        }
+
         /* Scroll personalizado */
         ::-webkit-scrollbar {
             width: 4px;
@@ -583,13 +752,40 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(255,215,0,0.8);
         }
+
+        /* Indicador de sonido */
+        .sound-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,215,0,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .sound-indicator.active {
+            opacity: 1;
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(255,215,0,0.5);
+        }
     </style>
 </head>
 <body>
     <!-- Partículas optimizadas -->
     <div class="particles" id="particles"></div>
 
-    <div class="container">
+    <!-- Indicador de sonido -->
+    <div class="sound-indicator" id="sound-indicator">🔊</div>
+
+    <div class="container" id="main-container">
         <!-- Header compacto -->
         <div class="header-compact">
             <div>
@@ -602,6 +798,10 @@
             </div>
             <div class="title-compact">Sorteo TOP10 IBERDROLA 2025/2026</div>
             <div class="timer-compact" id="timer">00:00</div>
+            <div class="volume-control">
+                🔊
+                <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.1" value="0.7">
+            </div>
         </div>
 
         <!-- Área principal con nueva distribución -->
@@ -647,7 +847,7 @@
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Probabilidad:</span>
-                        <span class="stat-value" id="probability">Pendiente</span>
+                        <span class="stat-value probability-real" id="probability">Pendiente</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Progreso:</span>
@@ -668,8 +868,11 @@
 
         <!-- Control inferior -->
         <div class="control-bottom">
-            <button class="button-main" id="main-button" onclick="startCorrectedDraw()">
+            <button class="button-main" id="main-button" onclick="startFinalDraw()">
                 🎭 Iniciar Sorteo
+            </button>
+            <button class="button-back" id="back-button" onclick="exitFinalView()" style="display: none;">
+                ↩️ Vista Completa
             </button>
             <div class="status-main" id="status">Listo para comenzar</div>
         </div>
@@ -693,6 +896,135 @@
     </div>
 
     <script>
+        // Configuración de sonido
+        let audioContext = null;
+        let masterVolume = 0.7;
+        let soundEnabled = true;
+
+        // Inicializar Tone.js
+        async function initializeAudio() {
+            try {
+                if (Tone.context.state !== 'running') {
+                    await Tone.start();
+                }
+                audioContext = Tone.context;
+                
+                // Configurar volumen maestro
+                Tone.Master.volume.value = Tone.gainToDb(masterVolume);
+                
+                console.log('Audio initialized successfully');
+            } catch (error) {
+                console.error('Error initializing audio:', error);
+                soundEnabled = false;
+            }
+        }
+
+        // Sintetizadores para efectos de sonido
+        let moveSynth = null;
+        let selectSynth = null;
+        let mixSynth = null;
+
+        function createSynths() {
+            try {
+                // Sintetizador para movimiento (swoosh)
+                moveSynth = new Tone.Synth({
+                    oscillator: {
+                        type: "sine"
+                    },
+                    envelope: {
+                        attack: 0.05,
+                        decay: 0.3,
+                        sustain: 0.1,
+                        release: 0.8
+                    }
+                }).toDestination();
+
+                // Sintetizador para selección (ding)
+                selectSynth = new Tone.MembraneSynth({
+                    pitchDecay: 0.08,
+                    octaves: 2,
+                    envelope: {
+                        attack: 0.001,
+                        decay: 0.3,
+                        sustain: 0.1,
+                        release: 0.8
+                    }
+                }).toDestination();
+
+                // Sintetizador para mezcla
+                mixSynth = new Tone.NoiseSynth({
+                    noise: {
+                        type: "pink"
+                    },
+                    envelope: {
+                        attack: 0.1,
+                        decay: 0.2,
+                        sustain: 0.0,
+                        release: 0.8
+                    }
+                }).toDestination();
+
+                console.log('Synths created successfully');
+            } catch (error) {
+                console.error('Error creating synths:', error);
+                soundEnabled = false;
+            }
+        }
+
+        // Funciones de sonido
+        function playMoveSound() {
+            if (!soundEnabled || !moveSynth) return;
+            try {
+                moveSynth.triggerAttackRelease("C5", "8n");
+                showSoundIndicator();
+            } catch (error) {
+                console.error('Error playing move sound:', error);
+            }
+        }
+
+        function playSelectSound() {
+            if (!soundEnabled || !selectSynth) return;
+            try {
+                selectSynth.triggerAttackRelease("C3", "4n");
+                showSoundIndicator();
+            } catch (error) {
+                console.error('Error playing select sound:', error);
+            }
+        }
+
+        function playMixSound() {
+            if (!soundEnabled || !mixSynth) return;
+            try {
+                mixSynth.triggerAttackRelease("8n");
+                showSoundIndicator();
+            } catch (error) {
+                console.error('Error playing mix sound:', error);
+            }
+        }
+
+        function showSoundIndicator() {
+            const indicator = document.getElementById('sound-indicator');
+            if (indicator) {
+                indicator.classList.add('active');
+                setTimeout(() => {
+                    indicator.classList.remove('active');
+                }, 500);
+            }
+        }
+
+        // Control de volumen
+        function setupVolumeControl() {
+            const volumeSlider = document.getElementById('volume-slider');
+            if (volumeSlider) {
+                volumeSlider.addEventListener('input', (e) => {
+                    masterVolume = parseFloat(e.target.value);
+                    if (Tone.Master) {
+                        Tone.Master.volume.value = Tone.gainToDb(masterVolume);
+                    }
+                });
+            }
+        }
+
         // Datos de equipos
         const teams = [
             { name: "Recreativo IES La Orden", position: "Campeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/IES-La-Orden.png", type: "head" },
@@ -712,8 +1044,9 @@
         let startTime = null;
         let timer = null;
         let selectionCount = 0;
-        let assignedTeams = new Set(); // Tracking de equipos asignados
+        let assignedTeams = new Set();
         let currentPhaseIndex = 0;
+        let finalViewActive = false;
 
         // Fases de normativa para popups
         const normativaFases = [
@@ -869,8 +1202,8 @@
             }
         }
 
-        // Actualizar estadísticas con validaciones
-        function updateStats(phase, probability = null) {
+        // Actualizar estadísticas con cálculos de probabilidad CORREGIDOS
+        function updateStats(phase, equiposRestantes = null, totalEquipos = null) {
             try {
                 const phaseElement = document.getElementById('current-phase');
                 const progressElement = document.getElementById('progress');
@@ -878,15 +1211,40 @@
                 
                 if (phaseElement) phaseElement.textContent = phase;
                 if (progressElement) progressElement.textContent = `${selectionCount}/8`;
-                if (probability && probabilityElement) {
-                    probabilityElement.textContent = probability;
+                
+                if (probabilityElement) {
+                    let probabilityText = '';
+                    
+                    switch (phase) {
+                        case 'Cabezas de Serie':
+                            probabilityText = 'Asignación fija (100%)';
+                            break;
+                        case 'Bombo 1':
+                            probabilityText = '50% cada equipo';
+                            break;
+                        case 'Bombo 2':
+                            if (equiposRestantes && totalEquipos) {
+                                const prob = ((1 / equiposRestantes) * 100).toFixed(1);
+                                probabilityText = `${prob}% cada uno (${equiposRestantes} restantes)`;
+                            } else {
+                                probabilityText = 'Equipos restantes';
+                            }
+                            break;
+                        case 'Finalizado':
+                            probabilityText = 'Sorteo completado';
+                            break;
+                        default:
+                            probabilityText = 'Pendiente';
+                    }
+                    
+                    probabilityElement.textContent = probabilityText;
                 }
             } catch (error) {
                 console.error('Error updating stats:', error);
             }
         }
 
-        // EFECTO DE MEZCLA MEJORADO con validaciones
+        // EFECTO DE MEZCLA MEJORADO con sonido
         function startMixingEffect(container) {
             return new Promise((resolve) => {
                 try {
@@ -897,6 +1255,9 @@
                     
                     const teams = Array.from(container.children);
                     
+                    // Reproducir sonido de mezcla
+                    playMixSound();
+                    
                     // Activar efecto de mezcla rápida en todos los equipos
                     teams.forEach(team => {
                         if (team && team.classList) {
@@ -906,7 +1267,6 @@
                     
                     // Mantener el efecto por 2 segundos
                     setTimeout(() => {
-                        // Quitar el efecto de todos
                         teams.forEach(team => {
                             if (team && team.classList) {
                                 team.classList.remove('mixing-effect');
@@ -921,7 +1281,7 @@
             });
         }
 
-        // Seleccionar equipo con efecto final y validaciones
+        // Seleccionar equipo con efecto final y sonido
         function selectTeamWithEffect(container) {
             return new Promise((resolve) => {
                 try {
@@ -954,6 +1314,9 @@
                         selectedTeam.classList.add('selected-final');
                     }
                     
+                    // Reproducir sonido de selección
+                    playSelectSound();
+                    
                     setTimeout(() => {
                         resolve(selectedTeam);
                     }, 1500);
@@ -964,11 +1327,10 @@
             });
         }
 
-        // Mover equipo con animación mejorada y validaciones robustas
-        function moveTeamCorrected(teamCard, targetSlot) {
+        // Mover equipo con animación mejorada y sonido
+        function moveTeamWithSound(teamCard, targetSlot) {
             return new Promise((resolve) => {
                 try {
-                    // Validaciones exhaustivas
                     if (!teamCard || !targetSlot) {
                         console.error('Invalid team card or target slot');
                         resolve();
@@ -981,7 +1343,6 @@
                         return;
                     }
                     
-                    // Verificar que el elemento aún existe en el DOM
                     if (!document.body.contains(teamCard)) {
                         console.error('Team card not in DOM');
                         resolve();
@@ -997,13 +1358,15 @@
                     const startRect = teamCard.getBoundingClientRect();
                     const endRect = targetSlot.getBoundingClientRect();
                     
-                    // Verificar que las dimensiones son válidas
                     if (startRect.width === 0 || startRect.height === 0 || 
                         endRect.width === 0 || endRect.height === 0) {
                         console.error('Invalid dimensions for animation');
                         resolve();
                         return;
                     }
+                    
+                    // Reproducir sonido de movimiento
+                    playMoveSound();
                     
                     const movingCard = teamCard.cloneNode(true);
                     movingCard.className = 'team-compact moving-team';
@@ -1016,7 +1379,6 @@
                     
                     document.body.appendChild(movingCard);
                     
-                    // Ocultar tarjeta original de forma segura
                     if (teamCard.style) {
                         teamCard.style.opacity = '0';
                     }
@@ -1032,7 +1394,6 @@
                     
                     setTimeout(() => {
                         try {
-                            // Crear el equipo grande para el grupo
                             const teamData = teams.find(t => t.name === teamCard.dataset.team);
                             if (!teamData) {
                                 console.error('Team data not found');
@@ -1042,7 +1403,6 @@
                             
                             const teamLarge = createTeamLarge(teamData);
                             
-                            // Verificar que el slot target aún existe
                             if (document.body.contains(targetSlot)) {
                                 targetSlot.innerHTML = '';
                                 targetSlot.appendChild(teamLarge);
@@ -1050,17 +1410,14 @@
                                 targetSlot.classList.add('filled');
                             }
                             
-                            // Limpiar efectos de la tarjeta original
                             if (teamCard.classList) {
                                 teamCard.classList.remove('selected-final');
                             }
                             
-                            // Remover tarjeta original del DOM de forma segura
                             if (teamCard.parentNode) {
                                 teamCard.parentNode.removeChild(teamCard);
                             }
                             
-                            // Limpiar tarjeta de movimiento
                             if (document.body.contains(movingCard)) {
                                 document.body.removeChild(movingCard);
                             }
@@ -1073,14 +1430,14 @@
                     }, 1850);
                     
                 } catch (error) {
-                    console.error('Error in moveTeamCorrected:', error);
+                    console.error('Error in moveTeamWithSound:', error);
                     resolve();
                 }
             });
         }
 
-        // Animar bombo mejorado
-        function animateBomboImproved(bomboId) {
+        // Animar bombo mejorado con sonido
+        function animateBomboWithSound(bomboId) {
             return new Promise((resolve) => {
                 try {
                     const bombo = document.getElementById(bomboId);
@@ -1104,6 +1461,48 @@
             });
         }
 
+        // FUNCIÓN PARA ENTRAR EN VISTA AMPLIADA
+        function enterFinalView() {
+            const container = document.getElementById('main-container');
+            const backButton = document.getElementById('back-button');
+            const status = document.getElementById('status');
+            
+            if (container) {
+                container.classList.add('final-view');
+                finalViewActive = true;
+            }
+            
+            if (backButton) {
+                backButton.style.display = 'block';
+            }
+            
+            if (status) {
+                status.textContent = 'Resultado Final - Vista Ampliada';
+            }
+            
+            addLogEntry('Vista ampliada activada para visualizar resultado final');
+        }
+
+        // FUNCIÓN PARA SALIR DE VISTA AMPLIADA
+        function exitFinalView() {
+            const container = document.getElementById('main-container');
+            const backButton = document.getElementById('back-button');
+            const status = document.getElementById('status');
+            
+            if (container) {
+                container.classList.remove('final-view');
+                finalViewActive = false;
+            }
+            
+            if (backButton) {
+                backButton.style.display = 'none';
+            }
+            
+            if (status) {
+                status.textContent = 'Vista completa restaurada';
+            }
+        }
+
         // Inicializar página con reseteo completo
         function initializePage() {
             try {
@@ -1114,6 +1513,10 @@
                 selectionCount = 0;
                 startTime = null;
                 currentPhaseIndex = 0;
+                finalViewActive = false;
+                
+                // Salir de vista ampliada si está activa
+                exitFinalView();
                 
                 // Limpiar contenedores de forma segura
                 ['heads-teams', 'pot1-teams', 'pot2-teams'].forEach(id => {
@@ -1176,7 +1579,7 @@
                 if (button) {
                     button.textContent = '🎭 Iniciar Sorteo';
                     button.disabled = false;
-                    button.onclick = startCorrectedDraw;
+                    button.onclick = startFinalDraw;
                 }
                 
                 if (status) status.textContent = 'Listo para comenzar';
@@ -1184,7 +1587,7 @@
                 if (logEntries) logEntries.innerHTML = '';
                 if (normativaPopup) normativaPopup.style.display = 'none';
                 
-                updateStats('Preparación', 'Pendiente');
+                updateStats('Preparación');
                 
                 // Resetear timer display
                 const timerElement = document.getElementById('timer');
@@ -1195,14 +1598,18 @@
             }
         }
 
-        // Sorteo corregido con manejo robusto de errores
-        async function startCorrectedDraw() {
+        // Sorteo final con ampliación automática y sonidos
+        async function startFinalDraw() {
             if (drawInProgress) return;
             
             try {
                 drawInProgress = true;
                 startTime = Date.now();
                 timer = setInterval(updateTimer, 100);
+                
+                // Inicializar audio
+                await initializeAudio();
+                createSynths();
                 
                 const button = document.getElementById('main-button');
                 const status = document.getElementById('status');
@@ -1212,13 +1619,13 @@
                     button.textContent = '🎬 Sorteo en Progreso';
                 }
                 
-                addLogEntry('Inicio del sorteo oficial corregido');
+                addLogEntry('Inicio del sorteo oficial con efectos de sonido');
                 
                 // Fase 1: Cabezas de serie con popup
                 await showNormativaPopup(0);
                 
                 if (status) status.textContent = '👑 Asignando Cabezas de Serie';
-                updateStats('Cabezas de Serie', 'Fijas');
+                updateStats('Cabezas de Serie');
                 
                 await new Promise(resolve => setTimeout(resolve, 800));
                 
@@ -1243,13 +1650,13 @@
                 if (runnerUp.dataset.team) assignedTeams.add(runnerUp.dataset.team);
                 
                 addLogEntry(`Campeón "${champion.dataset.team}" → Grupo A`);
-                await moveTeamCorrected(champion, groupASlots.children[0]);
+                await moveTeamWithSound(champion, groupASlots.children[0]);
                 selectionCount++;
                 
                 await new Promise(resolve => setTimeout(resolve, 600));
                 
                 addLogEntry(`Subcampeón "${runnerUp.dataset.team}" → Grupo B`);
-                await moveTeamCorrected(runnerUp, groupBSlots.children[0]);
+                await moveTeamWithSound(runnerUp, groupBSlots.children[0]);
                 selectionCount++;
                 
                 await new Promise(resolve => setTimeout(resolve, 800));
@@ -1258,17 +1665,17 @@
                 await showNormativaPopup(1);
                 
                 if (status) status.textContent = '🎯 Sorteo Bombo 1 - Mezclando...';
-                updateStats('Bombo 1', '50% cada uno');
+                updateStats('Bombo 1');
                 
-                addLogEntry('Mezclando Bombo 1 con efectos visuales');
-                await animateBomboImproved('bombo-1');
+                addLogEntry('Mezclando Bombo 1 con efectos visuales y sonoros');
+                await animateBomboWithSound('bombo-1');
                 
                 const pot1Container = document.getElementById('pot1-teams');
                 if (!pot1Container) {
                     throw new Error('Invalid pot1 container');
                 }
                 
-                // EFECTO DE MEZCLA VISUAL
+                // EFECTO DE MEZCLA VISUAL CON SONIDO
                 await startMixingEffect(pot1Container);
                 
                 if (status) status.textContent = '🎯 Seleccionando del Bombo 1...';
@@ -1282,7 +1689,7 @@
                 
                 await new Promise(resolve => setTimeout(resolve, 500));
                 
-                await moveTeamCorrected(selectedPot1, groupASlots.children[1]);
+                await moveTeamWithSound(selectedPot1, groupASlots.children[1]);
                 selectionCount++;
                 
                 // Encontrar el equipo restante del pot1
@@ -1296,7 +1703,7 @@
                     
                     assignedTeams.add(remainingPot1.dataset.team);
                     addLogEntry(`Restante "${remainingPot1.dataset.team}" → Grupo B`);
-                    await moveTeamCorrected(remainingPot1, groupBSlots.children[1]);
+                    await moveTeamWithSound(remainingPot1, groupBSlots.children[1]);
                     selectionCount++;
                 }
                 
@@ -1306,7 +1713,6 @@
                 await showNormativaPopup(2);
                 
                 if (status) status.textContent = '🎲 Sorteo Bombo 2 - Proceso completo';
-                updateStats('Bombo 2', 'Aleatorio');
                 
                 const pot2Container = document.getElementById('pot2-teams');
                 if (!pot2Container) {
@@ -1324,22 +1730,23 @@
                 
                 for (let i = 0; i < pot2Teams.length && (groupAPosition < 5 || groupBPosition < 5); i++) {
                     const remaining = pot2Teams.length - i;
-                    const prob = `${((1/remaining) * 100).toFixed(1)}%`;
-                    updateStats('Bombo 2', prob);
+                    
+                    // ACTUALIZAR PROBABILIDADES CORREGIDAS
+                    updateStats('Bombo 2', remaining, pot2Teams.length);
                     
                     addLogEntry(`Mezclando ${remaining} equipos restantes`);
                     if (status) status.textContent = `🎲 Mezclando ${remaining} equipos...`;
                     
-                    await animateBomboImproved('bombo-2');
+                    await animateBomboWithSound('bombo-2');
                     
-                    // EFECTO DE MEZCLA VISUAL
+                    // EFECTO DE MEZCLA VISUAL CON SONIDO
                     await startMixingEffect(pot2Container);
                     
                     if (status) status.textContent = '🎲 Seleccionando equipo...';
                     const selectedTeam = await selectTeamWithEffect(pot2Container);
                     
                     if (!selectedTeam) {
-                        break; // No hay más equipos disponibles
+                        break;
                     }
                     
                     addLogEntry(`Seleccionado: "${selectedTeam.dataset.team}"`);
@@ -1347,10 +1754,10 @@
                     await new Promise(resolve => setTimeout(resolve, 300));
                     
                     if (currentGroup === 'A' && groupAPosition < 5) {
-                        await moveTeamCorrected(selectedTeam, groupASlots.children[groupAPosition]);
+                        await moveTeamWithSound(selectedTeam, groupASlots.children[groupAPosition]);
                         groupAPosition++;
                     } else if (currentGroup === 'B' && groupBPosition < 5) {
-                        await moveTeamCorrected(selectedTeam, groupBSlots.children[groupBPosition]);
+                        await moveTeamWithSound(selectedTeam, groupBSlots.children[groupBPosition]);
                         groupBPosition++;
                     }
                     
@@ -1360,10 +1767,13 @@
                     await new Promise(resolve => setTimeout(resolve, 500));
                 }
                 
-                // Finalización
+                // Finalización con sonido especial
                 addLogEntry('Sorteo completado exitosamente');
                 if (status) status.textContent = '🎊 ¡Sorteo Completado!';
-                updateStats('Finalizado', 'Completado');
+                updateStats('Finalizado');
+                
+                // Reproducir sonido de finalización
+                playSelectSound();
                 
                 const finalMessage = document.getElementById('final-message');
                 if (finalMessage) {
@@ -1371,7 +1781,13 @@
                     
                     setTimeout(() => {
                         finalMessage.style.display = 'none';
-                    }, 4000);
+                        
+                        // AMPLIACIÓN AUTOMÁTICA
+                        setTimeout(() => {
+                            enterFinalView();
+                        }, 500);
+                        
+                    }, 3000);
                 }
                 
                 if (button) {
@@ -1419,9 +1835,19 @@
         }
 
         // Inicializar al cargar con manejo de errores
-        window.onload = function() {
+        window.onload = async function() {
             try {
-                initializePage();
+                await initializePage();
+                setupVolumeControl();
+                
+                // Configurar audio en primer click
+                document.addEventListener('click', async () => {
+                    if (!audioContext) {
+                        await initializeAudio();
+                        createSynths();
+                    }
+                }, { once: true });
+                
             } catch (error) {
                 console.error('Error on page load:', error);
             }
