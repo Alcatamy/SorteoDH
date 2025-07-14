@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Final</title>
+    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Corregida</title>
     <script src="https://unpkg.com/tone"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -868,7 +868,7 @@
 
         <!-- Control inferior -->
         <div class="control-bottom">
-            <button class="button-main" id="main-button" onclick="startFinalDraw()">
+            <button class="button-main" id="main-button" onclick="startCorrectedDraw()">
                 🎭 Iniciar Sorteo
             </button>
             <button class="button-back" id="back-button" onclick="exitFinalView()" style="display: none;">
@@ -1044,7 +1044,8 @@
         let startTime = null;
         let timer = null;
         let selectionCount = 0;
-        let assignedTeams = new Set();
+        let assignedTeams = new Set(); // CORREGIDO: Sistema robusto de tracking
+        let processedTeams = new Set(); // NUEVO: Tracking adicional de equipos procesados
         let currentPhaseIndex = 0;
         let finalViewActive = false;
 
@@ -1100,13 +1101,14 @@
             });
         }
 
-        // Crear equipo compacto con validaciones
+        // FUNCIÓN CORREGIDA: Crear equipo compacto con ID único
         function createTeamCompact(team, containerId) {
             const card = document.createElement('div');
             card.className = 'team-compact';
             card.dataset.team = team.name;
             card.dataset.container = containerId;
             card.dataset.type = team.type;
+            card.dataset.teamId = `${team.name}-${Date.now()}-${Math.random()}`; // ID único
             
             const logo = document.createElement('img');
             logo.src = team.logo;
@@ -1130,27 +1132,27 @@
             return card;
         }
 
-        // Crear equipo GRANDE para grupos con validaciones
-        function createTeamLarge(team) {
+        // FUNCIÓN CORREGIDA: Crear equipo grande para grupos
+        function createTeamLarge(teamData) {
             const teamDiv = document.createElement('div');
             teamDiv.className = 'team-in-group';
-            teamDiv.dataset.team = team.name;
+            teamDiv.dataset.team = teamData.name;
             
             const logo = document.createElement('img');
-            logo.src = team.logo;
-            logo.alt = team.name;
+            logo.src = teamData.logo;
+            logo.alt = teamData.name;
             logo.className = 'team-logo-large';
             logo.onerror = function() {
                 this.style.display = 'none';
                 const placeholder = document.createElement('div');
                 placeholder.className = 'logo-placeholder logo-placeholder-large';
-                placeholder.textContent = team.name.substring(0, 3).toUpperCase();
+                placeholder.textContent = teamData.name.substring(0, 3).toUpperCase();
                 this.parentNode.insertBefore(placeholder, this);
             };
             
             const name = document.createElement('div');
             name.className = 'team-name-large';
-            name.textContent = team.name;
+            name.textContent = teamData.name;
             
             teamDiv.appendChild(logo);
             teamDiv.appendChild(name);
@@ -1202,8 +1204,8 @@
             }
         }
 
-        // Actualizar estadísticas con cálculos de probabilidad CORREGIDOS
-        function updateStats(phase, equiposRestantes = null, totalEquipos = null) {
+        // FUNCIÓN CORREGIDA: Actualizar estadísticas con cálculos precisos
+        function updateStats(phase, availableTeams = null) {
             try {
                 const phaseElement = document.getElementById('current-phase');
                 const progressElement = document.getElementById('progress');
@@ -1223,11 +1225,11 @@
                             probabilityText = '50% cada equipo';
                             break;
                         case 'Bombo 2':
-                            if (equiposRestantes && totalEquipos) {
-                                const prob = ((1 / equiposRestantes) * 100).toFixed(1);
-                                probabilityText = `${prob}% cada uno (${equiposRestantes} restantes)`;
+                            if (availableTeams && availableTeams > 0) {
+                                const prob = ((1 / availableTeams) * 100).toFixed(1);
+                                probabilityText = `${prob}% cada uno (${availableTeams} restantes)`;
                             } else {
-                                probabilityText = 'Equipos restantes';
+                                probabilityText = 'Calculando...';
                             }
                             break;
                         case 'Finalizado':
@@ -1244,7 +1246,7 @@
             }
         }
 
-        // EFECTO DE MEZCLA MEJORADO con sonido
+        // FUNCIÓN CORREGIDA: Efecto de mezcla con sonido
         function startMixingEffect(container) {
             return new Promise((resolve) => {
                 try {
@@ -1254,12 +1256,24 @@
                     }
                     
                     const teams = Array.from(container.children);
+                    const availableTeams = teams.filter(team => 
+                        team && 
+                        team.dataset && 
+                        team.dataset.team && 
+                        !assignedTeams.has(team.dataset.team) &&
+                        !processedTeams.has(team.dataset.teamId)
+                    );
+                    
+                    if (availableTeams.length === 0) {
+                        resolve();
+                        return;
+                    }
                     
                     // Reproducir sonido de mezcla
                     playMixSound();
                     
-                    // Activar efecto de mezcla rápida en todos los equipos
-                    teams.forEach(team => {
+                    // Activar efecto de mezcla rápida solo en equipos disponibles
+                    availableTeams.forEach(team => {
                         if (team && team.classList) {
                             team.classList.add('mixing-effect');
                         }
@@ -1267,7 +1281,7 @@
                     
                     // Mantener el efecto por 2 segundos
                     setTimeout(() => {
-                        teams.forEach(team => {
+                        availableTeams.forEach(team => {
                             if (team && team.classList) {
                                 team.classList.remove('mixing-effect');
                             }
@@ -1281,11 +1295,12 @@
             });
         }
 
-        // Seleccionar equipo con efecto final y sonido
+        // FUNCIÓN CORREGIDA: Seleccionar equipo sin duplicados
         function selectTeamWithEffect(container) {
             return new Promise((resolve) => {
                 try {
                     if (!container || !container.children || container.children.length === 0) {
+                        console.log('Container vacío o inválido');
                         resolve(null);
                         return;
                     }
@@ -1295,10 +1310,17 @@
                         team && 
                         team.dataset && 
                         team.dataset.team && 
-                        !assignedTeams.has(team.dataset.team)
+                        !assignedTeams.has(team.dataset.team) &&
+                        !processedTeams.has(team.dataset.teamId) &&
+                        document.body.contains(team) // Verificar que el elemento esté en el DOM
                     );
                     
+                    console.log(`Equipos disponibles para selección: ${availableTeams.length}`);
+                    console.log('Equipos disponibles:', availableTeams.map(t => t.dataset.team));
+                    console.log('Equipos asignados:', Array.from(assignedTeams));
+                    
                     if (availableTeams.length === 0) {
+                        console.log('No hay equipos disponibles para seleccionar');
                         resolve(null);
                         return;
                     }
@@ -1306,8 +1328,11 @@
                     const randomIndex = Math.floor(Math.random() * availableTeams.length);
                     const selectedTeam = availableTeams[randomIndex];
                     
-                    // Marcar como asignado
+                    // Marcar como procesado y asignado INMEDIATAMENTE
                     assignedTeams.add(selectedTeam.dataset.team);
+                    processedTeams.add(selectedTeam.dataset.teamId);
+                    
+                    console.log(`Equipo seleccionado: ${selectedTeam.dataset.team}`);
                     
                     // Efecto de selección final
                     if (selectedTeam.classList) {
@@ -1327,10 +1352,11 @@
             });
         }
 
-        // Mover equipo con animación mejorada y sonido
+        // FUNCIÓN CORREGIDA: Mover equipo con validaciones robustas
         function moveTeamWithSound(teamCard, targetSlot) {
             return new Promise((resolve) => {
                 try {
+                    // Validaciones exhaustivas
                     if (!teamCard || !targetSlot) {
                         console.error('Invalid team card or target slot');
                         resolve();
@@ -1343,22 +1369,31 @@
                         return;
                     }
                     
-                    if (!document.body.contains(teamCard)) {
-                        console.error('Team card not in DOM');
+                    // Verificar que ambos elementos estén en el DOM
+                    if (!document.body.contains(teamCard) || !document.body.contains(targetSlot)) {
+                        console.error('Elements not in DOM - teamCard:', document.body.contains(teamCard), 'targetSlot:', document.body.contains(targetSlot));
                         resolve();
                         return;
                     }
                     
-                    if (!document.body.contains(targetSlot)) {
-                        console.error('Target slot not in DOM');
+                    // CAPTURAR DATOS DEL EQUIPO ANTES DE CUALQUIER MANIPULACIÓN
+                    const teamName = teamCard.dataset.team;
+                    const teamData = teams.find(t => t.name === teamName);
+                    
+                    if (!teamData) {
+                        console.error('Team data not found for:', teamName);
                         resolve();
                         return;
                     }
+                    
+                    console.log(`Moviendo equipo: ${teamName} con logo: ${teamData.logo}`);
                     
                     const startRect = teamCard.getBoundingClientRect();
                     const endRect = targetSlot.getBoundingClientRect();
                     
-                    if (startRect.width === 0 || startRect.height === 0 || 
+                    // Verificar dimensiones válidas
+                    if (!startRect || !endRect || 
+                        startRect.width === 0 || startRect.height === 0 || 
                         endRect.width === 0 || endRect.height === 0) {
                         console.error('Invalid dimensions for animation');
                         resolve();
@@ -1368,6 +1403,7 @@
                     // Reproducir sonido de movimiento
                     playMoveSound();
                     
+                    // Crear tarjeta de movimiento
                     const movingCard = teamCard.cloneNode(true);
                     movingCard.className = 'team-compact moving-team';
                     movingCard.style.position = 'fixed';
@@ -1379,6 +1415,7 @@
                     
                     document.body.appendChild(movingCard);
                     
+                    // Ocultar tarjeta original
                     if (teamCard.style) {
                         teamCard.style.opacity = '0';
                     }
@@ -1394,15 +1431,10 @@
                     
                     setTimeout(() => {
                         try {
-                            const teamData = teams.find(t => t.name === teamCard.dataset.team);
-                            if (!teamData) {
-                                console.error('Team data not found');
-                                resolve();
-                                return;
-                            }
-                            
+                            // Crear el equipo grande usando los datos capturados
                             const teamLarge = createTeamLarge(teamData);
                             
+                            // Verificar que el slot target aún existe
                             if (document.body.contains(targetSlot)) {
                                 targetSlot.innerHTML = '';
                                 targetSlot.appendChild(teamLarge);
@@ -1410,17 +1442,23 @@
                                 targetSlot.classList.add('filled');
                             }
                             
+                            // Limpiar efectos
                             if (teamCard.classList) {
                                 teamCard.classList.remove('selected-final');
                             }
                             
-                            if (teamCard.parentNode) {
+                            // Remover del DOM de forma segura
+                            if (teamCard.parentNode && document.body.contains(teamCard)) {
                                 teamCard.parentNode.removeChild(teamCard);
                             }
                             
                             if (document.body.contains(movingCard)) {
                                 document.body.removeChild(movingCard);
                             }
+                            
+                            // Log para debugging
+                            addLogEntry(`Equipo "${teamData.name}" movido correctamente`);
+                            console.log(`Equipo "${teamData.name}" movido correctamente con logo "${teamData.logo}"`);
                             
                             resolve();
                         } catch (cleanupError) {
@@ -1503,17 +1541,20 @@
             }
         }
 
-        // Inicializar página con reseteo completo
+        // FUNCIÓN CORREGIDA: Inicializar página con reseteo completo
         function initializePage() {
             try {
                 createOptimizedParticles();
                 
-                // Resetear estado global
+                // RESETEO COMPLETO DEL ESTADO
                 assignedTeams.clear();
+                processedTeams.clear();
                 selectionCount = 0;
                 startTime = null;
                 currentPhaseIndex = 0;
                 finalViewActive = false;
+                
+                console.log('Estado inicializado - Equipos asignados:', assignedTeams.size, 'Equipos procesados:', processedTeams.size);
                 
                 // Salir de vista ampliada si está activa
                 exitFinalView();
@@ -1579,7 +1620,7 @@
                 if (button) {
                     button.textContent = '🎭 Iniciar Sorteo';
                     button.disabled = false;
-                    button.onclick = startFinalDraw;
+                    button.onclick = startCorrectedDraw;
                 }
                 
                 if (status) status.textContent = 'Listo para comenzar';
@@ -1593,13 +1634,15 @@
                 const timerElement = document.getElementById('timer');
                 if (timerElement) timerElement.textContent = '00:00';
                 
+                console.log('Página inicializada correctamente');
+                
             } catch (error) {
                 console.error('Error initializing page:', error);
             }
         }
 
-        // Sorteo final con ampliación automática y sonidos
-        async function startFinalDraw() {
+        // FUNCIÓN PRINCIPAL CORREGIDA: Sorteo sin duplicados
+        async function startCorrectedDraw() {
             if (drawInProgress) return;
             
             try {
@@ -1619,7 +1662,8 @@
                     button.textContent = '🎬 Sorteo en Progreso';
                 }
                 
-                addLogEntry('Inicio del sorteo oficial con efectos de sonido');
+                addLogEntry('Inicio del sorteo oficial corregido');
+                console.log('=== INICIO DEL SORTEO ===');
                 
                 // Fase 1: Cabezas de serie con popup
                 await showNormativaPopup(0);
@@ -1646,8 +1690,14 @@
                 }
                 
                 // Marcar como asignados
-                if (champion.dataset.team) assignedTeams.add(champion.dataset.team);
-                if (runnerUp.dataset.team) assignedTeams.add(runnerUp.dataset.team);
+                if (champion.dataset.team) {
+                    assignedTeams.add(champion.dataset.team);
+                    processedTeams.add(champion.dataset.teamId);
+                }
+                if (runnerUp.dataset.team) {
+                    assignedTeams.add(runnerUp.dataset.team);
+                    processedTeams.add(runnerUp.dataset.teamId);
+                }
                 
                 addLogEntry(`Campeón "${champion.dataset.team}" → Grupo A`);
                 await moveTeamWithSound(champion, groupASlots.children[0]);
@@ -1694,7 +1744,10 @@
                 
                 // Encontrar el equipo restante del pot1
                 const remainingPot1Teams = Array.from(pot1Container.children).filter(team => 
-                    team.dataset.team && !assignedTeams.has(team.dataset.team)
+                    team.dataset.team && 
+                    !assignedTeams.has(team.dataset.team) &&
+                    !processedTeams.has(team.dataset.teamId) &&
+                    document.body.contains(team)
                 );
                 
                 if (remainingPot1Teams.length > 0) {
@@ -1702,6 +1755,7 @@
                     await new Promise(resolve => setTimeout(resolve, 400));
                     
                     assignedTeams.add(remainingPot1.dataset.team);
+                    processedTeams.add(remainingPot1.dataset.teamId);
                     addLogEntry(`Restante "${remainingPot1.dataset.team}" → Grupo B`);
                     await moveTeamWithSound(remainingPot1, groupBSlots.children[1]);
                     selectionCount++;
@@ -1723,19 +1777,28 @@
                 let groupAPosition = 2;
                 let groupBPosition = 2;
                 
-                // Sortear equipos restantes del pot2
-                const pot2Teams = Array.from(pot2Container.children).filter(team => 
-                    team.dataset.team && !assignedTeams.has(team.dataset.team)
-                );
-                
-                for (let i = 0; i < pot2Teams.length && (groupAPosition < 5 || groupBPosition < 5); i++) {
-                    const remaining = pot2Teams.length - i;
+                // CICLO CORREGIDO: Sortear equipos del pot2 uno por uno
+                while (true) {
+                    // Contar equipos disponibles
+                    const availableTeams = Array.from(pot2Container.children).filter(team => 
+                        team.dataset.team && 
+                        !assignedTeams.has(team.dataset.team) &&
+                        !processedTeams.has(team.dataset.teamId) &&
+                        document.body.contains(team)
+                    );
+                    
+                    console.log(`Equipos disponibles en Bombo 2: ${availableTeams.length}`);
+                    
+                    if (availableTeams.length === 0 || (groupAPosition >= 5 && groupBPosition >= 5)) {
+                        console.log('No hay más equipos disponibles o grupos llenos');
+                        break;
+                    }
                     
                     // ACTUALIZAR PROBABILIDADES CORREGIDAS
-                    updateStats('Bombo 2', remaining, pot2Teams.length);
+                    updateStats('Bombo 2', availableTeams.length);
                     
-                    addLogEntry(`Mezclando ${remaining} equipos restantes`);
-                    if (status) status.textContent = `🎲 Mezclando ${remaining} equipos...`;
+                    addLogEntry(`Mezclando ${availableTeams.length} equipos restantes`);
+                    if (status) status.textContent = `🎲 Mezclando ${availableTeams.length} equipos...`;
                     
                     await animateBomboWithSound('bombo-2');
                     
@@ -1746,6 +1809,7 @@
                     const selectedTeam = await selectTeamWithEffect(pot2Container);
                     
                     if (!selectedTeam) {
+                        console.log('No se pudo seleccionar equipo del Bombo 2');
                         break;
                     }
                     
@@ -1753,15 +1817,20 @@
                     
                     await new Promise(resolve => setTimeout(resolve, 300));
                     
+                    // Asignar al grupo correspondiente
                     if (currentGroup === 'A' && groupAPosition < 5) {
                         await moveTeamWithSound(selectedTeam, groupASlots.children[groupAPosition]);
+                        addLogEntry(`"${selectedTeam.dataset.team}" asignado a Grupo A, posición ${groupAPosition + 1}`);
                         groupAPosition++;
                     } else if (currentGroup === 'B' && groupBPosition < 5) {
                         await moveTeamWithSound(selectedTeam, groupBSlots.children[groupBPosition]);
+                        addLogEntry(`"${selectedTeam.dataset.team}" asignado a Grupo B, posición ${groupBPosition + 1}`);
                         groupBPosition++;
                     }
                     
                     selectionCount++;
+                    
+                    // Alternar grupo para el siguiente equipo
                     currentGroup = currentGroup === 'A' ? 'B' : 'A';
                     
                     await new Promise(resolve => setTimeout(resolve, 500));
@@ -1771,6 +1840,10 @@
                 addLogEntry('Sorteo completado exitosamente');
                 if (status) status.textContent = '🎊 ¡Sorteo Completado!';
                 updateStats('Finalizado');
+                
+                console.log('=== SORTEO FINALIZADO ===');
+                console.log('Equipos asignados total:', assignedTeams.size);
+                console.log('Equipos procesados total:', processedTeams.size);
                 
                 // Reproducir sonido de finalización
                 playSelectSound();
