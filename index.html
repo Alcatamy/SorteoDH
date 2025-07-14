@@ -3,538 +3,883 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo Definitivo TOP10 IBERDROLA (Versión Panorámica)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Grabación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-gold: #d4af37;
-            --primary-blue: #0c2f6b;
-            --dark-bg: #0a192f;
-            --accent-silver: #e5e7eb;
-            --shadow-gold: rgba(212, 175, 55, 0.3);
-        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--primary-blue) 100%);
-            color: white;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 30%, #2a3441 70%, #3a4554 100%);
             height: 100vh;
-            width: 100vw;
-            overflow: hidden; /* La clave para evitar el scroll */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .ceremony-wrapper {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            padding: 1.5rem;
-        }
-
-        /* --- HEADER --- */
-        .header-section {
-            text-align: center;
-            padding-bottom: 1rem;
-            flex-shrink: 0;
-        }
-        .main-logo {
-            max-width: 250px;
-            height: auto;
-            margin-bottom: 0.5rem;
-        }
-        .ceremony-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            background: linear-gradient(45deg, var(--primary-gold), #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* --- MAIN CONTENT AREA --- */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            gap: 1.5rem;
-            flex-grow: 1;
-            height: calc(100% - 150px); /* Ajustar altura para dejar espacio a header y footer */
-        }
-
-        /* --- GRUPOS (Laterales) --- */
-        .group-panel {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
+            color: #ffffff;
             overflow: hidden;
-        }
-        .group-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            color: var(--primary-gold);
-            flex-shrink: 0;
-        }
-        .group-teams {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            overflow-y: auto; /* Para el caso extremo de muchos equipos, aunque no se usará */
-        }
-        .group-team {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            opacity: 0;
-            transform: translateX(-20px);
-            animation: fadeIn 0.5s ease forwards;
-        }
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        .group-team img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-        }
-        .group-team .team-name {
-            font-weight: 500;
-        }
-        .group-team .team-position {
-            font-size: 0.8rem;
-            color: var(--accent-silver);
-            opacity: 0.8;
-        }
-
-        /* --- ÁREA CENTRAL DE SORTEO --- */
-        .draw-arena {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .pots-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            flex-shrink: 0;
-        }
-        .pot-container {
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 16px;
-            padding: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-        .pot-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-gold);
-        }
-        .pot-teams {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        .team-ball {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, white, #f3f4f6);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            cursor: default;
-        }
-        .team-ball.selected {
-            transform: scale(1.15);
-            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
-            box-shadow: 0 8px 25px var(--shadow-gold);
-        }
-        .team-ball img {
-            width: 35px;
-            height: 35px;
-            object-fit: contain;
-        }
-        .team-ball .team-name {
-            font-size: 0.6rem;
-            font-weight: 500;
-            color: var(--dark-bg);
-            margin-top: 2px;
-        }
-
-        .central-sphere-area {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             position: relative;
         }
-        .drawing-sphere {
-            width: 180px;
-            height: 180px;
+
+        /* Partículas optimizadas */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 215, 0, 0.4);
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
+            animation: float-optimized 8s ease-in-out infinite;
+        }
+
+        @keyframes float-optimized {
+            0%, 100% { transform: translateY(0px); opacity: 0.2; }
+            50% { transform: translateY(-15px); opacity: 0.6; }
+        }
+
+        .container {
+            height: 100vh;
+            display: grid;
+            grid-template-rows: 120px 1fr 80px;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+            gap: 20px;
+        }
+
+        /* Header compacto */
+        .header-compact {
+            display: grid;
+            grid-template-columns: 300px 1fr 200px;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+
+        .logo-compact {
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .title-compact {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .timer-compact {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 800;
+            color: #ffd700;
+            background: rgba(255,215,0,0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        /* Área principal horizontal */
+        .main-area {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 20px;
+            height: 100%;
+        }
+
+        /* Bombos compactos */
+        .bombos-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .bombo-compact {
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid rgba(255,215,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .bombo-compact:hover {
+            transform: scale(1.02);
+            border-color: #ffd700;
+        }
+
+        .bombo-title-compact {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .teams-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .team-compact {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .team-compact:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+            border-color: #ffd700;
+        }
+
+        .team-logo-compact {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 5px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .team-name-compact {
+            flex: 1;
+            font-size: 0.75em;
+            font-weight: 600;
+            color: #f8fafc;
+            line-height: 1.2;
+        }
+
+        /* Grupos centrales */
+        .grupos-center {
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grupo-compact {
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+            backdrop-filter: blur(12px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 3px solid rgba(255,215,0,0.4);
+            position: relative;
+        }
+
+        .grupo-title-compact {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .grupo-slots-compact {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            height: 100px;
+        }
+
+        .slot-compact {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 2px dashed rgba(255,215,0,0.3);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--dark-bg);
-            box-shadow: 0 10px 30px var(--shadow-gold);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            text-align: center;
-            padding: 1rem;
-        }
-        .drawing-sphere.active {
-            transform: scale(1.1);
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 10px 30px var(--shadow-gold); }
-            50% { box-shadow: 0 15px 45px var(--shadow-gold); }
-        }
-        .sphere-text {
-             font-size: 1.2rem;
-             font-weight: 600;
-        }
-        .status-message {
-            position: absolute;
-            bottom: 0;
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: var(--primary-gold);
+            font-size: 0.7em;
+            color: #94a3b8;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        /* --- FOOTER (Controles y Transparencia) --- */
-        .footer-bar {
-            flex-shrink: 0;
+        .slot-compact.filled {
+            border-style: solid;
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.05) 100%);
+        }
+
+        .slot-number-compact {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ffd700;
+            color: #0a0e1a;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: 700;
+        }
+
+        /* Panel de información */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stats-compact {
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .stats-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .stat-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 0.75rem 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8em;
         }
-        .transparency-grid {
-            display: flex;
-            gap: 1.5rem;
+
+        .stat-label {
+            color: #e2e8f0;
+            font-weight: 500;
         }
-        .transparency-item {
+
+        .stat-value {
+            color: #ffd700;
+            font-weight: 700;
+        }
+
+        .log-compact {
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid rgba(255,215,0,0.3);
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .log-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #ffd700;
             text-align: center;
+            margin-bottom: 10px;
         }
-        .transparency-label {
-            font-size: 0.8rem;
-            color: var(--accent-silver);
-            opacity: 0.7;
+
+        .log-entry-compact {
+            font-size: 0.7em;
+            color: #e2e8f0;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            line-height: 1.3;
         }
-        .transparency-value {
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            color: var(--primary-gold);
+
+        /* Control inferior */
+        .control-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
         }
-        .ceremony-button {
-            background: linear-gradient(135deg, var(--primary-gold), #fbbf24);
-            color: var(--dark-bg);
+
+        .button-main {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+            color: #0a0e1a;
             border: none;
-            padding: 0.8rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-weight: 800;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .ceremony-button:hover {
+
+        .button-main:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 12px 35px rgba(255,215,0,0.6);
         }
-        .ceremony-button:disabled {
-            background: #6b7280;
+
+        .button-main:disabled {
+            background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
+
+        .status-main {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            min-width: 300px;
+            text-align: center;
+        }
+
+        /* Efectos especiales */
+        .selected-glow {
+            animation: glow-pulse 1s ease-in-out infinite alternate;
+            border-color: #ffd700 !important;
+            box-shadow: 0 0 25px rgba(255,215,0,0.8);
+        }
+
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 25px rgba(255,215,0,0.8); }
+            100% { box-shadow: 0 0 35px rgba(255,215,0,1); }
+        }
+
+        .shake-effect {
+            animation: shake-compact 0.6s ease-in-out infinite;
+        }
+
+        @keyframes shake-compact {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
+        .moving-team {
+            position: fixed;
+            z-index: 1000;
+            transition: all 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: drop-shadow(0 8px 20px rgba(255,215,0,0.6));
+        }
+
+        .final-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(255,215,0,0.25) 0%, rgba(255,215,0,0.15) 100%);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #ffd700;
+            box-shadow: 0 20px 50px rgba(255,215,0,0.4);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+        }
+
+        /* Placeholder para logos */
+        .logo-placeholder {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6em;
+            color: #f8fafc;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Scroll personalizado */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,215,0,0.5);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,215,0,0.8);
+        }
     </style>
 </head>
 <body>
-    <div class="ceremony-wrapper">
-        <header class="header-section">
-            <img src="https://liga.badminton.es/wp-content/uploads/2024/01/AF_Iberdrola_Badminton_RGB_POS_H.png" alt="Logo Iberdrola" class="main-logo">
-            <h1 class="ceremony-title">Sorteo de Grupos TOP10 2025/2026</h1>
-        </header>
+    <!-- Partículas optimizadas -->
+    <div class="particles" id="particles"></div>
 
-        <main class="main-content">
-            <div class="group-panel" id="group-a-panel">
-                <h2 class="group-title">Grupo A</h2>
-                <div class="group-teams" id="group-a-teams"></div>
-            </div>
-
-            <div class="draw-arena">
-                <div class="pots-container">
-                    <div class="pot-container" id="pot-heads">
-                        <div class="pot-title">Cabezas de Serie</div>
-                        <div class="pot-teams" id="heads-teams"></div>
-                    </div>
-                    <div class="pot-container" id="pot-drawing">
-                        <div class="pot-title" id="current-pot-title">Bombo 1</div>
-                        <div class="pot-teams" id="current-pot-teams"></div>
-                    </div>
-                </div>
-                <div class="central-sphere-area">
-                    <div class="drawing-sphere" id="drawing-sphere">
-                        <span class="sphere-text" id="sphere-text">Iniciar Sorteo</span>
-                    </div>
-                    <div class="status-message" id="status-message"></div>
+    <div class="container">
+        <!-- Header compacto -->
+        <div class="header-compact">
+            <div>
+                <img src="https://liga.badminton.es/wp-content/uploads/2024/01/AF_Iberdrola_Badminton_RGB_POS_H.png" 
+                     alt="Logo TOP10 IBERDROLA" class="logo-compact" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-placeholder" style="display: none; width: 200px; height: 60px;">
+                    TOP10 IBERDROLA
                 </div>
             </div>
+            <div class="title-compact">Sorteo TOP10 IBERDROLA 2025/2026</div>
+            <div class="timer-compact" id="timer">00:00</div>
+        </div>
 
-            <div class="group-panel" id="group-b-panel">
-                <h2 class="group-title">Grupo B</h2>
-                <div class="group-teams" id="group-b-teams"></div>
+        <!-- Área principal -->
+        <div class="main-area">
+            <!-- Bombos -->
+            <div class="bombos-section">
+                <div class="bombo-compact" id="bombo-heads">
+                    <div class="bombo-title-compact">Cabezas de Serie</div>
+                    <div class="teams-compact" id="heads-teams"></div>
+                </div>
+                
+                <div class="bombo-compact" id="bombo-1">
+                    <div class="bombo-title-compact">Bombo 1</div>
+                    <div class="teams-compact" id="pot1-teams"></div>
+                </div>
+                
+                <div class="bombo-compact" id="bombo-2">
+                    <div class="bombo-title-compact">Bombo 2</div>
+                    <div class="teams-compact" id="pot2-teams"></div>
+                </div>
             </div>
-        </main>
-    </div>
 
-    <footer class="footer-bar">
-        <div class="transparency-grid">
-            <div class="transparency-item">
-                <div class="transparency-label">Timestamp</div>
-                <div class="transparency-value" id="timestamp">--:--:--</div>
+            <!-- Grupos centrales -->
+            <div class="grupos-center">
+                <div class="grupo-compact">
+                    <div class="grupo-title-compact">GRUPO A</div>
+                    <div class="grupo-slots-compact" id="grupo-a-slots"></div>
+                </div>
+                
+                <div class="grupo-compact">
+                    <div class="grupo-title-compact">GRUPO B</div>
+                    <div class="grupo-slots-compact" id="grupo-b-slots"></div>
+                </div>
             </div>
-            <div class="transparency-item">
-                <div class="transparency-label">Semilla Aleatoria</div>
-                <div class="transparency-value" id="random-seed">...</div>
-            </div>
-            <div class="transparency-item">
-                <div class="transparency-label">Hash Sorteo</div>
-                <div class="transparency-value" id="verification-hash">Pendiente</div>
+
+            <!-- Panel de información -->
+            <div class="info-panel">
+                <div class="stats-compact">
+                    <div class="stats-title">📊 Estadísticas</div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fase:</span>
+                        <span class="stat-value" id="current-phase">Preparación</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Probabilidad:</span>
+                        <span class="stat-value" id="probability">Pendiente</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Progreso:</span>
+                        <span class="stat-value" id="progress">0/8</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Equipos:</span>
+                        <span class="stat-value">10</span>
+                    </div>
+                </div>
+                
+                <div class="log-compact">
+                    <div class="log-title">📋 Registro</div>
+                    <div id="log-entries"></div>
+                </div>
             </div>
         </div>
-        <button class="ceremony-button" id="ceremony-btn">COMENZAR</button>
-    </footer>
+
+        <!-- Control inferior -->
+        <div class="control-bottom">
+            <button class="button-main" id="main-button" onclick="startOptimizedDraw()">
+                🎭 Iniciar Sorteo
+            </button>
+            <div class="status-main" id="status">Listo para comenzar</div>
+        </div>
+    </div>
+
+    <!-- Mensaje final -->
+    <div class="final-message" id="final-message" style="display: none;">
+        🏆 ¡Sorteo Completado! 🏆<br>
+        <span style="font-size: 0.7em; margin-top: 10px; display: block;">
+            Proceso transparente verificado
+        </span>
+    </div>
 
     <script>
-        // --- DATA ---
-        const teams = {
-            heads: [
-                { id: 'campeon', name: 'Recreativo IES La Orden', subtitle: 'Campeón', img: 'https://liga.badminton.es/wp-content/uploads/2022/09/IES-La-Orden.png' },
-                { id: 'subcampeon', name: 'Puertas Padilla Cartagena', subtitle: 'Subcampeón', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Logo-Puertas-Padilla-Cartagena.png' }
-            ],
-            pot1: [
-                { id: 'oviedo', name: 'Oviedo', subtitle: '3º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/09/Logo-cbo-formato-vertical.ai_.png' },
-                { id: 'rinconada', name: 'Rinconada - Sevilla', subtitle: '4º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Rinconada.png' }
-            ],
-            pot2: [
-                { id: 'ravachol', name: 'Ravachol Pontevedra', subtitle: '5º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/09/LOGO-HORIZONTAL.png' },
-                { id: 'ibiza', name: 'UD Ibiza', subtitle: '6º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Shield_of_UD_Ibiza.png' },
-                { id: 'alicante', name: 'Alicante Intercity', subtitle: '7º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-46.png' },
-                { id: 'sanfernando', name: 'San Fernando Valencia', subtitle: '8º Clasificado', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-30.png' },
-                { id: 'astures', name: 'Astures', subtitle: 'Ascendido', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/ASTURES.png' },
-                { id: 'huesca', name: 'Huesca La Magia', subtitle: 'Ascendido', img: 'https://liga.badminton.es/wp-content/uploads/2022/12/images-2-300x104.png' }
-            ]
-        };
+        // Datos de equipos
+        const teams = [
+            { name: "Recreativo IES La Orden", position: "Campeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/IES-La-Orden.png", type: "head" },
+            { name: "Puertas Padilla Cartagena", position: "Subcampeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Logo-Puertas-Padilla-Cartagena.png", type: "head" },
+            { name: "Oviedo", position: "3º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/Logo-cbo-formato-vertical.ai_.png", type: "pot1" },
+            { name: "Rinconada - Sevilla", position: "4º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Rinconada.png", type: "pot1" },
+            { name: "Ravachol Pontevedra", position: "5º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/LOGO-HORIZONTAL.png", type: "pot2" },
+            { name: "UD Ibiza - Bádminton Pitius", position: "6º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Shield_of_UD_Ibiza.png", type: "pot2" },
+            { name: "Alicante Intercity", position: "7º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-46.png", type: "pot2" },
+            { name: "San Fernando Valencia", position: "8º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-30.png", type: "pot2" },
+            { name: "Astures", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/ASTURES.png", type: "pot2" },
+            { name: "Huesca La Magia", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/images-2-300x104.png", type: "pot2" }
+        ];
 
-        // --- STATE ---
-        let state = {
-            isDrawing: false,
-            phase: 'initial',
-            groupA: [],
-            groupB: [],
-            randomSeed: '',
-        };
+        let drawInProgress = false;
+        let startTime = null;
+        let timer = null;
+        let selectionCount = 0;
 
-        // --- DOM ELEMENTS ---
-        const DOMElements = {
-            ceremonyBtn: document.getElementById('ceremony-btn'),
-            drawingSphere: document.getElementById('drawing-sphere'),
-            sphereText: document.getElementById('sphere-text'),
-            statusMessage: document.getElementById('status-message'),
-            headsTeams: document.getElementById('heads-teams'),
-            currentPotTeams: document.getElementById('current-pot-teams'),
-            currentPotTitle: document.getElementById('current-pot-title'),
-            groupATeams: document.getElementById('group-a-teams'),
-            groupBTeams: document.getElementById('group-b-teams'),
-            timestamp: document.getElementById('timestamp'),
-            randomSeed: document.getElementById('random-seed'),
-            verificationHash: document.getElementById('verification-hash'),
-        };
-
-        // --- RENDER FUNCTIONS ---
-        const render = {
-            teamBall: (team) => {
-                const name = team.name.split(' ')[0];
-                return `<div class="team-ball" data-team-id="${team.id}">
-                          <img src="${team.img}" alt="${team.name}" onerror="this.style.display='none'">
-                          <div class="team-name">${name}</div>
-                        </div>`;
-            },
-            groupTeam: (team) => {
-                return `<div class="group-team">
-                          <img src="${team.img}" alt="${team.name}">
-                          <div>
-                            <div class="team-name">${team.name}</div>
-                            <div class="team-position">${team.subtitle}</div>
-                          </div>
-                        </div>`;
-            },
-            initialState: () => {
-                DOMElements.headsTeams.innerHTML = teams.heads.map(render.teamBall).join('');
-                DOMElements.currentPotTitle.textContent = "Bombo 1";
-                DOMElements.currentPotTeams.innerHTML = teams.pot1.map(render.teamBall).join('');
-                DOMElements.groupATeams.innerHTML = '';
-                DOMElements.groupBTeams.innerHTML = '';
-            },
-            updateTimestamp: () => {
-                const now = new Date();
-                DOMElements.timestamp.textContent = now.toLocaleTimeString('es-ES');
-            },
-            showMessage: (msg, duration = 2000) => {
-                DOMElements.statusMessage.textContent = msg;
-                DOMElements.statusMessage.style.opacity = '1';
-                setTimeout(() => { DOMElements.statusMessage.style.opacity = '0'; }, duration);
+        // Crear partículas optimizadas
+        function createOptimizedParticles() {
+            const particles = document.getElementById('particles');
+            particles.innerHTML = '';
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                particles.appendChild(particle);
             }
-        };
-
-        // --- LOGIC FUNCTIONS ---
-        const logic = {
-            sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
-            generateRandomSeed: () => {
-                state.randomSeed = Math.random().toString(36).substring(2, 10).toUpperCase();
-                DOMElements.randomSeed.textContent = state.randomSeed;
-            },
-            generateHash: (data) => {
-                let hash = 0;
-                for (let i = 0; i < data.length; i++) {
-                    const char = data.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
-                    hash |= 0;
-                }
-                return Math.abs(hash).toString(16).toUpperCase().padStart(8, '0');
-            },
-            reset: () => {
-                state = { isDrawing: false, phase: 'initial', groupA: [], groupB: [], randomSeed: '' };
-                logic.generateRandomSeed();
-                render.initialState();
-                DOMElements.verificationHash.textContent = 'Pendiente';
-                DOMElements.sphereText.textContent = 'Iniciar Sorteo';
-                DOMElements.ceremonyBtn.textContent = 'COMENZAR';
-                DOMElements.ceremonyBtn.disabled = false;
-                DOMElements.drawingSphere.classList.remove('active');
-            },
-            drawTeam: async (pot, targetGroupEl, targetArray) => {
-                DOMElements.drawingSphere.classList.add('active');
-                DOMElements.sphereText.textContent = 'Sorteando...';
-                
-                const teamIndex = Math.floor(Math.random() * pot.length);
-                const selectedTeam = pot.splice(teamIndex, 1)[0];
-                
-                const ballEl = document.querySelector(`.pot-teams [data-team-id="${selectedTeam.id}"]`);
-                ballEl.classList.add('selected');
-                
-                await logic.sleep(1500);
-
-                targetArray.push(selectedTeam);
-                targetGroupEl.innerHTML += render.groupTeam(selectedTeam);
-                ballEl.style.transition = 'opacity 0.5s';
-                ballEl.style.opacity = '0';
-                
-                DOMElements.drawingSphere.classList.remove('active');
-                return selectedTeam;
-            }
-        };
-
-        // --- MAIN DRAW SEQUENCE ---
-        async function startDraw() {
-            if (state.isDrawing) return;
-            state.isDrawing = true;
-            DOMElements.ceremonyBtn.disabled = true;
-
-            // Phase 1: Heads of seed
-            render.showMessage('Asignando Cabezas de Serie');
-            DOMElements.sphereText.textContent = 'Fase 1';
-            await logic.sleep(1500);
-            
-            state.groupA.push(teams.heads[0]);
-            DOMElements.groupATeams.innerHTML += render.groupTeam(teams.heads[0]);
-            document.querySelector('#pot-heads [data-team-id="campeon"]').classList.add('selected');
-            await logic.sleep(1000);
-
-            state.groupB.push(teams.heads[1]);
-            DOMElements.groupBTeams.innerHTML += render.groupTeam(teams.heads[1]);
-            document.querySelector('#pot-heads [data-team-id="subcampeon"]').classList.add('selected');
-            await logic.sleep(1500);
-
-            // Phase 2: Pot 1
-            render.showMessage('Sorteo del Bombo 1');
-            DOMElements.sphereText.textContent = 'Fase 2';
-            let pot1 = [...teams.pot1];
-            const drawnToA = await logic.drawTeam(pot1, DOMElements.groupATeams, state.groupA);
-            await logic.sleep(500);
-            const remainingTeam = pot1[0];
-            const remainingBall = document.querySelector(`.pot-teams [data-team-id="${remainingTeam.id}"]`);
-            remainingBall.classList.add('selected');
-            await logic.sleep(1000);
-            state.groupB.push(remainingTeam);
-            DOMElements.groupBTeams.innerHTML += render.groupTeam(remainingTeam);
-            remainingBall.style.opacity = '0';
-            await logic.sleep(1500);
-
-            // Phase 3: Pot 2
-            render.showMessage('Sorteo del Bombo 2');
-            DOMElements.sphereText.textContent = 'Fase 3';
-            DOMElements.currentPotTitle.textContent = "Bombo 2";
-            DOMElements.currentPotTeams.innerHTML = teams.pot2.map(render.teamBall).join('');
-            let pot2 = [...teams.pot2].sort(() => Math.random() - 0.5);
-            
-            for(let i=0; i<6; i++) {
-                const targetGroupEl = state.groupA.length <= state.groupB.length ? DOMElements.groupATeams : DOMElements.groupBTeams;
-                const targetArray = state.groupA.length <= state.groupB.length ? state.groupA : state.groupB;
-                await logic.drawTeam(pot2, targetGroupEl, targetArray);
-                await logic.sleep(500);
-            }
-            
-            // Finalization
-            render.showMessage('¡Sorteo Finalizado!');
-            DOMElements.sphereText.textContent = 'Finalizado';
-            const finalData = state.randomSeed + JSON.stringify(state.groupA) + JSON.stringify(state.groupB);
-            DOMElements.verificationHash.textContent = logic.generateHash(finalData);
-            DOMElements.ceremonyBtn.textContent = 'REINICIAR';
-            DOMElements.ceremonyBtn.disabled = false;
         }
 
-        // --- INITIALIZATION ---
-        function init() {
-            logic.reset();
-            render.updateTimestamp();
-            setInterval(render.updateTimestamp, 1000);
+        // Crear equipo compacto
+        function createTeamCompact(team, containerId) {
+            const card = document.createElement('div');
+            card.className = 'team-compact';
+            card.dataset.team = team.name;
+            card.dataset.container = containerId;
+            
+            const logo = document.createElement('img');
+            logo.src = team.logo;
+            logo.alt = team.name;
+            logo.className = 'team-logo-compact';
+            logo.onerror = function() {
+                this.style.display = 'none';
+                const placeholder = document.createElement('div');
+                placeholder.className = 'logo-placeholder';
+                placeholder.textContent = team.name.substring(0, 4).toUpperCase();
+                this.parentNode.insertBefore(placeholder, this);
+            };
+            
+            const name = document.createElement('div');
+            name.className = 'team-name-compact';
+            name.textContent = team.name;
+            
+            card.appendChild(logo);
+            card.appendChild(name);
+            
+            return card;
+        }
 
-            DOMElements.ceremonyBtn.addEventListener('click', () => {
-                if (DOMElements.ceremonyBtn.textContent === 'REINICIAR') {
-                    logic.reset();
-                } else {
-                    startDraw();
-                }
+        // Crear slot compacto
+        function createSlotCompact(number) {
+            const slot = document.createElement('div');
+            slot.className = 'slot-compact empty';
+            slot.innerHTML = `
+                <div class="slot-number-compact">${number}</div>
+                <div style="font-size: 0.6em; text-align: center;">Pos. ${number}</div>
+            `;
+            return slot;
+        }
+
+        // Agregar entrada al log
+        function addLogEntry(message) {
+            const logEntries = document.getElementById('log-entries');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry-compact';
+            entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            logEntries.appendChild(entry);
+            logEntries.scrollTop = logEntries.scrollHeight;
+        }
+
+        // Actualizar cronómetro
+        function updateTimer() {
+            if (!startTime) return;
+            const elapsed = Date.now() - startTime;
+            const minutes = Math.floor(elapsed / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Actualizar estadísticas
+        function updateStats(phase, probability = null) {
+            document.getElementById('current-phase').textContent = phase;
+            document.getElementById('progress').textContent = `${selectionCount}/8`;
+            if (probability) {
+                document.getElementById('probability').textContent = probability;
+            }
+        }
+
+        // Mover equipo con animación
+        function moveTeamOptimized(teamCard, targetSlot) {
+            return new Promise((resolve) => {
+                const startRect = teamCard.getBoundingClientRect();
+                const endRect = targetSlot.getBoundingClientRect();
+                
+                const movingCard = teamCard.cloneNode(true);
+                movingCard.className = 'team-compact moving-team';
+                movingCard.style.left = startRect.left + 'px';
+                movingCard.style.top = startRect.top + 'px';
+                movingCard.style.width = startRect.width + 'px';
+                movingCard.style.height = startRect.height + 'px';
+                
+                document.body.appendChild(movingCard);
+                teamCard.style.opacity = '0';
+                
+                setTimeout(() => {
+                    movingCard.style.left = endRect.left + 'px';
+                    movingCard.style.top = endRect.top + 'px';
+                    movingCard.style.width = endRect.width + 'px';
+                    movingCard.style.height = endRect.height + 'px';
+                }, 50);
+                
+                setTimeout(() => {
+                    targetSlot.innerHTML = '';
+                    targetSlot.appendChild(teamCard);
+                    targetSlot.classList.remove('empty');
+                    targetSlot.classList.add('filled');
+                    teamCard.style.opacity = '1';
+                    teamCard.classList.remove('selected-glow');
+                    
+                    document.body.removeChild(movingCard);
+                    resolve();
+                }, 1850);
             });
         }
 
-        init();
+        // Seleccionar equipo aleatorio
+        function selectRandomTeam(container) {
+            const teams = Array.from(container.children);
+            const randomIndex = Math.floor(Math.random() * teams.length);
+            return teams[randomIndex];
+        }
+
+        // Animar bombo
+        function animateBombo(bomboId) {
+            return new Promise((resolve) => {
+                const bombo = document.getElementById(bomboId);
+                bombo.classList.add('shake-effect');
+                
+                setTimeout(() => {
+                    bombo.classList.remove('shake-effect');
+                    resolve();
+                }, 800);
+            });
+        }
+
+        // Inicializar página
+        function initializePage() {
+            createOptimizedParticles();
+            
+            // Limpiar contenedores
+            ['heads-teams', 'pot1-teams', 'pot2-teams'].forEach(id => {
+                document.getElementById(id).innerHTML = '';
+            });
+            
+            ['grupo-a-slots', 'grupo-b-slots'].forEach(id => {
+                document.getElementById(id).innerHTML = '';
+            });
+            
+            // Llenar bombos
+            teams.filter(team => team.type === 'head').forEach(team => {
+                document.getElementById('heads-teams').appendChild(createTeamCompact(team, 'heads-teams'));
+            });
+            
+            teams.filter(team => team.type === 'pot1').forEach(team => {
+                document.getElementById('pot1-teams').appendChild(createTeamCompact(team, 'pot1-teams'));
+            });
+            
+            teams.filter(team => team.type === 'pot2').forEach(team => {
+                document.getElementById('pot2-teams').appendChild(createTeamCompact(team, 'pot2-teams'));
+            });
+            
+            // Crear slots
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('grupo-a-slots').appendChild(createSlotCompact(i));
+                document.getElementById('grupo-b-slots').appendChild(createSlotCompact(i));
+            }
+            
+            // Resetear variables
+            drawInProgress = false;
+            selectionCount = 0;
+            startTime = null;
+            
+            if (timer) {
+                clearInterval(timer);
+            }
+            
+            // Resetear interfaz
+            document.getElementById('main-button').textContent = '🎭 Iniciar Sorteo';
+            document.getElementById('main-button').disabled = false;
+            document.getElementById('status').textContent = 'Listo para comenzar';
+            document.getElementById('final-message').style.display = 'none';
+            document.getElementById('log-entries').innerHTML = '';
+            
+            updateStats('Preparación', 'Pendiente');
+        }
+
+        // Sorteo optimizado
+        async function startOptimizedDraw() {
+            if (drawInProgress) return;
+            
+            drawInProgress = true;
+            startTime = Date.now();
+            timer = setInterval(updateTimer, 100);
+            
+            const button = document.getElementById('main-button');
+            button.disabled = true;
+            button.textContent = '🎬 Sorteo en Progreso';
+            
+            const status = document.getElementById('status');
+            
+            addLogEntry('Inicio del sorteo oficial');
+            
+            // Fase 1: Cabezas de serie
+            status.textContent = '👑 Asignando Cabezas de Serie';
+            updateStats('Cabezas de Serie', 'Fijas');
+            
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            const headsContainer = document.getElementById('heads-teams');
+            const champion = headsContainer.children[0];
+            const runnerUp = headsContainer.children[1];
+            
+            const groupASlots = document.getElementById('grupo-a-slots');
+            const groupBSlots = document.getElementById('grupo-b-slots');
+            
+            addLogEntry(`Campeón "${champion.dataset.team}" → Grupo A`);
+            await moveTeamOptimized(champion, groupASlots.children[0]);
+            selectionCount++;
+            
+            await new Promise(resolve => setTimeout(resolve, 600));
+            
+            addLogEntry(`Subcampeón "${runnerUp.dataset.team}" → Grupo B`);
+            await moveTeamOptimized(runnerUp, groupBSlots.children[0]);
+            selectionCount++;
+            
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            // Fase 2: Bombo 1
+            status.textContent = '🎯 Sorteo Bombo 1';
+            updateStats('Bombo 1', '50% cada uno');
+            
+            addLogEntry('Mezclando Bombo 1');
+            await animateBombo('bombo-1');
+            
+            const pot1Container = document.getElementById('pot1-teams');
+            const selectedPot1 = selectRandomTeam(pot1Container);
+            selectedPot1.classList.add('selected-glow');
+            
+            addLogEntry(`Seleccionado: "${selectedPot1.dataset.team}"`);
+            
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await moveTeamOptimized(selectedPot1, groupASlots.children[1]);
+            selectionCount++;
+            
+            const remainingPot1 = Array.from(pot1Container.children).find(child => child !== selectedPot1);
+            if (remainingPot1) {
+                await new Promise(resolve => setTimeout(resolve, 400));
+                addLogEntry(`Restante "${remainingPot1.dataset.team}" → Grupo B`);
+                await moveTeamOptimized(remainingPot1, groupBSlots.children[1]);
+                selectionCount++;
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            // Fase 3: Bombo 2
+            status.textContent = '🎲 Sorteo Bombo 2';
+            updateStats('Bombo 2', 'Aleatorio');
+            
+            const pot2Container = document.getElementById('pot2-teams');
+            let currentGroup = 'A';
+            let groupAPosition = 2;
+            let groupBPosition = 2;
+            
+            while (pot2Container.children.length > 0) {
+                const remaining = pot2Container.children.length;
+                const prob = `${((1/remaining) * 100).toFixed(1)}%`;
+                updateStats('Bombo 2', prob);
+                
+                addLogEntry(`Mezclando ${remaining} equipos restantes`);
+                await animateBombo('bombo-2');
+                
+                const selectedTeam = selectRandomTeam(pot2Container);
+                selectedTeam.classList.add('selected-glow');
+                
+                addLogEntry(`Seleccionado: "${selectedTeam.dataset.team}"`);
+                
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                if (currentGroup === 'A') {
+                    await moveTeamOptimized(selectedTeam, groupASlots.children[groupAPosition]);
+                    groupAPosition++;
+                } else {
+                    await moveTeamOptimized(selectedTeam, groupBSlots.children[groupBPosition]);
+                    groupBPosition++;
+                }
+                
+                selectionCount++;
+                currentGroup = currentGroup === 'A' ? 'B' : 'A';
+                
+                await new Promise(resolve => setTimeout(resolve, 600));
+            }
+            
+            // Finalización
+            addLogEntry('Sorteo completado exitosamente');
+            status.textContent = '🎊 ¡Sorteo Completado!';
+            updateStats('Finalizado', 'Completado');
+            
+            document.getElementById('final-message').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('final-message').style.display = 'none';
+            }, 3000);
+            
+            button.textContent = '🔄 Nuevo Sorteo';
+            button.disabled = false;
+            drawInProgress = false;
+            
+            if (timer) {
+                clearInterval(timer);
+            }
+            
+            button.onclick = () => {
+                initializePage();
+                button.onclick = startOptimizedDraw;
+            };
+        }
+
+        // Inicializar
+        window.onload = initializePage;
     </script>
 </body>
 </html>
