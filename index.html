@@ -3,1935 +3,427 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Corregida</title>
-    <script src="https://unpkg.com/tone"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <title>Sorteo TOP10 IBERDROLA 2025/2026 - Versión Final Mejorada</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --color-oro: #ffd700;
+            --color-fondo: #0a0e1a;
+            --gradiente-panel: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            --borde-color: rgba(255,215,0,0.3);
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 30%, #2a3441 70%, #3a4554 100%);
-            height: 100vh;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%);
             color: #ffffff;
             overflow: hidden;
-            position: relative;
-            transition: all 1s ease;
         }
-
-        /* Partículas optimizadas */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 215, 0, 0.4);
-            border-radius: 50%;
-            animation: float-optimized 8s ease-in-out infinite;
-        }
-
-        @keyframes float-optimized {
-            0%, 100% { transform: translateY(0px); opacity: 0.2; }
-            50% { transform: translateY(-15px); opacity: 0.6; }
-        }
-
         .container {
             height: 100vh;
             display: grid;
-            grid-template-rows: 100px 1fr 70px;
+            grid-template-rows: auto 1fr auto;
             padding: 15px;
             position: relative;
             z-index: 2;
             gap: 15px;
-            transition: all 1s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        /* VISTA AMPLIADA PARA RESULTADO FINAL */
-        .container.final-view {
-            grid-template-rows: 80px 1fr 60px;
-            padding: 10px;
-        }
-
-        .container.final-view .main-area {
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .container.final-view .bombos-section,
-        .container.final-view .info-panel {
-            display: none;
-        }
-
-        .container.final-view .grupos-center {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .container.final-view .grupo-large {
-            transform: scale(1.1);
-            border: 4px solid #ffd700;
-            box-shadow: 0 20px 60px rgba(255,215,0,0.4);
-        }
-
-        .container.final-view .grupo-title-large {
-            font-size: 2.5em;
-            margin-bottom: 25px;
-        }
-
-        .container.final-view .grupo-slots-large {
-            height: 140px;
-            gap: 12px;
-        }
-
-        /* Header compacto */
         .header-compact {
             display: grid;
             grid-template-columns: 250px 1fr 180px;
             align-items: center;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            gap: 15px;
+            background: var(--gradiente-panel);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 15px;
-            border: 1px solid rgba(255,215,0,0.3);
-            transition: all 0.5s ease;
+            border: 1px solid var(--borde-color);
         }
-
-        .container.final-view .header-compact {
-            grid-template-columns: 200px 1fr 120px 100px;
-            padding: 10px;
-        }
-
-        .logo-compact {
-            height: 50px;
-            object-fit: contain;
-            transition: all 0.5s ease;
-        }
-
-        .container.final-view .logo-compact {
-            height: 40px;
-        }
-
-        .title-compact {
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            transition: all 0.5s ease;
-        }
-
-        .container.final-view .title-compact {
-            font-size: 1.4em;
-        }
-
-        .timer-compact {
-            text-align: center;
-            font-size: 1.5em;
-            font-weight: 800;
-            color: #ffd700;
-            background: rgba(255,215,0,0.1);
-            padding: 8px;
-            border-radius: 8px;
-            border: 2px solid rgba(255,215,0,0.3);
-            transition: all 0.5s ease;
-        }
-
-        .container.final-view .timer-compact {
-            font-size: 1.2em;
-            padding: 6px;
-        }
-
-        /* Control de volumen */
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9em;
-            color: #ffd700;
-        }
-
-        .volume-slider {
-            width: 60px;
-            height: 4px;
-            background: rgba(255,215,0,0.3);
-            border-radius: 2px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 12px;
-            height: 12px;
-            background: #ffd700;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        /* Nueva distribución principal */
         .main-area {
             display: grid;
             grid-template-columns: 220px 1fr 250px;
             gap: 15px;
             height: 100%;
-            transition: all 1s ease;
-        }
-
-        /* Bombos más compactos */
-        .bombos-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            transition: all 0.5s ease;
-        }
-
-        .bombo-compact {
-            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
-            backdrop-filter: blur(12px);
-            border-radius: 10px;
-            padding: 12px;
-            border: 2px solid rgba(255,215,0,0.3);
-            transition: all 0.3s ease;
-        }
-
-        .bombo-compact:hover {
-            transform: scale(1.02);
-            border-color: #ffd700;
-        }
-
-        .bombo-title-compact {
-            font-family: 'Playfair Display', serif;
-            font-size: 1em;
-            font-weight: 700;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 8px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .teams-compact {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .team-compact {
-            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .team-compact:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(255,215,0,0.3);
-            border-color: #ffd700;
-        }
-
-        .team-logo-compact {
-            width: 25px;
-            height: 25px;
-            object-fit: contain;
-            border-radius: 4px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-
-        .team-name-compact {
-            flex: 1;
-            font-size: 0.7em;
-            font-weight: 600;
-            color: #f8fafc;
-            line-height: 1.1;
-        }
-
-        /* Grupos centrales MÁS GRANDES */
-        .grupos-center {
-            display: grid;
-            grid-template-rows: 1fr 1fr;
-            gap: 15px;
-            transition: all 1s ease;
-        }
-
-        .grupo-large {
-            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
-            backdrop-filter: blur(12px);
-            border-radius: 15px;
-            padding: 20px;
-            border: 3px solid rgba(255,215,0,0.4);
-            position: relative;
-            transition: all 1s ease;
-        }
-
-        .grupo-title-large {
-            font-family: 'Playfair Display', serif;
-            font-size: 2em;
-            font-weight: 700;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            transition: all 0.5s ease;
-        }
-
-        .grupo-slots-large {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            height: 120px;
-            transition: all 0.5s ease;
-        }
-
-        .slot-large {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            border: 2px dashed rgba(255,215,0,0.3);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7em;
-            color: #94a3b8;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 5px;
-        }
-
-        .slot-large.filled {
-            border-style: solid;
-            border-color: #ffd700;
-            background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.05) 100%);
-        }
-
-        /* EQUIPOS EN GRUPOS MÁS GRANDES */
-        .team-in-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            width: 100%;
-            height: 100%;
-            padding: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .container.final-view .team-in-group {
-            gap: 6px;
-            padding: 8px;
-        }
-
-        .team-logo-large {
-            width: 45px;
-            height: 45px;
-            object-fit: contain;
-            border-radius: 6px;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
-            transition: all 0.5s ease;
-        }
-
-        .container.final-view .team-logo-large {
-            width: 55px;
-            height: 55px;
-        }
-
-        .team-name-large {
-            font-size: 0.65em;
-            font-weight: 600;
-            color: #f8fafc;
-            text-align: center;
-            line-height: 1.1;
-            max-width: 100%;
             overflow: hidden;
-            text-overflow: ellipsis;
-            transition: all 0.5s ease;
+            transition: opacity 0.5s ease;
         }
-
-        .container.final-view .team-name-large {
-            font-size: 0.75em;
-            font-weight: 700;
-        }
-
-        .slot-number-large {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ffd700;
-            color: #0a0e1a;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7em;
-            font-weight: 700;
-            transition: all 0.5s ease;
-        }
-
-        .container.final-view .slot-number-large {
-            width: 22px;
-            height: 22px;
-            font-size: 0.8em;
-        }
-
-        /* Panel de información optimizado */
-        .info-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: all 0.5s ease;
-        }
-
-        .stats-compact {
-            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
-            backdrop-filter: blur(12px);
-            border-radius: 10px;
-            padding: 12px;
-            border: 2px solid rgba(255,215,0,0.3);
-        }
-
-        .stats-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1em;
-            font-weight: 700;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.75em;
-        }
-
-        .stat-label {
-            color: #e2e8f0;
-            font-weight: 500;
-        }
-
-        .stat-value {
-            color: #ffd700;
-            font-weight: 700;
-        }
-
-        .stat-value.probability-real {
-            color: #4ade80;
-            font-weight: 800;
-        }
-
-        .log-compact {
-            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
-            backdrop-filter: blur(12px);
-            border-radius: 10px;
-            padding: 12px;
-            border: 2px solid rgba(255,215,0,0.3);
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .log-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1em;
-            font-weight: 700;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .log-entry-compact {
-            font-size: 0.65em;
-            color: #e2e8f0;
-            padding: 2px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            line-height: 1.2;
-        }
-
-        /* Control inferior */
         .control-bottom {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 25px;
-            transition: all 0.5s ease;
         }
-
-        .container.final-view .control-bottom {
-            gap: 15px;
-        }
-
-        .button-main {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
-            color: #0a0e1a;
-            border: none;
-            padding: 12px 35px;
-            font-size: 1.2em;
-            font-weight: 800;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(255,215,0,0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .container.final-view .button-main {
-            padding: 10px 25px;
-            font-size: 1em;
-        }
-
-        .button-main:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255,215,0,0.6);
-        }
-
-        .button-main:disabled {
-            background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .button-back {
-            background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
-            color: #ffffff;
-            border: none;
-            padding: 10px 25px;
-            font-size: 1em;
-            font-weight: 600;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(100,116,139,0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .button-back:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(100,116,139,0.6);
-        }
-
-        .status-main {
-            font-size: 1em;
-            font-weight: 600;
-            color: #ffd700;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-            min-width: 250px;
-            text-align: center;
-            transition: all 0.5s ease;
-        }
-
-        .container.final-view .status-main {
-            min-width: 200px;
-            font-size: 0.9em;
-        }
-
-        /* EFECTOS DE MEZCLA MEJORADOS */
-        .mixing-effect {
-            animation: rapid-mixing 0.15s ease-in-out infinite;
-            border-color: #ffd700 !important;
-            box-shadow: 0 0 15px rgba(255,215,0,0.8);
-        }
-
-        @keyframes rapid-mixing {
-            0% { 
-                border-color: #ffd700;
-                box-shadow: 0 0 15px rgba(255,215,0,0.8);
-                transform: translateX(0px);
-            }
-            25% { 
-                border-color: #ff6b35;
-                box-shadow: 0 0 15px rgba(255,107,53,0.8);
-                transform: translateX(-2px);
-            }
-            50% { 
-                border-color: #f7931e;
-                box-shadow: 0 0 15px rgba(247,147,30,0.8);
-                transform: translateX(2px);
-            }
-            75% { 
-                border-color: #ffed4a;
-                box-shadow: 0 0 15px rgba(255,237,74,0.8);
-                transform: translateX(-1px);
-            }
-            100% { 
-                border-color: #ffd700;
-                box-shadow: 0 0 15px rgba(255,215,0,0.8);
-                transform: translateX(0px);
-            }
-        }
-
-        .selected-final {
-            animation: final-selection 1.5s ease-in-out;
-            border-color: #ffd700 !important;
-            box-shadow: 0 0 30px rgba(255,215,0,1);
-            transform: scale(1.05);
-        }
-
-        @keyframes final-selection {
-            0% { 
-                border-color: #ffd700;
-                box-shadow: 0 0 15px rgba(255,215,0,0.8);
-                transform: scale(1);
-            }
-            50% { 
-                border-color: #ffd700;
-                box-shadow: 0 0 35px rgba(255,215,0,1);
-                transform: scale(1.08);
-            }
-            100% { 
-                border-color: #ffd700;
-                box-shadow: 0 0 30px rgba(255,215,0,1);
-                transform: scale(1.05);
-            }
-        }
-
-        .shake-effect {
-            animation: shake-improved 0.5s ease-in-out infinite;
-        }
-
-        @keyframes shake-improved {
-            0%, 100% { transform: translateX(0) scale(1); }
-            25% { transform: translateX(-3px) scale(1.02); }
-            75% { transform: translateX(3px) scale(1.02); }
-        }
-
-        .moving-team {
-            position: fixed;
-            z-index: 1000;
-            transition: all 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            filter: drop-shadow(0 8px 20px rgba(255,215,0,0.6));
-        }
-
-        /* POPUP DE NORMATIVA */
-        .normativa-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-        }
-
-        .popup-content {
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 40px;
-            border: 3px solid rgba(255,215,0,0.5);
-            max-width: 600px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(255,215,0,0.3);
-        }
-
-        .popup-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2em;
-            font-weight: 700;
-            color: #ffd700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .popup-text {
-            font-size: 1.2em;
-            color: #e2e8f0;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .popup-button {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
-            color: #0a0e1a;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: 700;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(255,215,0,0.4);
-            text-transform: uppercase;
-        }
-
-        .popup-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(255,215,0,0.6);
-        }
-
-        .final-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, rgba(255,215,0,0.25) 0%, rgba(255,215,0,0.15) 100%);
-            border: 3px solid #ffd700;
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            font-size: 1.3em;
-            font-weight: 700;
-            color: #ffd700;
-            box-shadow: 0 20px 50px rgba(255,215,0,0.4);
-            backdrop-filter: blur(15px);
-            z-index: 2000;
-        }
-
-        /* Placeholder para logos */
-        .logo-placeholder {
-            background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.6em;
-            color: #f8fafc;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .logo-placeholder-compact {
-            width: 25px;
-            height: 25px;
-        }
-
-        .logo-placeholder-large {
-            width: 45px;
-            height: 45px;
-        }
-
-        .container.final-view .logo-placeholder-large {
-            width: 55px;
-            height: 55px;
-        }
-
-        /* Scroll personalizado */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255,215,0,0.5);
-            border-radius: 2px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,215,0,0.8);
-        }
-
-        /* Indicador de sonido */
-        .sound-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,215,0,0.1);
-            border: 1px solid rgba(255,215,0,0.3);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            opacity: 0;
-        }
-
-        .sound-indicator.active {
-            opacity: 1;
-            transform: scale(1.2);
-            box-shadow: 0 0 20px rgba(255,215,0,0.5);
-        }
+        .logo-compact { height: 50px; object-fit: contain; }
+        .title-compact { font-family: 'Playfair Display', serif; font-size: 1.8em; color: var(--color-oro); text-shadow: 2px 2px 4px rgba(0,0,0,0.5); text-align: center; }
+        .timer-compact { font-size: 1.5em; font-weight: 800; color: var(--color-oro); background: rgba(255,215,0,0.1); padding: 8px; border-radius: 8px; border: 2px solid var(--borde-color); text-align: center; }
+        .bombos-section, .info-panel { display: flex; flex-direction: column; gap: 10px; transition: opacity 0.5s, transform 0.5s; }
+        .bombo-compact, .stats-compact, .log-compact { background: var(--gradiente-panel); backdrop-filter: blur(12px); border-radius: 10px; padding: 12px; border: 2px solid var(--borde-color); }
+        .log-compact { flex-grow: 1; overflow-y: auto; }
+        .bombo-title-compact, .stats-title, .log-title { font-family: 'Playfair Display', serif; font-size: 1.1em; color: var(--color-oro); text-align: center; margin-bottom: 8px; }
+        .teams-compact { display: flex; flex-direction: column; gap: 6px; }
+        .team-compact { background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 8px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
+        .team-logo-compact { width: 25px; height: 25px; object-fit: contain; }
+        .team-name-compact { flex: 1; font-size: 0.75em; font-weight: 600; }
+        .grupos-center { display: grid; grid-template-rows: 1fr 1fr; gap: 15px; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .grupo-large { background: var(--gradiente-panel); backdrop-filter: blur(12px); border-radius: 15px; padding: 20px; border: 3px solid var(--borde-color); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .grupo-title-large { font-family: 'Playfair Display', serif; font-size: 2em; color: var(--color-oro); text-align: center; margin-bottom: 15px; }
+        .grupo-slots-large { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; height: calc(100% - 50px); }
+        .slot-large { background: rgba(0,0,0,0.2); border: 2px dashed var(--borde-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; position: relative; }
+        .slot-large.filled { border-style: solid; border-color: var(--color-oro); background: rgba(255,215,0,0.1); }
+        .team-in-group { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; width: 100%; height: 100%; padding: 5px; opacity: 0; animation: fadeIn 0.5s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .team-logo-large { width: 50px; height: 50px; object-fit: contain; }
+        .team-name-large { font-size: 0.75em; font-weight: 600; }
+        .stat-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .stat-value { color: var(--color-oro); font-weight: 700; }
+        .log-entry-compact { font-size: 0.7em; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .button-main, .button-secondary { border: none; padding: 12px 35px; font-size: 1.2em; font-weight: 800; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+        .button-main { background: linear-gradient(135deg, var(--color-oro) 0%, #ffed4a 100%); color: var(--color-fondo); box-shadow: 0 6px 20px rgba(255,215,0,0.4); }
+        .button-main:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,215,0,0.6); }
+        .button-main:disabled { background: #64748b; color: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+        .button-secondary { background: rgba(255,255,255,0.1); color: #fff; }
+        .status-main { font-size: 1.1em; font-weight: 600; color: var(--color-oro); min-width: 250px; text-align: center; }
+        .moving-team { position: fixed; z-index: 1000; transition: all 0.8s cubic-bezier(0.5, 0, 0.5, 1); filter: drop-shadow(0 8px 20px rgba(255,215,0,0.6)); }
+        .selected-final { animation: final-selection 1s ease-in-out; border-color: var(--color-oro) !important; box-shadow: 0 0 30px rgba(255,215,0,1); transform: scale(1.05); }
+        @keyframes final-selection { 50% { box-shadow: 0 0 40px rgba(255,215,0,1); transform: scale(1.1); } }
+        .pre-select-glow { border-color: var(--color-oro) !important; box-shadow: 0 0 15px rgba(255,215,0,0.7); }
+        .normativa-popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 3000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .normativa-popup.visible { opacity: 1; pointer-events: all; }
+        .popup-content { background: var(--gradiente-panel); border-radius: 20px; padding: 40px; border: 3px solid var(--borde-color); max-width: 600px; text-align: center; transform: scale(0.9); transition: transform 0.3s; }
+        .normativa-popup.visible .popup-content { transform: scale(1); }
+        .popup-title { font-family: 'Playfair Display', serif; font-size: 2em; color: var(--color-oro); margin-bottom: 20px; }
+        .popup-text { font-size: 1.1em; line-height: 1.6; margin-bottom: 30px; white-space: pre-wrap; }
+        .popup-button { background: var(--color-oro); color: var(--color-fondo); padding: 15px 30px; font-size: 1.1em; font-weight: 700; border-radius: 25px; }
+        .logo-placeholder { background: #475569; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #f1f5f9; }
+        .logo-placeholder.compact { width: 25px; height: 25px; }
+        .logo-placeholder.large { width: 50px; height: 50px; }
+        .container.final-view .main-area { grid-template-columns: 1fr; }
+        .container.final-view .bombos-section, .container.final-view .info-panel { opacity: 0; pointer-events: none; transform: scale(0.9); }
+        .container.final-view .grupos-center { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; max-width: 800px; margin: 0 auto; align-items: center; }
+        .container.final-view .grupo-large { transform: scale(1.0); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.5); border-radius: 3px; }
     </style>
 </head>
 <body>
-    <!-- Partículas optimizadas -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Indicador de sonido -->
-    <div class="sound-indicator" id="sound-indicator">🔊</div>
-
     <div class="container" id="main-container">
-        <!-- Header compacto -->
-        <div class="header-compact">
-            <div>
-                <img src="https://liga.badminton.es/wp-content/uploads/2024/01/AF_Iberdrola_Badminton_RGB_POS_H.png" 
-                     alt="Logo TOP10 IBERDROLA" class="logo-compact" 
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <div class="logo-placeholder" style="display: none; width: 180px; height: 50px;">
-                    TOP10 IBERDROLA
-                </div>
-            </div>
-            <div class="title-compact">Sorteo TOP10 IBERDROLA 2025/2026</div>
+        <header class="header-compact">
+            <img src="https://liga.badminton.es/wp-content/uploads/2024/01/AF_Iberdrola_Badminton_RGB_POS_H.png" alt="Logo TOP10 IBERDROLA" class="logo-compact" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="logo-placeholder compact" style="display: none; width: 200px; height: 50px;">TOP10</div>
+            <h1 class="title-compact">Sorteo Oficial 2025/2026</h1>
             <div class="timer-compact" id="timer">00:00</div>
-            <div class="volume-control">
-                🔊
-                <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.1" value="0.7">
-            </div>
-        </div>
+        </header>
 
-        <!-- Área principal con nueva distribución -->
-        <div class="main-area">
-            <!-- Bombos compactos -->
-            <div class="bombos-section">
-                <div class="bombo-compact" id="bombo-heads">
-                    <div class="bombo-title-compact">Cabezas de Serie</div>
-                    <div class="teams-compact" id="heads-teams"></div>
-                </div>
-                
-                <div class="bombo-compact" id="bombo-1">
-                    <div class="bombo-title-compact">Bombo 1</div>
-                    <div class="teams-compact" id="pot1-teams"></div>
-                </div>
-                
-                <div class="bombo-compact" id="bombo-2">
-                    <div class="bombo-title-compact">Bombo 2</div>
-                    <div class="teams-compact" id="pot2-teams"></div>
-                </div>
-            </div>
+        <main class="main-area">
+            <section class="bombos-section">
+                <div class="bombo-compact" id="bombo-heads"><h2 class="bombo-title-compact">Cabezas de Serie</h2><div class="teams-compact" id="heads-teams"></div></div>
+                <div class="bombo-compact" id="bombo-1"><h2 class="bombo-title-compact">Bombo 1</h2><div class="teams-compact" id="pot1-teams"></div></div>
+                <div class="bombo-compact" id="bombo-2"><h2 class="bombo-title-compact">Bombo 2</h2><div class="teams-compact" id="pot2-teams"></div></div>
+            </section>
 
-            <!-- Grupos centrales MÁS GRANDES -->
-            <div class="grupos-center">
-                <div class="grupo-large">
-                    <div class="grupo-title-large">GRUPO A</div>
-                    <div class="grupo-slots-large" id="grupo-a-slots"></div>
-                </div>
-                
-                <div class="grupo-large">
-                    <div class="grupo-title-large">GRUPO B</div>
-                    <div class="grupo-slots-large" id="grupo-b-slots"></div>
-                </div>
-            </div>
+            <section class="grupos-center">
+                <div class="grupo-large"><h2 class="grupo-title-large">GRUPO A</h2><div class="grupo-slots-large" id="grupo-a-slots"></div></div>
+                <div class="grupo-large"><h2 class="grupo-title-large">GRUPO B</h2><div class="grupo-slots-large" id="grupo-b-slots"></div></div>
+            </section>
 
-            <!-- Panel de información -->
-            <div class="info-panel">
+            <section class="info-panel">
                 <div class="stats-compact">
-                    <div class="stats-title">📊 Estadísticas</div>
-                    <div class="stat-item">
-                        <span class="stat-label">Fase:</span>
-                        <span class="stat-value" id="current-phase">Preparación</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Probabilidad:</span>
-                        <span class="stat-value probability-real" id="probability">Pendiente</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Progreso:</span>
-                        <span class="stat-value" id="progress">0/8</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Equipos:</span>
-                        <span class="stat-value">10</span>
-                    </div>
+                    <h2 class="stats-title">Estadísticas</h2>
+                    <div class="stat-item"><span class="stat-label">Fase:</span><span class="stat-value" id="current-phase">Preparación</span></div>
+                    <div class="stat-item"><span class="stat-label">Probabilidad:</span><span class="stat-value" id="probability">N/A</span></div>
+                    <div class="stat-item"><span class="stat-label">Progreso:</span><span class="stat-value" id="progress">0 / 8</span></div>
                 </div>
-                
-                <div class="log-compact">
-                    <div class="log-title">📋 Registro</div>
-                    <div id="log-entries"></div>
-                </div>
-            </div>
-        </div>
+                <div class="log-compact"><h2 class="log-title">Registro del Sorteo</h2><div id="log-entries" aria-live="polite"></div></div>
+            </section>
+        </main>
 
-        <!-- Control inferior -->
-        <div class="control-bottom">
-            <button class="button-main" id="main-button" onclick="startCorrectedDraw()">
-                🎭 Iniciar Sorteo
-            </button>
-            <button class="button-back" id="back-button" onclick="exitFinalView()" style="display: none;">
-                ↩️ Vista Completa
-            </button>
-            <div class="status-main" id="status">Listo para comenzar</div>
-        </div>
+        <footer class="control-bottom">
+            <button class="button-main" id="main-button">Iniciar Sorteo</button>
+            <div class="status-main" id="status-text" aria-live="polite">Listo para comenzar</div>
+        </footer>
     </div>
 
-    <!-- Mensaje final -->
-    <div class="final-message" id="final-message" style="display: none;">
-        🏆 ¡Sorteo Completado! 🏆<br>
-        <span style="font-size: 0.7em; margin-top: 10px; display: block;">
-            Proceso transparente verificado
-        </span>
-    </div>
-
-    <!-- Popup de normativa -->
-    <div class="normativa-popup" id="normativa-popup" style="display: none;">
+    <div class="normativa-popup" id="normativa-popup">
         <div class="popup-content">
-            <div class="popup-title" id="popup-title">Normativa del Sorteo</div>
-            <div class="popup-text" id="popup-text">Texto de la normativa</div>
-            <button class="popup-button" id="popup-button">Continuar Sorteo</button>
+            <h2 class="popup-title" id="popup-title"></h2>
+            <p class="popup-text" id="popup-text"></p>
         </div>
     </div>
 
     <script>
-        // Configuración de sonido
-        let audioContext = null;
-        let masterVolume = 0.7;
-        let soundEnabled = true;
+        // --- CONFIGURACIÓN Y DATOS ---
+        const AppConfig = {
+            teams: [
+                { name: "Recreativo IES La Orden", position: "Campeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/IES-La-Orden.png", type: "head" },
+                { name: "Puertas Padilla Cartagena", position: "Subcampeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Logo-Puertas-Padilla-Cartagena.png", type: "head" },
+                { name: "Oviedo", position: "3º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/Logo-cbo-formato-vertical.ai_.png", type: "pot1" },
+                { name: "Rinconada - Sevilla", position: "4º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Rinconada.png", type: "pot1" },
+                { name: "Ravachol Pontevedra", position: "5º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/LOGO-HORIZONTAL.png", type: "pot2" },
+                { name: "UD Ibiza - Bádminton Pitius", position: "6º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Shield_of_UD_Ibiza.png", type: "pot2" },
+                { name: "Alicante Intercity", position: "7º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-46.png", type: "pot2" },
+                { name: "San Fernando Valencia", position: "8º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-30.png", type: "pot2" },
+                { name: "Astures", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/ASTURES.png", type: "pot2" },
+                { name: "Huesca La Magia", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/images-2-300x104.png", type: "pot2" }
+            ],
+            normativa: [
+                { title: "Normativa: Cabezas de Serie", text: "El Campeón se asigna al Grupo A.\nEl Subcampeón se asigna al Grupo B." },
+                { title: "Normativa: Bombo 1", text: "El 3º y 4º clasificado deben ir a grupos separados.\nSe sorteará aleatoriamente cuál va al Grupo A y el otro irá por defecto al Grupo B." },
+                { title: "Normativa: Bombo 2", text: "Los 6 equipos restantes se sortearán de forma aleatoria para rellenar las plazas libres de cada grupo." }
+            ],
+            delays: { step: 500, move: 800, select: 1000, preSelect: 3000 }
+        };
 
-        // Inicializar Tone.js
-        async function initializeAudio() {
-            try {
-                if (Tone.context.state !== 'running') {
-                    await Tone.start();
-                }
-                audioContext = Tone.context;
-                
-                // Configurar volumen maestro
-                Tone.Master.volume.value = Tone.gainToDb(masterVolume);
-                
-                console.log('Audio initialized successfully');
-            } catch (error) {
-                console.error('Error initializing audio:', error);
-                soundEnabled = false;
-            }
-        }
+        // --- ESTADO DE LA APLICACIÓN ---
+        const AppState = {
+            isDrawing: false,
+            timerInterval: null,
+            assignedTeams: new Set(),
+            dom: {}
+        };
 
-        // Sintetizadores para efectos de sonido
-        let moveSynth = null;
-        let selectSynth = null;
-        let mixSynth = null;
-
-        function createSynths() {
-            try {
-                // Sintetizador para movimiento (swoosh)
-                moveSynth = new Tone.Synth({
-                    oscillator: {
-                        type: "sine"
-                    },
-                    envelope: {
-                        attack: 0.05,
-                        decay: 0.3,
-                        sustain: 0.1,
-                        release: 0.8
-                    }
-                }).toDestination();
-
-                // Sintetizador para selección (ding)
-                selectSynth = new Tone.MembraneSynth({
-                    pitchDecay: 0.08,
-                    octaves: 2,
-                    envelope: {
-                        attack: 0.001,
-                        decay: 0.3,
-                        sustain: 0.1,
-                        release: 0.8
-                    }
-                }).toDestination();
-
-                // Sintetizador para mezcla
-                mixSynth = new Tone.NoiseSynth({
-                    noise: {
-                        type: "pink"
-                    },
-                    envelope: {
-                        attack: 0.1,
-                        decay: 0.2,
-                        sustain: 0.0,
-                        release: 0.8
-                    }
-                }).toDestination();
-
-                console.log('Synths created successfully');
-            } catch (error) {
-                console.error('Error creating synths:', error);
-                soundEnabled = false;
-            }
-        }
-
-        // Funciones de sonido
-        function playMoveSound() {
-            if (!soundEnabled || !moveSynth) return;
-            try {
-                moveSynth.triggerAttackRelease("C5", "8n");
-                showSoundIndicator();
-            } catch (error) {
-                console.error('Error playing move sound:', error);
-            }
-        }
-
-        function playSelectSound() {
-            if (!soundEnabled || !selectSynth) return;
-            try {
-                selectSynth.triggerAttackRelease("C3", "4n");
-                showSoundIndicator();
-            } catch (error) {
-                console.error('Error playing select sound:', error);
-            }
-        }
-
-        function playMixSound() {
-            if (!soundEnabled || !mixSynth) return;
-            try {
-                mixSynth.triggerAttackRelease("8n");
-                showSoundIndicator();
-            } catch (error) {
-                console.error('Error playing mix sound:', error);
-            }
-        }
-
-        function showSoundIndicator() {
-            const indicator = document.getElementById('sound-indicator');
-            if (indicator) {
-                indicator.classList.add('active');
-                setTimeout(() => {
-                    indicator.classList.remove('active');
-                }, 500);
-            }
-        }
-
-        // Control de volumen
-        function setupVolumeControl() {
-            const volumeSlider = document.getElementById('volume-slider');
-            if (volumeSlider) {
-                volumeSlider.addEventListener('input', (e) => {
-                    masterVolume = parseFloat(e.target.value);
-                    if (Tone.Master) {
-                        Tone.Master.volume.value = Tone.gainToDb(masterVolume);
-                    }
-                });
-            }
-        }
-
-        // Datos de equipos
-        const teams = [
-            { name: "Recreativo IES La Orden", position: "Campeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/IES-La-Orden.png", type: "head" },
-            { name: "Puertas Padilla Cartagena", position: "Subcampeón", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Logo-Puertas-Padilla-Cartagena.png", type: "head" },
-            { name: "Oviedo", position: "3º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/Logo-cbo-formato-vertical.ai_.png", type: "pot1" },
-            { name: "Rinconada - Sevilla", position: "4º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Rinconada.png", type: "pot1" },
-            { name: "Ravachol Pontevedra", position: "5º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/09/LOGO-HORIZONTAL.png", type: "pot2" },
-            { name: "UD Ibiza - Bádminton Pitius", position: "6º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Shield_of_UD_Ibiza.png", type: "pot2" },
-            { name: "Alicante Intercity", position: "7º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-46.png", type: "pot2" },
-            { name: "San Fernando Valencia", position: "8º Clasificado", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/Diseno-sin-titulo-30.png", type: "pot2" },
-            { name: "Astures", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/ASTURES.png", type: "pot2" },
-            { name: "Huesca La Magia", position: "Ascendido", logo: "https://liga.badminton.es/wp-content/uploads/2022/12/images-2-300x104.png", type: "pot2" }
-        ];
-
-        // Variables de estado mejoradas
-        let drawInProgress = false;
-        let startTime = null;
-        let timer = null;
-        let selectionCount = 0;
-        let assignedTeams = new Set(); // CORREGIDO: Sistema robusto de tracking
-        let processedTeams = new Set(); // NUEVO: Tracking adicional de equipos procesados
-        let currentPhaseIndex = 0;
-        let finalViewActive = false;
-
-        // Fases de normativa para popups
-        const normativaFases = [
-            {
-                title: "Cabezas de Serie - Normativa",
-                text: "Según la normativa oficial del sorteo:\n\n• El campeón de la edición anterior será ubicado automáticamente en el Grupo A\n• El subcampeón de la edición anterior será ubicado automáticamente en el Grupo B\n\nEsto garantiza que los dos mejores equipos no coincidan en la misma llave."
-            },
-            {
-                title: "Bombo 1 - Normativa",
-                text: "Según la normativa oficial del sorteo:\n\n• Los equipos clasificados en 3º y 4º lugar de la edición anterior serán sorteados\n• Deberán quedar en grupos distintos para equilibrar la competencia\n• Se realizará un sorteo aleatorio para determinar la distribución"
-            },
-            {
-                title: "Bombo 2 - Normativa",
-                text: "Según la normativa oficial del sorteo:\n\n• Los equipos restantes (5º al 8º clasificados y ascendidos) serán sorteados\n• Se distribuirán aleatoriamente entre los dos grupos\n• El sorteo garantiza la equidad y transparencia en la distribución"
-            }
-        ];
-
-        // Crear partículas optimizadas
-        function createOptimizedParticles() {
-            const particles = document.getElementById('particles');
-            particles.innerHTML = '';
-            for (let i = 0; i < 15; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 8 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
-                particles.appendChild(particle);
-            }
-        }
-
-        // Mostrar popup de normativa
-        function showNormativaPopup(phaseIndex) {
-            return new Promise((resolve) => {
-                const popup = document.getElementById('normativa-popup');
-                const title = document.getElementById('popup-title');
-                const text = document.getElementById('popup-text');
-                const button = document.getElementById('popup-button');
-                
-                const fase = normativaFases[phaseIndex];
-                title.textContent = fase.title;
-                text.textContent = fase.text;
-                
-                popup.style.display = 'flex';
-                
-                button.onclick = () => {
-                    popup.style.display = 'none';
-                    resolve();
+        // --- MÓDULO DE UI ---
+        const UI = {
+            cacheDOM() {
+                const D = id => document.getElementById(id);
+                AppState.dom = {
+                    mainContainer: D('main-container'), mainButton: D('main-button'),
+                    timer: D('timer'), statusText: D('status-text'), headsTeams: D('heads-teams'),
+                    pot1Teams: D('pot1-teams'), pot2Teams: D('pot2-teams'), groupA: D('grupo-a-slots'),
+                    groupB: D('grupo-b-slots'), logEntries: D('log-entries'), popup: D('normativa-popup'),
+                    popupTitle: D('popup-title'), popupText: D('popup-text'),
+                    currentPhase: D('current-phase'), probability: D('probability'), progress: D('progress'),
                 };
-            });
-        }
-
-        // FUNCIÓN CORREGIDA: Crear equipo compacto con ID único
-        function createTeamCompact(team, containerId) {
-            const card = document.createElement('div');
-            card.className = 'team-compact';
-            card.dataset.team = team.name;
-            card.dataset.container = containerId;
-            card.dataset.type = team.type;
-            card.dataset.teamId = `${team.name}-${Date.now()}-${Math.random()}`; // ID único
-            
-            const logo = document.createElement('img');
-            logo.src = team.logo;
-            logo.alt = team.name;
-            logo.className = 'team-logo-compact';
-            logo.onerror = function() {
-                this.style.display = 'none';
-                const placeholder = document.createElement('div');
-                placeholder.className = 'logo-placeholder logo-placeholder-compact';
-                placeholder.textContent = team.name.substring(0, 3).toUpperCase();
-                this.parentNode.insertBefore(placeholder, this);
-            };
-            
-            const name = document.createElement('div');
-            name.className = 'team-name-compact';
-            name.textContent = team.name;
-            
-            card.appendChild(logo);
-            card.appendChild(name);
-            
-            return card;
-        }
-
-        // FUNCIÓN CORREGIDA: Crear equipo grande para grupos
-        function createTeamLarge(teamData) {
-            const teamDiv = document.createElement('div');
-            teamDiv.className = 'team-in-group';
-            teamDiv.dataset.team = teamData.name;
-            
-            const logo = document.createElement('img');
-            logo.src = teamData.logo;
-            logo.alt = teamData.name;
-            logo.className = 'team-logo-large';
-            logo.onerror = function() {
-                this.style.display = 'none';
-                const placeholder = document.createElement('div');
-                placeholder.className = 'logo-placeholder logo-placeholder-large';
-                placeholder.textContent = teamData.name.substring(0, 3).toUpperCase();
-                this.parentNode.insertBefore(placeholder, this);
-            };
-            
-            const name = document.createElement('div');
-            name.className = 'team-name-large';
-            name.textContent = teamData.name;
-            
-            teamDiv.appendChild(logo);
-            teamDiv.appendChild(name);
-            
-            return teamDiv;
-        }
-
-        // Crear slot grande
-        function createSlotLarge(number) {
-            const slot = document.createElement('div');
-            slot.className = 'slot-large empty';
-            slot.innerHTML = `
-                <div class="slot-number-large">${number}</div>
-                <div style="font-size: 0.6em; text-align: center; color: #64748b;">Posición ${number}</div>
-            `;
-            return slot;
-        }
-
-        // Agregar entrada al log con timestamp
-        function addLogEntry(message) {
-            try {
-                const logEntries = document.getElementById('log-entries');
-                if (!logEntries) return;
-                
+            },
+            createTeamCard(team) {
+                const card = document.createElement('div');
+                card.className = 'team-compact';
+                card.dataset.teamName = team.name;
+                card.innerHTML = `<img src="${team.logo}" alt="" class="team-logo-compact" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="logo-placeholder compact" style="display:none;">${team.name.slice(0,3)}</div><div class="team-name-compact">${team.name}</div>`;
+                return card;
+            },
+            fillSlot(slot, team) {
+                slot.innerHTML = `<div class="team-in-group"><img src="${team.logo}" alt="" class="team-logo-large" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="logo-placeholder large" style="display:none;">${team.name.slice(0,3)}</div><div class="team-name-large">${team.name}</div></div>`;
+                slot.classList.add('filled');
+            },
+            log(message) {
                 const entry = document.createElement('div');
                 entry.className = 'log-entry-compact';
-                entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
-                logEntries.appendChild(entry);
-                logEntries.scrollTop = logEntries.scrollHeight;
-            } catch (error) {
-                console.error('Error adding log entry:', error);
-            }
-        }
-
-        // Actualizar cronómetro
-        function updateTimer() {
-            if (!startTime) return;
-            try {
-                const elapsed = Date.now() - startTime;
-                const minutes = Math.floor(elapsed / 60000);
-                const seconds = Math.floor((elapsed % 60000) / 1000);
-                const timerElement = document.getElementById('timer');
-                if (timerElement) {
-                    timerElement.textContent = 
-                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                if (AppState.dom.logEntries) {
+                    AppState.dom.logEntries.prepend(entry);
                 }
-            } catch (error) {
-                console.error('Error updating timer:', error);
-            }
-        }
-
-        // FUNCIÓN CORREGIDA: Actualizar estadísticas con cálculos precisos
-        function updateStats(phase, availableTeams = null) {
-            try {
-                const phaseElement = document.getElementById('current-phase');
-                const progressElement = document.getElementById('progress');
-                const probabilityElement = document.getElementById('probability');
+            },
+            reset() {
+                AppState.dom.mainContainer.classList.remove('final-view');
+                ['headsTeams', 'pot1Teams', 'pot2Teams', 'groupA', 'groupB'].forEach(key => AppState.dom[key].innerHTML = '');
                 
-                if (phaseElement) phaseElement.textContent = phase;
-                if (progressElement) progressElement.textContent = `${selectionCount}/8`;
+                AppConfig.teams.forEach(team => {
+                    const card = this.createTeamCard(team);
+                    if (team.type === 'head') AppState.dom.headsTeams.appendChild(card);
+                    else if (team.type === 'pot1') AppState.dom.pot1Teams.appendChild(card);
+                    else AppState.dom.pot2Teams.appendChild(card);
+                });
+
+                for (let i = 1; i <= 5; i++) {
+                    AppState.dom.groupA.innerHTML += `<div class="slot-large"></div>`;
+                    AppState.dom.groupB.innerHTML += `<div class="slot-large"></div>`;
+                }
                 
-                if (probabilityElement) {
-                    let probabilityText = '';
-                    
-                    switch (phase) {
-                        case 'Cabezas de Serie':
-                            probabilityText = 'Asignación fija (100%)';
-                            break;
-                        case 'Bombo 1':
-                            probabilityText = '50% cada equipo';
-                            break;
-                        case 'Bombo 2':
-                            if (availableTeams && availableTeams > 0) {
-                                const prob = ((1 / availableTeams) * 100).toFixed(1);
-                                probabilityText = `${prob}% cada uno (${availableTeams} restantes)`;
-                            } else {
-                                probabilityText = 'Calculando...';
-                            }
-                            break;
-                        case 'Finalizado':
-                            probabilityText = 'Sorteo completado';
-                            break;
-                        default:
-                            probabilityText = 'Pendiente';
-                    }
-                    
-                    probabilityElement.textContent = probabilityText;
-                }
-            } catch (error) {
-                console.error('Error updating stats:', error);
+                AppState.dom.logEntries.innerHTML = '';
+                AppState.dom.mainButton.disabled = false;
+                AppState.dom.mainButton.textContent = 'Iniciar Sorteo';
+                this.updateStatus('Listo para comenzar');
+                this.updateStats('Preparación', 'N/A', 0);
+            },
+            updateStatus(text) { AppState.dom.statusText.textContent = text; },
+            updateStats(phase, probability, drawnCount) {
+                AppState.dom.currentPhase.textContent = phase;
+                AppState.dom.probability.textContent = probability;
+                AppState.dom.progress.textContent = `${drawnCount} / 8`;
+            },
+            showPopup(phaseIndex, duration = 3000) {
+                return new Promise(resolve => {
+                    const rule = AppConfig.normativa[phaseIndex];
+                    AppState.dom.popupTitle.textContent = rule.title;
+                    AppState.dom.popupText.textContent = rule.text;
+                    AppState.dom.popup.classList.add('visible');
+                    setTimeout(() => {
+                        AppState.dom.popup.classList.remove('visible');
+                        resolve();
+                    }, duration);
+                });
+            },
+            enterFinalView() {
+                AppState.dom.mainContainer.classList.add('final-view');
+                const newButton = AppState.dom.mainButton.cloneNode(true);
+                newButton.textContent = "Volver";
+                newButton.onclick = () => this.reset();
+                AppState.dom.mainButton.replaceWith(newButton);
+                AppState.dom.mainButton = newButton;
             }
-        }
+        };
 
-        // FUNCIÓN CORREGIDA: Efecto de mezcla con sonido
-        function startMixingEffect(container) {
-            return new Promise((resolve) => {
-                try {
-                    if (!container || !container.children) {
-                        resolve();
-                        return;
-                    }
-                    
-                    const teams = Array.from(container.children);
-                    const availableTeams = teams.filter(team => 
-                        team && 
-                        team.dataset && 
-                        team.dataset.team && 
-                        !assignedTeams.has(team.dataset.team) &&
-                        !processedTeams.has(team.dataset.teamId)
-                    );
-                    
-                    if (availableTeams.length === 0) {
-                        resolve();
-                        return;
-                    }
-                    
-                    // Reproducir sonido de mezcla
-                    playMixSound();
-                    
-                    // Activar efecto de mezcla rápida solo en equipos disponibles
-                    availableTeams.forEach(team => {
-                        if (team && team.classList) {
-                            team.classList.add('mixing-effect');
-                        }
-                    });
-                    
-                    // Mantener el efecto por 2 segundos
-                    setTimeout(() => {
-                        availableTeams.forEach(team => {
-                            if (team && team.classList) {
-                                team.classList.remove('mixing-effect');
-                            }
-                        });
-                        resolve();
-                    }, 2000);
-                } catch (error) {
-                    console.error('Error in mixing effect:', error);
-                    resolve();
-                }
-            });
-        }
-
-        // FUNCIÓN CORREGIDA: Seleccionar equipo sin duplicados
-        function selectTeamWithEffect(container) {
-            return new Promise((resolve) => {
-                try {
-                    if (!container || !container.children || container.children.length === 0) {
-                        console.log('Container vacío o inválido');
-                        resolve(null);
-                        return;
-                    }
-                    
-                    const teams = Array.from(container.children);
-                    const availableTeams = teams.filter(team => 
-                        team && 
-                        team.dataset && 
-                        team.dataset.team && 
-                        !assignedTeams.has(team.dataset.team) &&
-                        !processedTeams.has(team.dataset.teamId) &&
-                        document.body.contains(team) // Verificar que el elemento esté en el DOM
-                    );
-                    
-                    console.log(`Equipos disponibles para selección: ${availableTeams.length}`);
-                    console.log('Equipos disponibles:', availableTeams.map(t => t.dataset.team));
-                    console.log('Equipos asignados:', Array.from(assignedTeams));
-                    
-                    if (availableTeams.length === 0) {
-                        console.log('No hay equipos disponibles para seleccionar');
-                        resolve(null);
-                        return;
-                    }
-                    
-                    const randomIndex = Math.floor(Math.random() * availableTeams.length);
-                    const selectedTeam = availableTeams[randomIndex];
-                    
-                    // Marcar como procesado y asignado INMEDIATAMENTE
-                    assignedTeams.add(selectedTeam.dataset.team);
-                    processedTeams.add(selectedTeam.dataset.teamId);
-                    
-                    console.log(`Equipo seleccionado: ${selectedTeam.dataset.team}`);
-                    
-                    // Efecto de selección final
-                    if (selectedTeam.classList) {
-                        selectedTeam.classList.add('selected-final');
-                    }
-                    
-                    // Reproducir sonido de selección
-                    playSelectSound();
-                    
-                    setTimeout(() => {
-                        resolve(selectedTeam);
-                    }, 1500);
-                } catch (error) {
-                    console.error('Error selecting team:', error);
-                    resolve(null);
-                }
-            });
-        }
-
-        // FUNCIÓN CORREGIDA: Mover equipo con validaciones robustas
-        function moveTeamWithSound(teamCard, targetSlot) {
-            return new Promise((resolve) => {
-                try {
-                    // Validaciones exhaustivas
-                    if (!teamCard || !targetSlot) {
-                        console.error('Invalid team card or target slot');
-                        resolve();
-                        return;
-                    }
-                    
-                    if (!teamCard.dataset || !teamCard.dataset.team) {
-                        console.error('Team card missing data');
-                        resolve();
-                        return;
-                    }
-                    
-                    // Verificar que ambos elementos estén en el DOM
-                    if (!document.body.contains(teamCard) || !document.body.contains(targetSlot)) {
-                        console.error('Elements not in DOM - teamCard:', document.body.contains(teamCard), 'targetSlot:', document.body.contains(targetSlot));
-                        resolve();
-                        return;
-                    }
-                    
-                    // CAPTURAR DATOS DEL EQUIPO ANTES DE CUALQUIER MANIPULACIÓN
-                    const teamName = teamCard.dataset.team;
-                    const teamData = teams.find(t => t.name === teamName);
-                    
-                    if (!teamData) {
-                        console.error('Team data not found for:', teamName);
-                        resolve();
-                        return;
-                    }
-                    
-                    console.log(`Moviendo equipo: ${teamName} con logo: ${teamData.logo}`);
-                    
-                    const startRect = teamCard.getBoundingClientRect();
+        // --- ANIMACIONES ---
+        const Animations = {
+            pause: (duration) => new Promise(resolve => setTimeout(resolve, duration)),
+            move(card, targetSlot) {
+                return new Promise(resolve => {
+                    const startRect = card.getBoundingClientRect();
                     const endRect = targetSlot.getBoundingClientRect();
-                    
-                    // Verificar dimensiones válidas
-                    if (!startRect || !endRect || 
-                        startRect.width === 0 || startRect.height === 0 || 
-                        endRect.width === 0 || endRect.height === 0) {
-                        console.error('Invalid dimensions for animation');
-                        resolve();
-                        return;
-                    }
-                    
-                    // Reproducir sonido de movimiento
-                    playMoveSound();
-                    
-                    // Crear tarjeta de movimiento
-                    const movingCard = teamCard.cloneNode(true);
-                    movingCard.className = 'team-compact moving-team';
-                    movingCard.style.position = 'fixed';
-                    movingCard.style.left = startRect.left + 'px';
-                    movingCard.style.top = startRect.top + 'px';
-                    movingCard.style.width = startRect.width + 'px';
-                    movingCard.style.height = startRect.height + 'px';
-                    movingCard.style.zIndex = '1000';
-                    
+                    const movingCard = card.cloneNode(true);
+                    movingCard.classList.add('moving-team');
+                    Object.assign(movingCard.style, { left: `${startRect.left}px`, top: `${startRect.top}px`, width: `${startRect.width}px`, height: `${startRect.height}px` });
                     document.body.appendChild(movingCard);
+                    card.style.opacity = '0.2';
                     
-                    // Ocultar tarjeta original
-                    if (teamCard.style) {
-                        teamCard.style.opacity = '0';
-                    }
-                    
-                    setTimeout(() => {
-                        if (document.body.contains(movingCard)) {
-                            movingCard.style.left = endRect.left + 'px';
-                            movingCard.style.top = endRect.top + 'px';
-                            movingCard.style.width = endRect.width + 'px';
-                            movingCard.style.height = endRect.height + 'px';
-                        }
-                    }, 50);
-                    
-                    setTimeout(() => {
-                        try {
-                            // Crear el equipo grande usando los datos capturados
-                            const teamLarge = createTeamLarge(teamData);
-                            
-                            // Verificar que el slot target aún existe
-                            if (document.body.contains(targetSlot)) {
-                                targetSlot.innerHTML = '';
-                                targetSlot.appendChild(teamLarge);
-                                targetSlot.classList.remove('empty');
-                                targetSlot.classList.add('filled');
-                            }
-                            
-                            // Limpiar efectos
-                            if (teamCard.classList) {
-                                teamCard.classList.remove('selected-final');
-                            }
-                            
-                            // Remover del DOM de forma segura
-                            if (teamCard.parentNode && document.body.contains(teamCard)) {
-                                teamCard.parentNode.removeChild(teamCard);
-                            }
-                            
-                            if (document.body.contains(movingCard)) {
-                                document.body.removeChild(movingCard);
-                            }
-                            
-                            // Log para debugging
-                            addLogEntry(`Equipo "${teamData.name}" movido correctamente`);
-                            console.log(`Equipo "${teamData.name}" movido correctamente con logo "${teamData.logo}"`);
-                            
-                            resolve();
-                        } catch (cleanupError) {
-                            console.error('Error in cleanup:', cleanupError);
-                            resolve();
-                        }
-                    }, 1850);
-                    
-                } catch (error) {
-                    console.error('Error in moveTeamWithSound:', error);
-                    resolve();
-                }
-            });
-        }
+                    requestAnimationFrame(() => {
+                        Object.assign(movingCard.style, { 
+                            left: `${endRect.left}px`, top: `${endRect.top}px`, 
+                            width: `${endRect.width}px`, height: `${endRect.height}px`,
+                            padding: '0px'
+                        });
+                    });
 
-        // Animar bombo mejorado con sonido
-        function animateBomboWithSound(bomboId) {
-            return new Promise((resolve) => {
-                try {
-                    const bombo = document.getElementById(bomboId);
-                    if (!bombo) {
+                    setTimeout(() => {
+                        const teamData = AppConfig.teams.find(t => t.name === card.dataset.teamName);
+                        UI.fillSlot(targetSlot, teamData);
+                        movingCard.remove();
+                        card.remove();
                         resolve();
-                        return;
-                    }
-                    
-                    bombo.classList.add('shake-effect');
-                    
-                    setTimeout(() => {
-                        if (bombo.classList) {
-                            bombo.classList.remove('shake-effect');
-                        }
-                        resolve();
-                    }, 600);
-                } catch (error) {
-                    console.error('Error animating bombo:', error);
-                    resolve();
-                }
-            });
-        }
-
-        // FUNCIÓN PARA ENTRAR EN VISTA AMPLIADA
-        function enterFinalView() {
-            const container = document.getElementById('main-container');
-            const backButton = document.getElementById('back-button');
-            const status = document.getElementById('status');
-            
-            if (container) {
-                container.classList.add('final-view');
-                finalViewActive = true;
-            }
-            
-            if (backButton) {
-                backButton.style.display = 'block';
-            }
-            
-            if (status) {
-                status.textContent = 'Resultado Final - Vista Ampliada';
-            }
-            
-            addLogEntry('Vista ampliada activada para visualizar resultado final');
-        }
-
-        // FUNCIÓN PARA SALIR DE VISTA AMPLIADA
-        function exitFinalView() {
-            const container = document.getElementById('main-container');
-            const backButton = document.getElementById('back-button');
-            const status = document.getElementById('status');
-            
-            if (container) {
-                container.classList.remove('final-view');
-                finalViewActive = false;
-            }
-            
-            if (backButton) {
-                backButton.style.display = 'none';
-            }
-            
-            if (status) {
-                status.textContent = 'Vista completa restaurada';
-            }
-        }
-
-        // FUNCIÓN CORREGIDA: Inicializar página con reseteo completo
-        function initializePage() {
-            try {
-                createOptimizedParticles();
-                
-                // RESETEO COMPLETO DEL ESTADO
-                assignedTeams.clear();
-                processedTeams.clear();
-                selectionCount = 0;
-                startTime = null;
-                currentPhaseIndex = 0;
-                finalViewActive = false;
-                
-                console.log('Estado inicializado - Equipos asignados:', assignedTeams.size, 'Equipos procesados:', processedTeams.size);
-                
-                // Salir de vista ampliada si está activa
-                exitFinalView();
-                
-                // Limpiar contenedores de forma segura
-                ['heads-teams', 'pot1-teams', 'pot2-teams'].forEach(id => {
-                    const container = document.getElementById(id);
-                    if (container) container.innerHTML = '';
+                    }, AppConfig.delays.move);
                 });
-                
-                ['grupo-a-slots', 'grupo-b-slots'].forEach(id => {
-                    const container = document.getElementById(id);
-                    if (container) container.innerHTML = '';
-                });
-                
-                // Llenar bombos
-                const headsContainer = document.getElementById('heads-teams');
-                const pot1Container = document.getElementById('pot1-teams');
-                const pot2Container = document.getElementById('pot2-teams');
-                
-                if (headsContainer) {
-                    teams.filter(team => team.type === 'head').forEach(team => {
-                        headsContainer.appendChild(createTeamCompact(team, 'heads-teams'));
-                    });
-                }
-                
-                if (pot1Container) {
-                    teams.filter(team => team.type === 'pot1').forEach(team => {
-                        pot1Container.appendChild(createTeamCompact(team, 'pot1-teams'));
-                    });
-                }
-                
-                if (pot2Container) {
-                    teams.filter(team => team.type === 'pot2').forEach(team => {
-                        pot2Container.appendChild(createTeamCompact(team, 'pot2-teams'));
-                    });
-                }
-                
-                // Crear slots grandes
-                const groupAContainer = document.getElementById('grupo-a-slots');
-                const groupBContainer = document.getElementById('grupo-b-slots');
-                
-                if (groupAContainer && groupBContainer) {
-                    for (let i = 1; i <= 5; i++) {
-                        groupAContainer.appendChild(createSlotLarge(i));
-                        groupBContainer.appendChild(createSlotLarge(i));
-                    }
-                }
-                
-                // Resetear timer
-                if (timer) {
-                    clearInterval(timer);
-                    timer = null;
-                }
-                
-                // Resetear interfaz
-                const button = document.getElementById('main-button');
-                const status = document.getElementById('status');
-                const finalMessage = document.getElementById('final-message');
-                const logEntries = document.getElementById('log-entries');
-                const normativaPopup = document.getElementById('normativa-popup');
-                
-                if (button) {
-                    button.textContent = '🎭 Iniciar Sorteo';
-                    button.disabled = false;
-                    button.onclick = startCorrectedDraw;
-                }
-                
-                if (status) status.textContent = 'Listo para comenzar';
-                if (finalMessage) finalMessage.style.display = 'none';
-                if (logEntries) logEntries.innerHTML = '';
-                if (normativaPopup) normativaPopup.style.display = 'none';
-                
-                updateStats('Preparación');
-                
-                // Resetear timer display
-                const timerElement = document.getElementById('timer');
-                if (timerElement) timerElement.textContent = '00:00';
-                
-                console.log('Página inicializada correctamente');
-                
-            } catch (error) {
-                console.error('Error initializing page:', error);
-            }
-        }
+            },
+            async selectFromPot(potKey) {
+                const potContainer = AppState.dom[potKey];
+                const availableCards = [...potContainer.children].filter(c => c.style.opacity !== '0.2');
+                if (availableCards.length === 0) return null;
 
-        // FUNCIÓN PRINCIPAL CORREGIDA: Sorteo sin duplicados
-        async function startCorrectedDraw() {
-            if (drawInProgress) return;
-            
-            try {
-                drawInProgress = true;
-                startTime = Date.now();
-                timer = setInterval(updateTimer, 100);
-                
-                // Inicializar audio
-                await initializeAudio();
-                createSynths();
-                
-                const button = document.getElementById('main-button');
-                const status = document.getElementById('status');
-                
-                if (button) {
-                    button.disabled = true;
-                    button.textContent = '🎬 Sorteo en Progreso';
-                }
-                
-                addLogEntry('Inicio del sorteo oficial corregido');
-                console.log('=== INICIO DEL SORTEO ===');
-                
-                // Fase 1: Cabezas de serie con popup
-                await showNormativaPopup(0);
-                
-                if (status) status.textContent = '👑 Asignando Cabezas de Serie';
-                updateStats('Cabezas de Serie');
-                
-                await new Promise(resolve => setTimeout(resolve, 800));
-                
-                const headsContainer = document.getElementById('heads-teams');
-                if (!headsContainer || headsContainer.children.length < 2) {
-                    throw new Error('Invalid heads container');
-                }
-                
-                const champion = headsContainer.children[0];
-                const runnerUp = headsContainer.children[1];
-                
-                const groupASlots = document.getElementById('grupo-a-slots');
-                const groupBSlots = document.getElementById('grupo-b-slots');
-                
-                if (!groupASlots || !groupBSlots || 
-                    groupASlots.children.length < 5 || groupBSlots.children.length < 5) {
-                    throw new Error('Invalid group containers');
-                }
-                
-                // Marcar como asignados
-                if (champion.dataset.team) {
-                    assignedTeams.add(champion.dataset.team);
-                    processedTeams.add(champion.dataset.teamId);
-                }
-                if (runnerUp.dataset.team) {
-                    assignedTeams.add(runnerUp.dataset.team);
-                    processedTeams.add(runnerUp.dataset.teamId);
-                }
-                
-                addLogEntry(`Campeón "${champion.dataset.team}" → Grupo A`);
-                await moveTeamWithSound(champion, groupASlots.children[0]);
-                selectionCount++;
-                
-                await new Promise(resolve => setTimeout(resolve, 600));
-                
-                addLogEntry(`Subcampeón "${runnerUp.dataset.team}" → Grupo B`);
-                await moveTeamWithSound(runnerUp, groupBSlots.children[0]);
-                selectionCount++;
-                
-                await new Promise(resolve => setTimeout(resolve, 800));
-                
-                // Fase 2: Bombo 1 con popup
-                await showNormativaPopup(1);
-                
-                if (status) status.textContent = '🎯 Sorteo Bombo 1 - Mezclando...';
-                updateStats('Bombo 1');
-                
-                addLogEntry('Mezclando Bombo 1 con efectos visuales y sonoros');
-                await animateBomboWithSound('bombo-1');
-                
-                const pot1Container = document.getElementById('pot1-teams');
-                if (!pot1Container) {
-                    throw new Error('Invalid pot1 container');
-                }
-                
-                // EFECTO DE MEZCLA VISUAL CON SONIDO
-                await startMixingEffect(pot1Container);
-                
-                if (status) status.textContent = '🎯 Seleccionando del Bombo 1...';
-                const selectedPot1 = await selectTeamWithEffect(pot1Container);
-                
-                if (!selectedPot1) {
-                    throw new Error('No team selected from pot1');
-                }
-                
-                addLogEntry(`Seleccionado: "${selectedPot1.dataset.team}"`);
-                
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                await moveTeamWithSound(selectedPot1, groupASlots.children[1]);
-                selectionCount++;
-                
-                // Encontrar el equipo restante del pot1
-                const remainingPot1Teams = Array.from(pot1Container.children).filter(team => 
-                    team.dataset.team && 
-                    !assignedTeams.has(team.dataset.team) &&
-                    !processedTeams.has(team.dataset.teamId) &&
-                    document.body.contains(team)
-                );
-                
-                if (remainingPot1Teams.length > 0) {
-                    const remainingPot1 = remainingPot1Teams[0];
-                    await new Promise(resolve => setTimeout(resolve, 400));
-                    
-                    assignedTeams.add(remainingPot1.dataset.team);
-                    processedTeams.add(remainingPot1.dataset.teamId);
-                    addLogEntry(`Restante "${remainingPot1.dataset.team}" → Grupo B`);
-                    await moveTeamWithSound(remainingPot1, groupBSlots.children[1]);
-                    selectionCount++;
-                }
-                
-                await new Promise(resolve => setTimeout(resolve, 800));
-                
-                // Fase 3: Bombo 2 con popup
-                await showNormativaPopup(2);
-                
-                if (status) status.textContent = '🎲 Sorteo Bombo 2 - Proceso completo';
-                
-                const pot2Container = document.getElementById('pot2-teams');
-                if (!pot2Container) {
-                    throw new Error('Invalid pot2 container');
-                }
-                
-                let currentGroup = 'A';
-                let groupAPosition = 2;
-                let groupBPosition = 2;
-                
-                // CICLO CORREGIDO: Sortear equipos del pot2 uno por uno
-                while (true) {
-                    // Contar equipos disponibles
-                    const availableTeams = Array.from(pot2Container.children).filter(team => 
-                        team.dataset.team && 
-                        !assignedTeams.has(team.dataset.team) &&
-                        !processedTeams.has(team.dataset.teamId) &&
-                        document.body.contains(team)
-                    );
-                    
-                    console.log(`Equipos disponibles en Bombo 2: ${availableTeams.length}`);
-                    
-                    if (availableTeams.length === 0 || (groupAPosition >= 5 && groupBPosition >= 5)) {
-                        console.log('No hay más equipos disponibles o grupos llenos');
-                        break;
-                    }
-                    
-                    // ACTUALIZAR PROBABILIDADES CORREGIDAS
-                    updateStats('Bombo 2', availableTeams.length);
-                    
-                    addLogEntry(`Mezclando ${availableTeams.length} equipos restantes`);
-                    if (status) status.textContent = `🎲 Mezclando ${availableTeams.length} equipos...`;
-                    
-                    await animateBomboWithSound('bombo-2');
-                    
-                    // EFECTO DE MEZCLA VISUAL CON SONIDO
-                    await startMixingEffect(pot2Container);
-                    
-                    if (status) status.textContent = '🎲 Seleccionando equipo...';
-                    const selectedTeam = await selectTeamWithEffect(pot2Container);
-                    
-                    if (!selectedTeam) {
-                        console.log('No se pudo seleccionar equipo del Bombo 2');
-                        break;
-                    }
-                    
-                    addLogEntry(`Seleccionado: "${selectedTeam.dataset.team}"`);
-                    
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    
-                    // Asignar al grupo correspondiente
-                    if (currentGroup === 'A' && groupAPosition < 5) {
-                        await moveTeamWithSound(selectedTeam, groupASlots.children[groupAPosition]);
-                        addLogEntry(`"${selectedTeam.dataset.team}" asignado a Grupo A, posición ${groupAPosition + 1}`);
-                        groupAPosition++;
-                    } else if (currentGroup === 'B' && groupBPosition < 5) {
-                        await moveTeamWithSound(selectedTeam, groupBSlots.children[groupBPosition]);
-                        addLogEntry(`"${selectedTeam.dataset.team}" asignado a Grupo B, posición ${groupBPosition + 1}`);
-                        groupBPosition++;
-                    }
-                    
-                    selectionCount++;
-                    
-                    // Alternar grupo para el siguiente equipo
-                    currentGroup = currentGroup === 'A' ? 'B' : 'A';
-                    
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                }
-                
-                // Finalización con sonido especial
-                addLogEntry('Sorteo completado exitosamente');
-                if (status) status.textContent = '🎊 ¡Sorteo Completado!';
-                updateStats('Finalizado');
-                
-                console.log('=== SORTEO FINALIZADO ===');
-                console.log('Equipos asignados total:', assignedTeams.size);
-                console.log('Equipos procesados total:', processedTeams.size);
-                
-                // Reproducir sonido de finalización
-                playSelectSound();
-                
-                const finalMessage = document.getElementById('final-message');
-                if (finalMessage) {
-                    finalMessage.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        finalMessage.style.display = 'none';
-                        
-                        // AMPLIACIÓN AUTOMÁTICA
-                        setTimeout(() => {
-                            enterFinalView();
-                        }, 500);
-                        
-                    }, 3000);
-                }
-                
-                if (button) {
-                    button.textContent = '🔄 Nuevo Sorteo';
-                    button.disabled = false;
-                }
-                
-                drawInProgress = false;
-                
-                if (timer) {
-                    clearInterval(timer);
-                    timer = null;
-                }
-                
-                // Cambiar función del botón
-                if (button) {
-                    button.onclick = () => {
-                        initializePage();
-                    };
-                }
-                
-            } catch (error) {
-                console.error('Error in draw process:', error);
-                
-                // Recuperación de errores
-                drawInProgress = false;
-                if (timer) {
-                    clearInterval(timer);
-                    timer = null;
-                }
-                
-                const button = document.getElementById('main-button');
-                const status = document.getElementById('status');
-                
-                if (button) {
-                    button.textContent = '⚠️ Reiniciar Sorteo';
-                    button.disabled = false;
-                    button.onclick = initializePage;
-                }
-                
-                if (status) status.textContent = 'Error detectado - Reinicie el sorteo';
-                
-                addLogEntry('Error en el sorteo - Proceso interrumpido');
-            }
-        }
+                // Animación de pre-selección
+                const preSelectDuration = AppConfig.delays.preSelect;
+                const interval = 40; // Más rápido
+                let lastGlowedCard = null;
+                const startTime = Date.now();
 
-        // Inicializar al cargar con manejo de errores
-        window.onload = async function() {
-            try {
-                await initializePage();
-                setupVolumeControl();
+                while (Date.now() - startTime < preSelectDuration) {
+                    if (lastGlowedCard) lastGlowedCard.classList.remove('pre-select-glow');
+                    const randomCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+                    randomCard.classList.add('pre-select-glow');
+                    lastGlowedCard = randomCard;
+                    await this.pause(interval);
+                }
+                if (lastGlowedCard) lastGlowedCard.classList.remove('pre-select-glow');
                 
-                // Configurar audio en primer click
-                document.addEventListener('click', async () => {
-                    if (!audioContext) {
-                        await initializeAudio();
-                        createSynths();
-                    }
-                }, { once: true });
-                
-            } catch (error) {
-                console.error('Error on page load:', error);
+                // Selección final
+                const selectedCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+                selectedCard.classList.add('selected-final');
+                await this.pause(AppConfig.delays.select);
+                return selectedCard;
             }
         };
 
-        // Manejo de errores globales
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            console.error('Global error:', msg, 'at', lineNo + ':' + columnNo);
-            addLogEntry('Error detectado en el sistema');
-            return false;
+        // --- LÓGICA DEL SORTEO ---
+        const DrawController = {
+            async run() {
+                if (AppState.isDrawing) return;
+                AppState.isDrawing = true;
+                
+                this.prepare();
+                await UI.showPopup(0);
+                await this.phase1_Heads();
+                
+                await UI.showPopup(1, 5000); // Popup 2 con 5 segundos
+                await this.phase2_Pot1();
+
+                await UI.showPopup(2);
+                await this.phase3_Pot2();
+                
+                this.finish();
+            },
+            prepare() {
+                UI.reset();
+                AppState.assignedTeams.clear();
+                AppState.isDrawing = true;
+                AppState.dom.mainButton.disabled = true;
+                const startTime = Date.now();
+                AppState.timerInterval = setInterval(() => {
+                    const elapsed = new Date(Date.now() - startTime);
+                    AppState.dom.timer.textContent = elapsed.toISOString().substr(14, 5);
+                }, 1000);
+                UI.log("Sorteo iniciado.");
+            },
+            async assignTeam(teamName, targetSlot) {
+                AppState.assignedTeams.add(teamName);
+                const card = document.querySelector(`[data-team-name="${teamName}"]`);
+                await Animations.move(card, targetSlot);
+                UI.log(`${teamName} → ${targetSlot.parentElement.previousElementSibling.textContent.trim()}`);
+                const drawnCount = AppState.assignedTeams.size - 2; // No contar cabezas de serie
+                UI.updateStats(AppState.currentPhase, 'N/A', Math.max(0, drawnCount));
+            },
+            async phase1_Heads() {
+                AppState.currentPhase = "Cabezas de Serie";
+                UI.updateStatus('Asignando Cabezas de Serie...');
+                await this.assignTeam("Recreativo IES La Orden", AppState.dom.groupA.children[0]);
+                await this.assignTeam("Puertas Padilla Cartagena", AppState.dom.groupB.children[0]);
+            },
+            async phase2_Pot1() {
+                AppState.currentPhase = "Bombo 1";
+                UI.updateStatus('Sorteando Bombo 1...');
+                const selectedCard = await Animations.selectFromPot('pot1Teams');
+                await this.assignTeam(selectedCard.dataset.teamName, AppState.dom.groupA.children[1]);
+                
+                const remainingCard = AppState.dom.pot1Teams.querySelector('.team-compact');
+                if(remainingCard) await this.assignTeam(remainingCard.dataset.teamName, AppState.dom.groupB.children[1]);
+            },
+            async phase3_Pot2() {
+                AppState.currentPhase = "Bombo 2";
+                let groupASlot = 2, groupBSlot = 2;
+
+                while(AppState.assignedTeams.size < AppConfig.teams.length) {
+                    const pot2Teams = AppConfig.teams.filter(t => t.type === 'pot2');
+                    const remainingInPot = pot2Teams.filter(team => !AppState.assignedTeams.has(team.name));
+                    if (remainingInPot.length === 0) break;
+
+                    const remainingCount = remainingInPot.length;
+                    UI.updateStats(AppState.currentPhase, `${(100/remainingCount).toFixed(1)}%`, AppState.assignedTeams.size - 2);
+                    UI.updateStatus(`Sorteando Bombo 2 (${remainingCount} restantes)`);
+
+                    const selectedCard = await Animations.selectFromPot('pot2Teams');
+                    if (!selectedCard || AppState.assignedTeams.has(selectedCard.dataset.teamName)) {
+                        const realCard = AppState.dom.pot2Teams.querySelector('.team-compact:not([style*="opacity: 0.2"])');
+                        if(realCard) await this.assignTeamToGroup(realCard, groupASlot, groupBSlot);
+                    } else {
+                       await this.assignTeamToGroup(selectedCard, groupASlot, groupBSlot);
+                    }
+                    if(groupASlot <= groupBSlot && groupASlot < 5) groupASlot++; else groupBSlot++;
+                }
+            },
+            async assignTeamToGroup(card, slotA, slotB) {
+                 if (slotA <= slotB && slotA < 5) {
+                    await this.assignTeam(card.dataset.teamName, AppState.dom.groupA.children[slotA]);
+                } else if (slotB < 5) {
+                    await this.assignTeam(card.dataset.teamName, AppState.dom.groupB.children[slotB]);
+                }
+            },
+            finish() {
+                clearInterval(AppState.timerInterval);
+                UI.updateStatus('¡Sorteo Finalizado!');
+                UI.updateStats('Finalizado', '100%', 8);
+                UI.log("Sorteo completado.");
+                setTimeout(() => UI.enterFinalView(), 1500);
+                AppState.isDrawing = false;
+            }
         };
+
+        // --- INICIALIZACIÓN ---
+        window.addEventListener('load', () => {
+            UI.cacheDOM();
+            UI.reset();
+            AppState.dom.mainButton.addEventListener('click', () => DrawController.run());
+        });
     </script>
 </body>
 </html>
